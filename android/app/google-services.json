@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "469140471156",
+    "project_id": "gymnastic-center",
+    "storage_bucket": "gymnastic-center.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469140471156:android:49cff41302ba371b584021",
+        "android_client_info": {
+          "package_name": "com.deltateam.gymnastic_center"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOWoN335GXOCdfoHWPEZmr4xMcsOexI1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
