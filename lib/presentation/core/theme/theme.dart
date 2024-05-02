@@ -6,12 +6,12 @@ class AppTheme {
   const AppTheme({this.isDarkMode = false});
 
   ThemeData getTheme() => ThemeData(
-    useMaterial3: true,
-    brightness: isDarkMode ? Brightness.dark : Brightness.light,
-    colorSchemeSeed: Colors.deepPurple,
-  );
+      useMaterial3: true,
+      brightness: isDarkMode ? Brightness.dark : Brightness.light,
+      colorSchemeSeed: Colors.deepPurple,
+      fontFamily: 'PT Sans');
 
   AppTheme copyWith({bool? isDarkMode}) => AppTheme(
-    isDarkMode: isDarkMode ?? this.isDarkMode,
-  );
+        isDarkMode: isDarkMode ?? this.isDarkMode,
+      );
 }
