@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications.dart';
+import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications_manager.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_options.dart';
 import 'package:gymnastic_center/infrastructure/local_notifications/local_notifications.dart';
 import 'package:gymnastic_center/presentation/core/app_widget.dart';
@@ -14,7 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register the background message handler
-  FirebaseNotifications.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  FirebaseNotificationsManager.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   // Initialize Firebase, and pass the default options (firebase_options.dart)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -27,7 +27,7 @@ void main() async {
       BlocProvider(create: (_) => ThemesBloc()),
       BlocProvider(
         create: (_) => NotificationsBloc(
-          FirebaseNotifications(LocalNotifications())
+          FirebaseNotificationsManager(LocalNotifications())
         )
       ),
     ], 
