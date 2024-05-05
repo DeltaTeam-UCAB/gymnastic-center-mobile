@@ -10,7 +10,7 @@ class APIVideoDatasource extends VideosDatasource{
   
   
   final dio = Dio( BaseOptions(
-    baseUrl: '${Environment.backendApi}/api/video/one',
+    baseUrl: '${Environment.backendApi}/video/one',
     headers: {
       //TODO: Extraer el token de autenticacion de un localstorage 
       // 'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRhYWM4ZTJlLWMxY2QtNDk4Yy04NDNjLWI0MGIwMzA4MzNmYSIsImlhdCI6MTcxNDU2NDQ5NH0.OMykx39ocOShdQa72PpNdlDwokiaxStc9D_UE_QUvTk'
