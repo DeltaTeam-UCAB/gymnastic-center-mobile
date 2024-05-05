@@ -35,7 +35,7 @@ dart run flutter_launcher_icons
 
 2. Build the app for Android
 ```bash
-dart run build appbundle
+flutter build appbundle
 ```
 
 dart run change_app_package_name:main com.deltateam.gymnastic_center
