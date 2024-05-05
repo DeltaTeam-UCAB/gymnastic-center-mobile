@@ -73,6 +73,7 @@ flutter:
     - assets/welcome/yoga1.svg
     - assets/welcome/yoga2.svg
     - assets/welcome/yoga3.svg
+    - assets/left-arrow-gradient-circle.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
