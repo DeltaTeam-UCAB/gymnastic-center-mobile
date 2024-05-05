@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// ```dart
 /// GradientText(
 ///   textWidget: Text('Hello world'),
-///   gradient: LinearGradient: const LinearGradient(colors: [
+///   gradient: const LinearGradient(colors: [
 ///       Colors.red,
 ///       Colors.green,
 ///       Colors.blue,
