@@ -9,6 +9,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: isDarkMode ? Brightness.dark : Brightness.light,
     colorSchemeSeed: Colors.deepPurple,
+    fontFamily: 'PT Sans',
 
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(
@@ -39,6 +40,6 @@ class AppTheme {
   );
 
   AppTheme copyWith({bool? isDarkMode}) => AppTheme(
-    isDarkMode: isDarkMode ?? this.isDarkMode,
-  );
+        isDarkMode: isDarkMode ?? this.isDarkMode,
+      );
 }
