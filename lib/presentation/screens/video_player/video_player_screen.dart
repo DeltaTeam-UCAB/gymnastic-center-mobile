@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/videos/api_video_datasource.dart';
-import 'package:gymnastic_center/infrastructure/repositories/video_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/videos/video_repository_impl.dart';
 import 'package:gymnastic_center/presentation/screens/video_player/widgets/full_screen_player.dart';
 import 'package:gymnastic_center/presentation/screens/video_player/widgets/video_buttons.dart';
 

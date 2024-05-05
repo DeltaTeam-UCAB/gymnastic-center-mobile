@@ -1,9 +1,8 @@
-// import 'package:cloudinary_flutter/video/cld_video_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
 import 'package:gymnastic_center/domain/entities/videos/video.dart';
-import 'package:gymnastic_center/infrastructure/services/video_player/network_video_player_service.dart';
+import 'package:gymnastic_center/infrastructure/video_player/network_video_player_manager.dart';
 import 'package:video_player/video_player.dart';
 
 class FullScreenPlayer extends StatefulWidget {
@@ -17,14 +16,14 @@ class FullScreenPlayer extends StatefulWidget {
 
 class _FullScreenPlayerState extends State<FullScreenPlayer> {
   late VideoPlayerController _controller;
-  late NetworkVideoPlayerService service;
+  late NetworkVideoPlayerManager service;
 
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.video.src));
 
-    service = NetworkVideoPlayerService(_controller);
+    service = NetworkVideoPlayerManager(_controller);
   }
 
   @override
@@ -39,7 +38,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<VideoPlayerBloc>().setVideoPlayerService(service);
+    context.read<VideoPlayerBloc>().setVideoPlayerManager(service);
     return FutureBuilder(
         future: initialize(context),
         builder: (context, snapshot) {

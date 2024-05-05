@@ -1,10 +1,10 @@
-import 'package:gymnastic_center/application/services/video_player/video_player_service.dart';
+import 'package:gymnastic_center/application/video_player/video_player_manager.dart';
 import 'package:video_player/video_player.dart';
 
-class NetworkVideoPlayerService extends VideoPlayerService {
+class NetworkVideoPlayerManager extends VideoPlayerManager {
   final VideoPlayerController videoPlayerController;
 
-  NetworkVideoPlayerService(this.videoPlayerController);
+  NetworkVideoPlayerManager(this.videoPlayerController);
 
   @override
   void pause() {

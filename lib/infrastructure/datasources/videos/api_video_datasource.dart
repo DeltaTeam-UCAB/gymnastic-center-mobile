@@ -10,9 +10,9 @@ class APIVideoDatasource extends VideosDatasource{
   
   
   final dio = Dio( BaseOptions(
-    baseUrl: 'http://${Environment.backendApi}:8080/api/video/one',
+    baseUrl: '${Environment.backendApi}/api/video/one',
     headers: {
-      //TODO: Extraer el token de autenticacion de un localstorage
+      //TODO: Extraer el token de autenticacion de un localstorage 
       // 'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRhYWM4ZTJlLWMxY2QtNDk4Yy04NDNjLWI0MGIwMzA4MzNmYSIsImlhdCI6MTcxNDU2NDQ5NH0.OMykx39ocOShdQa72PpNdlDwokiaxStc9D_UE_QUvTk'
       } 
     )
@@ -20,16 +20,11 @@ class APIVideoDatasource extends VideosDatasource{
   
   @override
   Future<Video> getVideoById(String id) async{
-    try {
-      final response = await dio.get('/$id');
-                
-      final apiVideoResponse = VideoAPIVideo.fromJson(response.data);
-      final video = VideoMapper.apiVideoToEntity(apiVideoResponse);
+    final response = await dio.get('/$id');
+              
+    final apiVideoResponse = VideoAPIVideo.fromJson(response.data);
+    final video = VideoMapper.apiVideoToEntity(apiVideoResponse);
 
-      return video;
-    } catch (e) {
-      rethrow;
-    }
-
+    return video;
   }
 }

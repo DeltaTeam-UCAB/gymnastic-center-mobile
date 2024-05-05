@@ -1,4 +1,4 @@
-abstract class VideoPlayerService {
+abstract class VideoPlayerManager {
   Future<void> initialize();
   void play();
   void pause();
