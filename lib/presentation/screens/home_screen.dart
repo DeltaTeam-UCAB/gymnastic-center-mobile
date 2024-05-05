@@ -9,9 +9,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bool isDark = context.watch<ThemesBloc>().isDarkMode;
-    final bool isNotificationsEnabled = context.watch<NotificationsBloc>().state.status;
+    final bool isNotificationsEnabled =
+        context.watch<NotificationsBloc>().state.status;
 
     return Scaffold(
       appBar: AppBar(
