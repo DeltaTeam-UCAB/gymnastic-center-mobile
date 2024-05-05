@@ -8,44 +8,39 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bool isDark = context.watch<ThemesBloc>().isDarkMode;
-    final bool isNotificationsEnabled = context.watch<NotificationsBloc>().state.status;
+    final bool isNotificationsEnabled =
+        context.watch<NotificationsBloc>().state.status;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen - Theme: ${isDark ? 'Dark' : 'Light'}'),
-      ),
-
-      body: Center(
-        child: Text('Notifications are ${isNotificationsEnabled ? 'enabled' : 'disabled'}'),
-      ),
-      
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end, 
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              context.read<ThemesBloc>().changeTheme();
-            },
-            child: Icon(
-              isDark ? Icons.light_mode : Icons.dark_mode,
+        appBar: AppBar(
+          title: Text('Home Screen - Theme: ${isDark ? 'Dark' : 'Light'}'),
+        ),
+        body: Center(
+          child: Text(
+              'Notifications are ${isNotificationsEnabled ? 'enabled' : 'disabled'}'),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                context.read<ThemesBloc>().changeTheme();
+              },
+              child: Icon(
+                isDark ? Icons.light_mode : Icons.dark_mode,
+              ),
             ),
-          ),
-
-          const SizedBox(height: 10),
-
-          FloatingActionButton(
-            onPressed: () {
-              context.read<NotificationsBloc>().requestPermission();
-            },
-            child: const Icon(
-              Icons.notifications,
+            const SizedBox(height: 10),
+            FloatingActionButton(
+              onPressed: () {
+                context.read<NotificationsBloc>().requestPermission();
+              },
+              child: const Icon(
+                Icons.notifications,
+              ),
             ),
-            
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 }
