@@ -3,14 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 
 class WelcomeScreenDailyYogaPage extends StatelessWidget {
-  const WelcomeScreenDailyYogaPage({super.key, this.onNextClicked});
-
-  final Function? onNextClicked;
+  const WelcomeScreenDailyYogaPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
@@ -36,32 +34,6 @@ class WelcomeScreenDailyYogaPage extends StatelessWidget {
               'Do your practice of physical exercise and relaxation make healthy',
               style: TextStyle(fontSize: 15, color: Color(0xff677294)),
               textAlign: TextAlign.center,
-            )),
-        Directionality(
-            textDirection: TextDirection.rtl,
-            child: FilledButton.icon(
-              onPressed: () {
-                onNextClicked?.call();
-              },
-              style: ElevatedButton.styleFrom(
-                maximumSize: const Size(107, 54),
-                padding: const EdgeInsets.fromLTRB(16, 14, 11, 14),
-                backgroundColor: Colors.white,
-                elevation: 20,
-                shadowColor: const Color.fromARGB(128, 0, 0, 0),
-              ),
-              label: const Expanded(
-                  child: Text(
-                'Next',
-                style: TextStyle(fontSize: 16, color: Color(0xff222222)),
-              )),
-              icon: Container(
-                  margin: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                  child: SvgPicture.asset(
-                    'assets/left-arrow-gradient-circle.svg',
-                    width: 27,
-                    height: 27,
-                  )),
             )),
       ],
     );
