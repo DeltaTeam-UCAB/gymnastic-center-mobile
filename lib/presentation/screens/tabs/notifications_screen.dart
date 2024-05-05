@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/models/push_message_model.dart';
-import 'package:gymnastic_center/presentation/widgets/notifications/notifications_listview.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/widgets/notifications_listview.dart';
 
 class NotificationsScreen extends StatelessWidget {
 
