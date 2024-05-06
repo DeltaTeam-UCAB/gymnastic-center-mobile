@@ -69,14 +69,8 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icon/
+    - assets/
     - .env
-    - assets/splash/logo-white.svg
-    - assets/splash/splash-screen-bg.svg
-    - assets/welcome/yoga1.svg
-    - assets/welcome/yoga2.svg
-    - assets/welcome/yoga3.svg
-    - assets/left-arrow-gradient-circle.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
