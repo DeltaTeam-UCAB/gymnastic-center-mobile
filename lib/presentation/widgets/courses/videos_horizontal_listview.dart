@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
-import 'new_tag.dart';
-
-class CourseHorizontalListView extends StatelessWidget {
+class VideoHorizontalListView extends StatelessWidget {
   final List<Course> courses;
   final String title;
 
-  const CourseHorizontalListView(
+  const VideoHorizontalListView(
       {super.key, required this.courses, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 250,
       child: Column(
         children: [
           _Title(title: title),
@@ -42,9 +40,8 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
-    const subTitleStyle = TextStyle(color: Colors.white, fontSize: 14);
+    //const titleStyle = TextStyle(
+    //fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
     return GestureDetector(
       onTap: () {
         //TODO: Nav to course screen
@@ -59,8 +56,8 @@ class _Slide extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               children: [
                 SizedBox(
-                    width: 160,
-                    height: 150,
+                    width: 275,
+                    height: 175,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
@@ -83,31 +80,65 @@ class _Slide extends StatelessWidget {
                       ),
                     )),
                 Container(
-                  alignment: Alignment.topRight,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 63, 59, 102)
-                          .withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(10)),
-                  height: 150,
-                  width: 160,
-                  child: NewTag(courseDate: course.released),
-                ),
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 63, 59, 102)
+                            .withOpacity(0.65),
+                        borderRadius: BorderRadius.circular(10)),
+                    height: 175,
+                    width: 275,
+                    child: const Icon(
+                      Icons.play_circle_outline_rounded,
+                      color: Colors.white,
+                      size: 80,
+                    )),
                 Container(
                   padding: const EdgeInsets.fromLTRB(13, 5, 0, 10),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        course.title,
+                      /*Text(
+                        course.name,
                         style: titleStyle,
-                      ),
-                      Text(course.category, style: subTitleStyle)
+                      )*/
                     ],
                   ),
                 )
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class NewButton extends StatelessWidget {
+  final DateTime courseDate;
+  const NewButton({
+    super.key,
+    required this.courseDate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime today = DateTime.now();
+    if (today.difference(courseDate) > const Duration(days: 15)) {
+      return Container();
+    }
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: SizedBox(
+        height: 25,
+        width: 60,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: const Color.fromRGBO(115, 81, 230, 1),
+              borderRadius: BorderRadius.circular(20)),
+          child: const Text(
+            'New',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
