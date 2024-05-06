@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/video_player_screen.dart';
 import 'package:gymnastic_center/presentation/screens/start_screen.dart';
+import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
+import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
+
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(initialLocation: '/home/0', routes: [
@@ -19,5 +21,15 @@ class RoutesManager {
           VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
     ),
     GoRoute(path: '/start', builder: (context, state) => const StartScreen()),
+
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => SplashScreen(
+          splashScreenDurationSeconds: 3,
+          onSplashScreenFade: () => context.go('/welcome')),
+    ),
+    GoRoute(
+        path: '/welcome', builder: (context, state) => const WelcomeScreen()),
+
   ]);
 }
