@@ -9,11 +9,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
-class FirebaseNotifications extends NotificationsManager {
+class FirebaseNotificationsManager extends NotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final LocalNotificationsManager? localNotifications;
 
-  FirebaseNotifications(this.localNotifications);
+  FirebaseNotificationsManager(this.localNotifications);
 
   static onBackgroundMessage(Future<void> Function(RemoteMessage message) handler) {
     FirebaseMessaging.onBackgroundMessage(handler);
