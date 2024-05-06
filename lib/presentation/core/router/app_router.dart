@@ -22,8 +22,9 @@ class RoutesManager {
     ),
     GoRoute(
       path: '/splash',
-      builder: (context, state) =>
-          SplashScreen(onSplashScreenFade: () => context.go('/welcome')),
+      builder: (context, state) => SplashScreen(
+          splashScreenDurationSeconds: 3,
+          onSplashScreenFade: () => context.go('/welcome')),
     ),
     GoRoute(
         path: '/welcome', builder: (context, state) => const WelcomeScreen()),
