@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
-    
+  
     final routes = <Widget>[
       FadeIn(child: const HomeView()),
       FadeIn(child: const Placeholder()),
