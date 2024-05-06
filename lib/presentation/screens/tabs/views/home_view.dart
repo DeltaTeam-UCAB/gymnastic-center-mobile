@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/posts_horizontal_listview.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/videos_horizontal_listview.dart';
+import 'package:gymnastic_center/presentation/widgets/posts/posts_horizontal_listview.dart';
+import 'package:gymnastic_center/presentation/widgets/videos/videos_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/custom_appbar.dart';
 
 class HomeView extends StatelessWidget {
