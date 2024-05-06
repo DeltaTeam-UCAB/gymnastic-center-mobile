@@ -6,7 +6,6 @@ import 'package:gymnastic_center/presentation/screens/tabs/views/home_view.dart'
 import 'package:gymnastic_center/presentation/widgets/shared/navigation_bar/custom_bottom_navigation.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/side_menu.dart';
 
-
 class HomeScreen extends StatelessWidget {
   final int pageIndex;
   const HomeScreen({super.key, required this.pageIndex});
@@ -14,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
-    
+
     final routes = <Widget>[
       FadeIn(child: const HomeView()),
       FadeIn(child: const Placeholder()),
