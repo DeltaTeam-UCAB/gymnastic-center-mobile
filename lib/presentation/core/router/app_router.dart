@@ -20,5 +20,11 @@ class RoutesManager {
       builder: (context, state) =>
           VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
     ),
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+        path: '/welcome', builder: (context, state) => const WelcomeScreen()),
   ]);
 }
