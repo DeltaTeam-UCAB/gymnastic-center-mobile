@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({super.key, required this.onSplashScreenFade});
+
+  final void Function() onSplashScreenFade;
 
   @override
   SplashScreenState createState() => SplashScreenState();
@@ -15,7 +16,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () => context.go('/welcome'));
+    Timer(const Duration(seconds: 3), () => widget.onSplashScreenFade());
   }
 
   @override
