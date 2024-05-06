@@ -9,7 +9,6 @@ import 'package:gymnastic_center/infrastructure/local_notifications/local_notifi
 import 'package:gymnastic_center/presentation/core/app_widget.dart';
 
 void main() async {
-
   // Ensure that the WidgetsBinding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,15 +21,10 @@ void main() async {
   // Initialize the local notifications
   await LocalNotifications().initializeLocalNotifications();
 
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(create: (_) => ThemesBloc()),
-      BlocProvider(
-        create: (_) => NotificationsBloc(
-          FirebaseNotifications(LocalNotifications())
-        )
-      ),
-    ], 
-    child: const GymnasticCenterApp()
-  ));
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (_) => ThemesBloc()),
+    BlocProvider(
+        create: (_) =>
+            NotificationsBloc(FirebaseNotifications(LocalNotifications()))),
+  ], child: const GymnasticCenterApp()));
 }
