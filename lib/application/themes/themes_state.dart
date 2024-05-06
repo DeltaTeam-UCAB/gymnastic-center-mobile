@@ -13,5 +13,5 @@ class ThemesState extends Equatable {
           isInitialized: isInitialized ?? this.isInitialized);
 
   @override
-  List<Object> get props => [appTheme];
+  List<Object> get props => [appTheme, isInitialized];
 }

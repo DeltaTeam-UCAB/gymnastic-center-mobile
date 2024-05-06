@@ -32,12 +32,10 @@ class StartScreen extends StatelessWidget {
             style: textStyle,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Spacer(),
               FilledButton(onPressed: () {}, child: const Text("Login")),
-              Spacer(),
               FilledButton(onPressed: () {}, child: const Text("Signup")),
-              Spacer(),
             ],
           )
         ],
