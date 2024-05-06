@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gymnastic_center/presentation/screens/welcome_screen_pages/welcome_screen_community_page.dart';
-import 'package:gymnastic_center/presentation/screens/welcome_screen_pages/welcome_screen_daily_yoga_page.dart';
-import 'package:gymnastic_center/presentation/screens/welcome_screen_pages/welcome_screen_yoga_classes_page.dart';
+import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_next_button.dart';
+import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
+  const WelcomeScreen(
+      {super.key, this.onPressSkip, this.onPressNextInLastPage});
+
+  final void Function()? onPressSkip;
+  final void Function()? onPressNextInLastPage;
 
   @override
   WelcomeScreenState createState() => WelcomeScreenState();
@@ -18,7 +20,26 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   List<Widget> pages = [];
 
   void initializePages() {
-    pages = [];
+    pages = [
+      const WelcomeScreenPage(
+          svgPictureAssetLocation: 'assets/welcome/yoga1.svg',
+          gradientText: 'Yoga',
+          titleText: 'Daily Yoga',
+          descriptionText:
+              'Do your practice of physical exercise and relaxation make healthy'),
+      const WelcomeScreenPage(
+          svgPictureAssetLocation: 'assets/welcome/yoga2.svg',
+          gradientText: 'Meditation',
+          titleText: 'Yoga Classes',
+          descriptionText:
+              'Meditation is the key to Productivity.\nHappiness & Longevity'),
+      const WelcomeScreenPage(
+          svgPictureAssetLocation: 'assets/welcome/yoga3.svg',
+          gradientText: 'Meets',
+          titleText: 'Community',
+          descriptionText:
+              'Do your practice of physical exercise and relaxation make healthy'),
+    ];
   }
 
   @override
@@ -60,32 +81,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
             height: MediaQuery.of(context).size.height * 0.14,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: FilledButton.icon(
-                    onPressed: () {
-                      animateToNextPage();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      maximumSize: const Size(107, 54),
-                      padding: const EdgeInsets.fromLTRB(16, 14, 11, 14),
-                      backgroundColor: Colors.white,
-                      elevation: 20,
-                      shadowColor: const Color.fromARGB(128, 0, 0, 0),
-                    ),
-                    label: const Expanded(
-                        child: Text(
-                      'Next',
-                      style: TextStyle(fontSize: 16, color: Color(0xff222222)),
-                    )),
-                    icon: Container(
-                        margin: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                        child: SvgPicture.asset(
-                          'assets/left-arrow-gradient-circle.svg',
-                          width: 27,
-                          height: 27,
-                        )),
-                  )),
+              WelcomeScreenNextButton(onClickFunction: nextPressedCallback),
             ]),
           ),
           const Divider(
@@ -99,7 +95,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: skipPressedCallback,
                     child: const Text(
                       'Skip',
                       style: TextStyle(color: Color(0xff677294), fontSize: 16),
@@ -137,5 +133,21 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   void animateToNextPage() {
     pageController.nextPage(
         duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+  }
+
+  void lastPageCallback() {
+    widget.onPressNextInLastPage?.call();
+  }
+
+  void nextPressedCallback() {
+    if (selectedIndex == pageCount - 1) {
+      lastPageCallback();
+    } else {
+      animateToNextPage();
+    }
+  }
+
+  void skipPressedCallback() {
+    widget.onPressSkip?.call();
   }
 }
