@@ -13,7 +13,7 @@ class CoursesState extends Equatable {
     this.currentCourse,
     this.courses = const [],
     this.isLoading = false,
-    this.limit = 10,
+    this.limit = 4,
     this.offset = 0,
     this.isLastPage = false,
     this.isError = false,
