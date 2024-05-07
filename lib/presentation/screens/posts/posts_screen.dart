@@ -21,7 +21,8 @@ class AllPostsScreen extends StatelessWidget {
             'Lifestyle',
             'Healthy',
             'Trendy',
-          ], body: ''),
+          ],
+          body: ''),
       Post(
           id: '2',
           title: 'Researchers discovered apples are healthy',
@@ -30,7 +31,8 @@ class AllPostsScreen extends StatelessWidget {
             'https://www.foodandwine.com/thmb/dJioehiMBM0IHtF2yqvv4fjrahI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/A-Feast-of-Apples-FT-2-MAG1123-980271d42b1a489bab239b1466588ca4.jpg'
           ],
           autor: 'Pepe',
-          tags: ['Food'], body: ''),
+          tags: ['Food'],
+          body: ''),
       Post(
           id: '2',
           title: 'Yoga influencer married',
@@ -39,7 +41,8 @@ class AllPostsScreen extends StatelessWidget {
             'https://www.realmenrealstyle.com/wp-content/uploads/2016/06/Sports-and-Attractiveness-athlete-couple-fit.jpg'
           ],
           autor: 'Pepe',
-          tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy'], body: ''),
+          tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy'],
+          body: ''),
     ];
 
     return Scaffold(

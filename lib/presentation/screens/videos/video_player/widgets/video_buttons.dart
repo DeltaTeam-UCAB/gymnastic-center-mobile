@@ -45,18 +45,18 @@ class _VideoCompletedLayer extends StatelessWidget {
         ),
         Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('🎉Lesson finished!',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: textStyle.fontSize)),
-                TextButton.icon(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => context.pop(),
-                  label: const Text('Return to course'),
-                ),
-              ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('🎉Lesson finished!',
+                style: TextStyle(
+                    color: Colors.white, fontSize: textStyle.fontSize)),
+            TextButton.icon(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () => context.pop(),
+              label: const Text('Return to course'),
+            ),
+          ],
         )),
       ],
     );

@@ -54,8 +54,7 @@ class _Title extends StatelessWidget {
           ),
           const Spacer(),
           GestureDetector(
-              onTap: () => context.push('/home/0/courses')
-              ,
+              onTap: () => context.push('/home/0/courses'),
               child: const Row(children: [
                 Text(
                   'See all',

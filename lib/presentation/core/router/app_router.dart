@@ -64,11 +64,9 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
-
     GoRoute(
-      path: '/', 
+      path: '/',
       redirect: (_, __) => '/home/0',
     )
-
   ]);
 }

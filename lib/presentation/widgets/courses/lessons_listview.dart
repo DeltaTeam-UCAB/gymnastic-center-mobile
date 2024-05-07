@@ -36,7 +36,6 @@ class _LessonsListViewState extends State<LessonsListView> {
             ),
           ),
         ),
-
         ListView.builder(
           padding: const EdgeInsets.only(top: 10),
           shrinkWrap: true,
@@ -61,7 +60,8 @@ class _LessonsListViewState extends State<LessonsListView> {
                   body: Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
-                          onPressed: () => context.push('/home/0/video/${lesson.videoId}'),
+                          onPressed: () =>
+                              context.push('/home/0/video/${lesson.videoId}'),
                           icon: const Icon(Icons.play_circle_fill),
                           label: Text(lesson.description))),
                   isExpanded: _expansionStates[index],

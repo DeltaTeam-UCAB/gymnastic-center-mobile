@@ -4,6 +4,7 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/posts/posts_horizontal_listview.dart';
@@ -18,16 +19,15 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => CoursesBloc(
-            coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl())
-          )..loadNextPage()
-        ),
-      ], 
+            create: (_) => CoursesBloc(
+                coursesRepository: CoursesRepositoryImpl(
+                    CoursesDatasourceImpl(LocalStorageService())))
+              ..loadNextPage()),
+      ],
       child: const _Home(),
     );
   }
 }
-
 
 class _Home extends StatelessWidget {
   const _Home();
@@ -49,7 +49,8 @@ class _Home extends StatelessWidget {
             'Lifestyle',
             'Healthy',
             'Trendy',
-          ], body: ''),
+          ],
+          body: ''),
       Post(
           id: '2',
           title: 'Researchers discovered apples are healthy',
@@ -58,7 +59,8 @@ class _Home extends StatelessWidget {
             'https://www.foodandwine.com/thmb/dJioehiMBM0IHtF2yqvv4fjrahI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/A-Feast-of-Apples-FT-2-MAG1123-980271d42b1a489bab239b1466588ca4.jpg'
           ],
           autor: 'Pepe',
-          tags: ['Food'], body: ''),
+          tags: ['Food'],
+          body: ''),
       Post(
           id: '2',
           title: 'Yoga influencer married',
@@ -67,7 +69,8 @@ class _Home extends StatelessWidget {
             'https://www.realmenrealstyle.com/wp-content/uploads/2016/06/Sports-and-Attractiveness-athlete-couple-fit.jpg'
           ],
           autor: 'Pepe',
-          tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy'], body: ''),
+          tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy'],
+          body: ''),
     ];
     return CustomScrollView(
       slivers: [
@@ -85,9 +88,7 @@ class _Home extends StatelessWidget {
           return Column(
             children: [
               CourseHorizontalListView(
-                courses: courses, 
-                title: 'Popular Courses'
-              ),
+                  courses: courses, title: 'Popular Courses'),
               VideoHorizontalListView(courses: courses, title: 'Resume Videos'),
               PostHorizontalListView(posts: posts, title: 'Our latest posts'),
             ],
