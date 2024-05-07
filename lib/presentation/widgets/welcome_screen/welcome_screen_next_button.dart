@@ -15,17 +15,16 @@ class WelcomeScreenNextButton extends StatelessWidget {
             onClickFunction();
           },
           style: ElevatedButton.styleFrom(
-            maximumSize: const Size(107, 54),
+            minimumSize: const Size(107, 54),
             padding: const EdgeInsets.fromLTRB(16, 14, 11, 14),
             backgroundColor: Colors.white,
             elevation: 20,
             shadowColor: const Color.fromARGB(128, 0, 0, 0),
           ),
-          label: const Expanded(
-              child: Text(
+          label: const Text(
             'Next',
             style: TextStyle(fontSize: 16, color: Color(0xff222222)),
-          )),
+          ),
           icon: Container(
               margin: const EdgeInsets.fromLTRB(12, 0, 0, 0),
               child: SvgPicture.asset(
