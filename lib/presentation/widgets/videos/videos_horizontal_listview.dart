@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'course_slide.dart';
 
-class CourseHorizontalListView extends StatelessWidget {
+import 'video_slide.dart';
+
+class VideoHorizontalListView extends StatelessWidget {
   final List<Course> courses;
   final String title;
 
-  const CourseHorizontalListView(
+  const VideoHorizontalListView(
       {super.key, required this.courses, required this.title});
 
   @override
   Widget build(BuildContext context) {
+    const double height = 170;
+    const double width = 280;
     return SizedBox(
-      height: 220,
+      height: 240,
       child: Column(
         children: [
           _Title(title: title),
@@ -27,7 +30,8 @@ class CourseHorizontalListView extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return CourseSlide(course: courses[index]);
+                    return VideoSlide(
+                        course: courses[index], height: height, width: width);
                   }))
         ],
       ),
@@ -55,7 +59,7 @@ class _Title extends StatelessWidget {
           const Spacer(),
           GestureDetector(
               onTap: () {
-                context.push('/home/0/courses');
+                context.push('/home/0/videos');
               },
               child: const Row(children: [
                 Text(

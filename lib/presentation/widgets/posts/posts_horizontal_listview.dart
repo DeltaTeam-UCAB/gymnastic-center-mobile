@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'course_slide.dart';
+import 'package:gymnastic_center/domain/entities/posts/post.dart';
+import 'post_slide.dart';
 
-class CourseHorizontalListView extends StatelessWidget {
-  final List<Course> courses;
+class PostHorizontalListView extends StatelessWidget {
+  final List<Post> posts;
   final String title;
 
-  const CourseHorizontalListView(
-      {super.key, required this.courses, required this.title});
+  const PostHorizontalListView(
+      {super.key, required this.posts, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 310,
       child: Column(
         children: [
           _Title(title: title),
@@ -23,11 +23,11 @@ class CourseHorizontalListView extends StatelessWidget {
           Expanded(
               child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  itemCount: courses.length,
+                  itemCount: posts.length,
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return CourseSlide(course: courses[index]);
+                    return PostSlide(post: posts[index]);
                   }))
         ],
       ),
@@ -55,7 +55,7 @@ class _Title extends StatelessWidget {
           const Spacer(),
           GestureDetector(
               onTap: () {
-                context.push('/home/0/courses');
+                context.push('/home/0/posts');
               },
               child: const Row(children: [
                 Text(
