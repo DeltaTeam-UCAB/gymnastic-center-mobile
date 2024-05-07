@@ -36,14 +36,10 @@ class StartScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FilledButton(
-                  onPressed: () {
-                    context.go('/home/0');
-                  },
+                  onPressed: () => context.go('/home/0'),
                   child: const Text("Login")),
               FilledButton(
-                  onPressed: () {
-                    context.go('/home/0');
-                  },
+                  onPressed: () => context.go('/home/0'),
                   child: const Text("Signup")),
             ],
           )

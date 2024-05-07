@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_icon.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_image.dart';
-import 'package:gymnastic_center/presentation/widgets/videos/videos_courses_listview.dart';
+import 'package:gymnastic_center/presentation/widgets/courses/lessons_listview.dart';
 
 class CourseDetailsView extends StatelessWidget {
   final Course course;
@@ -51,9 +51,8 @@ class CourseDetailsView extends StatelessWidget {
           ],
         ),
 
-        const VideosCoursesListView(
-          // lessons: course.lessons!,
-          lessons: [],
+        LessonsListView(
+          lessons: course.lessons!,
         ),
 
         const SizedBox(height: 100),

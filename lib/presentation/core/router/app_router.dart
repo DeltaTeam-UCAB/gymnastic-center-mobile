@@ -58,15 +58,17 @@ class RoutesManager {
     GoRoute(
         path: '/welcome',
         builder: (context, state) => WelcomeScreen(
-              onPressSkip: () {
-                context.go('/start');
-              },
-              onPressNextInLastPage: () {
-                context.go('/start');
-              },
+              onPressSkip: () => context.go('/start'),
+              onPressNextInLastPage: () => context.go('/start'),
             )),
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
+
+    GoRoute(
+      path: '/', 
+      redirect: (_, __) => '/home/0',
+    )
+
   ]);
 }

@@ -15,6 +15,10 @@ flutter clean
 flutter pub get
 ```
 
+> [!NOTE]
+> To find out which are the environment variables, you should consult the owner
+3. Rename .env.template to .env and fill the variables
+
 ## Running the app
 1. Select the device
 ```bash
