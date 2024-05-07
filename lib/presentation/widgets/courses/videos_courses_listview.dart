@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
 class VideosCoursesListView extends StatefulWidget {
- final List<Map<String, String>> lessons;
- const VideosCoursesListView({super.key, required this.lessons});
+  final List<Lesson> lessons;
+  const VideosCoursesListView({super.key, required this.lessons});
 
- @override
- State<VideosCoursesListView> createState() => _VideosCoursesListViewState();
+  @override
+  State<VideosCoursesListView> createState() => _VideosCoursesListViewState();
 }
 
 class _VideosCoursesListViewState extends State<VideosCoursesListView> {
- late List<bool> _expansionStates;
+  late List<bool> _expansionStates;
 
- @override
- void initState() {
+  @override
+  void initState() {
     super.initState();
     _expansionStates = List.generate(widget.lessons.length, (index) => false);
- }
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme.titleMedium;
 
     return Column(
@@ -27,42 +29,49 @@ class _VideosCoursesListViewState extends State<VideosCoursesListView> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, bottom: 10),
-            child: Text('Lecciones del curso', style: textStyles,),
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(
+              'Lecciones del curso',
+              style: textStyles,
+            ),
           ),
         ),
-        ...widget.lessons.asMap().entries.map((entry) {
-          int index = entry.key;
-          Map<String, String> lesson = entry.value;
-          return ExpansionPanelList(
-            expansionCallback: (panelIndex, expanded) {
-              setState(() {
-                _expansionStates[index] = !_expansionStates[index];
-              });
-            },
-            children: [
-              ExpansionPanel(
-                headerBuilder: (context, isExpanded) {
-                 return ListTile(
-                    title: Text(lesson['titulo']!),
-                    leading: const Icon(Icons.video_library),
-                 );
-                },
-                body: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton.icon(
-                    onPressed: (){}, 
-                    icon: const Icon(Icons.play_circle_fill), 
-                    label: const Text('Subtitulo')
-                  )
+
+        ListView.builder(
+          padding: const EdgeInsets.only(top: 10),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.lessons.length,
+          itemBuilder: (context, index) {
+            final lesson = widget.lessons[index];
+            return ExpansionPanelList(
+              expansionCallback: (panelIndex, expanded) {
+                setState(() {
+                  _expansionStates[index] = !_expansionStates[index];
+                });
+              },
+              children: [
+                ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return ListTile(
+                      title: Text(lesson.name),
+                      leading: const Icon(Icons.video_library),
+                    );
+                  },
+                  body: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                          onPressed: () => context.push('/home/0/video/${lesson.videoId}'),
+                          icon: const Icon(Icons.play_circle_fill),
+                          label: Text(lesson.description))),
+                  isExpanded: _expansionStates[index],
+                  canTapOnHeader: true,
                 ),
-                isExpanded: _expansionStates[index],
-                canTapOnHeader: true,
-              ),
-            ],
-          );
-        }).toList(),
+              ],
+            );
+          },
+        ),
       ],
     );
- }
+  }
 }
