@@ -1,7 +1,6 @@
 part of 'video_player_bloc.dart';
 
-
-enum VideoPlayerStatus{
+enum VideoPlayerStatus {
   loading,
   paused,
   error,
@@ -11,27 +10,25 @@ enum VideoPlayerStatus{
 }
 
 class VideoPlayerState extends Equatable {
-  
   final Video currentVideo;
   final VideoPlayerStatus status;
   final bool mute;
 
-  const VideoPlayerState({
-    this.currentVideo = const Video(id: '', src: ''),
-    this.status = VideoPlayerStatus.fetching,
-    this.mute = false
-  });
+  const VideoPlayerState(
+      {this.currentVideo = const Video(id: '', src: ''),
+      this.status = VideoPlayerStatus.fetching,
+      this.mute = false});
 
   VideoPlayerState copyWith({
     Video? currentVideo,
     VideoPlayerStatus? status,
     bool? mute,
-  })=>VideoPlayerState(
-    currentVideo: currentVideo ?? this.currentVideo,
-    status: status ?? this.status,
-    mute: mute ?? this.mute
-  );
-  
+  }) =>
+      VideoPlayerState(
+          currentVideo: currentVideo ?? this.currentVideo,
+          status: status ?? this.status,
+          mute: mute ?? this.mute);
+
   @override
   List<Object> get props => [currentVideo, status, mute];
 }

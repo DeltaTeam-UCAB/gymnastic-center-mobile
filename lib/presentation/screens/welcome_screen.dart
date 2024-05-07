@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_next_button.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen(
-      {super.key, this.onPressSkip, this.onPressNextInLastPage});
+  const WelcomeScreen({super.key, this.onPressSkip, this.onPressNextInLastPage});
 
   final void Function()? onPressSkip;
   final void Function()? onPressNextInLastPage;
@@ -59,8 +59,12 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocalStorageService().getValue<bool>('initialized').then((value) {
+      if (value != null && value) widget.onPressSkip?.call();
+    });
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colors.background,
       body: Column(
         children: [
           SizedBox(
@@ -80,9 +84,9 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.14,
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              WelcomeScreenNextButton(onClickFunction: nextPressedCallback),
-            ]),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: WelcomeScreenNextButton(onClickFunction: nextPressedCallback)),
           ),
           const Divider(
             color: Color.fromRGBO(0, 0, 0, 0.07),
@@ -136,6 +140,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void lastPageCallback() {
+    LocalStorageService().setKeyValue('initialized', true);
     widget.onPressNextInLastPage?.call();
   }
 
@@ -148,6 +153,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void skipPressedCallback() {
+    LocalStorageService().setKeyValue('initialized', true);
     widget.onPressSkip?.call();
   }
 }

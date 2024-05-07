@@ -1,189 +1,75 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/videos_courses_listview.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/presentation/screens/courses/widgets/course_details_view.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/navigation_bar/custom_bottom_navigation.dart';
 
 class CourseScreen extends StatelessWidget {
-
   final String courseId;
   const CourseScreen({super.key, required this.courseId});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          
-          SingleChildScrollView(
-            child: _CourseDetailsView(courseId: courseId),
-          ),
+    return BlocProvider(
+      create: (_) => CoursesBloc(
+          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl()))
+        ..getCourseById(courseId),
+      child: const _CourseScreenView(),
+    );
+  }
+}
 
-          // Appbar
-          Positioned(
+class _CourseScreenView extends StatelessWidget {
+  const _CourseScreenView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CoursesBloc, CoursesState>(
+      buildWhen: (previous, current) =>
+          (previous.currentCourse != current.currentCourse) ||
+          (current.isError),
+      builder: (context, state) {
+        final course = state.currentCourse;
+        return Scaffold(
+          body: state.currentCourse != null
+              ? _Details(course: course!)
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+          bottomNavigationBar: const CustomBottomNavigation(currentIndex: 0),
+        );
+      },
+    );
+  }
+}
+
+class _Details extends StatelessWidget {
+  final Course course;
+  
+  const _Details({
+    required this.course,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: CourseDetailsView(course: course),
+        ),
+        Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: AppBar(
-              title: const Text('Yoga Basics For Beginners', style: TextStyle(color: Colors.white, fontSize: 20)),
+              titleSpacing: -10,
+              title: Text('Category: ${course.category}',
+                  style: const TextStyle(color: Colors.white, fontSize: 16)),
               elevation: 0,
-            ) 
-          ),
-        ],
-      )
-    );
-  }
-}
-
-class _CourseDetailsView extends StatelessWidget {
-  const _CourseDetailsView({required this.courseId});
-
-  final String courseId;
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _CustomImage('pepe'),
-
-        // Course Details
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Nostrud Lorem laboris commodo cillum consequat tempor incididunt cupidatat eiusmod cillum. Consectetur irure commodo consectetur tempor ad. Culpa pariatur aliqua nisi nisi dolor sint eiusmod labore est consectetur sunt. Excepteur eu cillum exercitation proident.', style: TextStyle(fontSize: 12)),
-            ],
-          ),
-        ),
-
-        Divider(),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _CustomIcon(icon: Icons.menu, title: 'Level', subtitle: '1'),
-            _CustomIcon(icon: Icons.calendar_month_outlined, title: 'Weeks', subtitle: '3'),
-            _CustomIcon(icon: Icons.watch_later_outlined, title: 'Mins', subtitle: '22'),
-          ],
-        ),
-
-        VideosCoursesListView(
-          lessons: [
-            {
-              'titulo': 'Lección 1',
-              'contenido': 'Contenido de la lección 1',
-            },
-            {
-              'titulo': 'Lección 2',
-              'contenido': 'Contenido de la lección 2',
-            },
-            {
-              'titulo': 'Lección 3',
-              'contenido': 'Contenido de la lección 3',
-            },
-          ],
-        ),
-
-        SizedBox(height: 100),
-      ],
-    );
-  }
-}
-
-class _CustomIcon extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  const _CustomIcon({required this.icon, required this.title, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    final themeColor = Theme.of(context).primaryColor;
-    final textStyles = Theme.of(context).textTheme;
-    return Row(
-      children: [
-        Container(
-          width: 40, height: 40,
-          decoration: BoxDecoration(
-            color: themeColor.withOpacity(0.2),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Icon(icon, color: themeColor),
-          ),
-        ),
-
-        const SizedBox(width: 5),
-
-        Column(
-          children: [
-            //Title
-            Text(title, style: textStyles.labelSmall),
-
-            //Subtitle
-            Text(subtitle, style: textStyles.labelSmall,)
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class _CustomImage extends StatelessWidget {
-  final String src;
-  const _CustomImage(this.src);
-
-  @override
-  Widget build(BuildContext context) {
-    const customBorderRadius = BorderRadius.only(bottomRight: Radius.circular(60));
-    return Stack(
-      children: [
-        
-        // Image
-        ClipRRect(
-          borderRadius: customBorderRadius,
-          child: Image.network(
-            'https://www.futurefit.co.uk/wp-content/uploads/2021/11/Personal-trainer-helping-with-form-scaled.jpg',
-            height: 400,
-            fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) return const SizedBox();
-              return FadeIn(child: child);
-            },
-          ),
-        ),
-        
-        // Gradiente
-        Container(
-          height: 400,
-          decoration: const BoxDecoration(
-            borderRadius: customBorderRadius,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black87]
-            )
-          ),
-        ),
-
-        // Title
-        Positioned(
-          bottom: 20,
-          left: 20,
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text(
-              'Course Title',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-        ),
+            )),
       ],
     );
   }

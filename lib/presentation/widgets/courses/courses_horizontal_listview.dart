@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'course_slide.dart';
 
 class CourseHorizontalListView extends StatelessWidget {
   final List<Course> courses;
@@ -12,7 +13,7 @@ class CourseHorizontalListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: 220,
       child: Column(
         children: [
           _Title(title: title),
@@ -26,120 +27,9 @@ class CourseHorizontalListView extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return _Slide(course: courses[index]);
+                    return CourseSlide(course: courses[index]);
                   }))
         ],
-      ),
-    );
-  }
-}
-
-class _Slide extends StatelessWidget {
-  final Course course;
-
-  const _Slide({required this.course});
-
-  @override
-  Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
-    const subTitleStyle = TextStyle(color: Colors.white, fontSize: 14);
-    return GestureDetector(
-      onTap: () {
-        //TODO: Nav to course screen
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Image
-            Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                SizedBox(
-                    width: 160,
-                    height: 150,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        course.image,
-                        fit: BoxFit.cover,
-                        //width: 150,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress != null) {
-                            return const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            );
-                          }
-                          return child;
-                        },
-                      ),
-                    )),
-                Container(
-                  alignment: Alignment.topRight,
-                  decoration: BoxDecoration(
-                      color: Colors.black26,
-                      borderRadius: BorderRadius.circular(10)),
-                  height: 150,
-                  width: 160,
-                  child: NewButton(courseDate: course.released),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(13, 5, 0, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        course.name,
-                        style: titleStyle,
-                      ),
-                      Text(course.category, style: subTitleStyle)
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NewButton extends StatelessWidget {
-  final DateTime courseDate;
-  const NewButton({
-    super.key,
-    required this.courseDate,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    DateTime today = DateTime.now();
-    if (today.difference(courseDate) > const Duration(days: 15)) {
-      return Container();
-    }
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: SizedBox(
-        height: 25,
-        width: 60,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: const Color.fromRGBO(115, 81, 230, 1),
-              borderRadius: BorderRadius.circular(20)),
-          child: const Text(
-            'New',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
       ),
     );
   }
@@ -164,9 +54,8 @@ class _Title extends StatelessWidget {
           ),
           const Spacer(),
           GestureDetector(
-              onTap: () {
-                //TODO: Nav to paginated courses
-              },
+              onTap: () => context.push('/home/0/courses')
+              ,
               child: const Row(children: [
                 Text(
                   'See all',
