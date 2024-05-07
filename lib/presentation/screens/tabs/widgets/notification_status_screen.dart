@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
-import 'package:gymnastic_center/infrastructure/models/push_message_model.dart';
 
 
 class NotificationStatuScreen extends StatelessWidget {
 
-  NotificationStatuScreen({super.key});
 
-  final List<PushMessageModel> myNotifications = [];
 
   @override
   Widget build(BuildContext context) {
