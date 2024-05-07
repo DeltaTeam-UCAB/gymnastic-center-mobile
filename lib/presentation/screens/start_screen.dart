@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/custom_button.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -9,42 +10,47 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemesBloc>().isDarkMode;
-    final textStyle =
-        const TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
+    const textStyle = TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
+
     return Scaffold(
-        body: Center(
-      child: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 130,
-          ),
-          Image.asset(
-            isDark
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(height: 150),
+            Image.asset(
+              isDark
                 ? 'assets/icon/logoApp_white.png'
                 : 'assets/icon/logoApp_purple.png',
-            width: 225,
-          ),
-          Text(
-            "Welcome to yoga ",
-            style: textStyle,
-          ),
-          Text(
-            "Online Class ",
-            style: textStyle,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              FilledButton(
-                  onPressed: () => context.go('/home/0'),
-                  child: const Text("Login")),
-              FilledButton(
-                  onPressed: () => context.go('/home/0'),
-                  child: const Text("Signup")),
-            ],
-          )
-        ],
-      ),
-    ));
+              width: 225,
+            ),
+            const SizedBox(height: 30),
+            const Column(
+              children: [
+                Text("Welcome to yoga ",style: textStyle),
+                Text("Online Class ", style: textStyle,),
+              ],
+            ),
+            const SizedBox(height: 80),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomButtom(
+                  nextPage: () => context.go('/home/0'),
+                  title: 'Login',
+                  backgroundColor: isDark ? Colors.white : Colors.deepPurple,
+                  foregroundColor: isDark ? Colors.deepPurple : Colors.white,
+                ),
+                CustomButtom(
+                  nextPage: () => context.go('/home/0'),
+                  title: 'Signup',
+                  backgroundColor: isDark ? Colors.grey : Colors.white,
+                  foregroundColor: isDark ? Colors.white : Colors.deepPurple,
+                ),
+              ],
+            )
+          ],
+        ));
   }
 }
+
+
