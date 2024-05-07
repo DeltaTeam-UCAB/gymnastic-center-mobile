@@ -7,15 +7,12 @@ class Post {
   final String autor;
   final List<String> tags;
 
-  const Post({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.released,
-    required this.images,
-    required this.autor,
-    required this.tags
-   });
-
+  const Post(
+      {required this.id,
+      required this.title,
+      required this.body,
+      required this.released,
+      required this.images,
+      required this.autor,
+      required this.tags});
 }
-

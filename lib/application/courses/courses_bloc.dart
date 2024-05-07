@@ -17,7 +17,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     on<CoursesIsEmpty>(_onCourseIsEmpty);
     on<CourseError>(_onCourseError);
     on<CurrentCourse>(_onCurrentCourse);
-
   }
 
   void _onCurrentCourse(CurrentCourse event, Emitter<CoursesState> emit) {
@@ -37,22 +36,19 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   }
 
   void _onCoursesFetched(CoursesFetched event, Emitter<CoursesState> emit) {
-    emit( state.copyWith(
-        courses: event.courses,
-        isLoading: false,
-        offset: state.offset + state.limit,
-      )
-    );
+    emit(state.copyWith(
+      courses: event.courses,
+      isLoading: false,
+      offset: state.offset + state.limit,
+    ));
   }
 
-  Future <void> loadNextPage() async {
+  Future<void> loadNextPage() async {
     if (state.isLastPage || state.isLoading || state.isError) return;
     add(const CourseLoading());
 
     final coursesResponse = await coursesRepository.getCoursesPaginated(
-      limit: state.limit, 
-      offset: state.offset
-    );
+        limit: state.limit, offset: state.offset);
 
     if (coursesResponse.isSuccessful()) {
       final courses = coursesResponse.getValue();

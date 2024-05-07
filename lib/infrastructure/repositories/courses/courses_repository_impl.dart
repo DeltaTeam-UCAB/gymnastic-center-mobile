@@ -19,9 +19,11 @@ class CoursesRepositoryImpl extends CoursesRepository {
   }
 
   @override
-  Future<Result<List<Course>>> getCoursesPaginated({int limit = 5, int offset = 0}) async {
+  Future<Result<List<Course>>> getCoursesPaginated(
+      {int limit = 5, int offset = 0}) async {
     try {
-      final courses = await coursesDataSource.getCoursesPaginated(limit: limit, offset: offset);
+      final courses = await coursesDataSource.getCoursesPaginated(
+          limit: limit, offset: offset);
       return Result<List<Course>>.success(courses);
     } catch (error, _) {
       return Result<List<Course>>.fail(error as Exception);

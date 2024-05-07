@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_next_button.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen(
-      {super.key, this.onPressSkip, this.onPressNextInLastPage});
+  WelcomeScreen({super.key, this.onPressSkip, this.onPressNextInLastPage});
 
   final void Function()? onPressSkip;
   final void Function()? onPressNextInLastPage;
@@ -59,6 +59,9 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocalStorageService().getValue<bool>('initialized').then((value) {
+      if (value != null && value) this.widget.onPressSkip?.call();
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -136,6 +139,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void lastPageCallback() {
+    LocalStorageService().setKeyValue('initialized', true);
     widget.onPressNextInLastPage?.call();
   }
 
@@ -148,6 +152,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void skipPressedCallback() {
+    LocalStorageService().setKeyValue('initialized', true);
     widget.onPressSkip?.call();
   }
 }

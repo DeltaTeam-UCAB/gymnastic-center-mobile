@@ -3,11 +3,10 @@ import 'package:gymnastic_center/domain/datasources/posts/posts_datasource.dart'
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
 import 'package:gymnastic_center/domain/repositories/posts/posts_repository.dart';
 
-class PostRepositoryImpl extends PostsRepository{
-
+class PostRepositoryImpl extends PostsRepository {
   final PostsDatasource postsDatasource;
 
-  PostRepositoryImpl({required this.postsDatasource}); 
+  PostRepositoryImpl({required this.postsDatasource});
 
   @override
   Future<Result<Post>> getAllPosts({int limit = 5, int offset = 0}) {
@@ -23,5 +22,4 @@ class PostRepositoryImpl extends PostsRepository{
       return Result<Post>.fail(e as Exception);
     }
   }
-
 }

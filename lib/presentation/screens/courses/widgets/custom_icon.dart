@@ -4,7 +4,7 @@ class CustomIcon extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  
+
   const CustomIcon(
       {super.key,
       required this.icon,
