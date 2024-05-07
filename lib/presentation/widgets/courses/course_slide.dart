@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
 
@@ -13,9 +14,7 @@ class CourseSlide extends StatelessWidget {
         fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
     const subTitleStyle = TextStyle(color: Colors.white, fontSize: 14);
     return GestureDetector(
-      onTap: () {
-        //TODO: Nav to course screen
-      },
+      onTap: () => context.push('/home/0/course/${course.id}'),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
         child: Column(

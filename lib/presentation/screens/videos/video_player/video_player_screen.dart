@@ -35,23 +35,25 @@ class _VideoPlayerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
       buildWhen: (previous, current) {
-        return (previous.currentVideo != current.currentVideo) ||
-            (current.status == VideoPlayerStatus.error);
+        return (previous.currentVideo != current.currentVideo)
+                || (current.status == VideoPlayerStatus.error)
+        ;
       },
       builder: (context, state) {
         if (state.status == VideoPlayerStatus.error) {
           return Center(
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text('Video not found'),
-                  TextButton.icon(
-                    icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () => context.pop(),
-                    label: const Text('Return to course'),
-                  ),
-                ]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text('Video not found'),
+                TextButton.icon(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () => context.pop(),
+                  label: const Text('Return to course'),
+                ),
+              ]
+            ),
           );
         }
         if (state.status != VideoPlayerStatus.fetching) {
@@ -72,4 +74,3 @@ class _VideoPlayerView extends StatelessWidget {
     );
   }
 }
-
