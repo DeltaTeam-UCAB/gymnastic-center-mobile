@@ -5,8 +5,8 @@ import 'package:gymnastic_center/application/notifications/bloc/notifications_bl
 
 
 class NotificationStatuScreen extends StatelessWidget {
-
-
+  
+  const NotificationStatuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
