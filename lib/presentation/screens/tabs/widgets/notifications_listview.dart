@@ -9,8 +9,9 @@ class NotificationsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: notifications.length,
-      itemBuilder: (context, index) => _CustomNotification(notification: notifications[index]),
-      separatorBuilder: (context, index) => const Divider(height: 2), 
+      itemBuilder: (context, index) =>
+          _CustomNotification(notification: notifications[index]),
+      separatorBuilder: (context, index) => const Divider(height: 2),
     );
   }
 }
@@ -26,8 +27,8 @@ class _CustomNotification extends StatelessWidget {
       child: ListTile(
         title: Text(notification.title),
         subtitle: Text(notification.body),
-        leading: const Icon(Icons.notifications_none_outlined),        
-        onTap: (){},
+        leading: const Icon(Icons.notifications_none_outlined),
+        onTap: () {},
       ),
     );
   }

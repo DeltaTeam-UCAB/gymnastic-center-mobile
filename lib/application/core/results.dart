@@ -21,5 +21,6 @@ class Result<T> {
 
   factory Result.success(T value) => Result._(value: value, isSuccess: true);
 
-  factory Result.fail(Exception error) => Result._(error: error, isSuccess: false);
+  factory Result.fail(Exception error) =>
+      Result._(error: error, isSuccess: false);
 }

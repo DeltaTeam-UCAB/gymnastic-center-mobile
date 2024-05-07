@@ -3,6 +3,7 @@ import 'package:gymnastic_center/presentation/screens/posts/post_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
 class RoutesManager {
@@ -62,5 +63,8 @@ class RoutesManager {
     ),
     GoRoute(
         path: '/welcome', builder: (context, state) => const WelcomeScreen()),
+    GoRoute(
+        path: '/configuration/theme',
+        builder: (context, state) => const ThemeManagerScreen()),
   ]);
 }

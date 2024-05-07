@@ -16,6 +16,5 @@ class VideoRepositoryImpl extends VideosRepository {
     } catch (error, _) {
       return Result<Video>.fail(error as Exception);
     }
-
   }
 }

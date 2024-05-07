@@ -1,6 +1,6 @@
 part of 'video_player_bloc.dart';
 
-sealed class VideoPlayerEvent{
+sealed class VideoPlayerEvent {
   const VideoPlayerEvent();
 }
 
@@ -36,5 +36,3 @@ class CurrentVideoCompleted extends VideoPlayerEvent {
 class CurrentVideoNotFound extends VideoPlayerEvent {
   const CurrentVideoNotFound();
 }
-
-

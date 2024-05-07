@@ -22,9 +22,7 @@ class CustomBottomNavigation extends StatelessWidget {
             size: Size(size.width, 80),
             painter: BNBCustomPainter(backgroundColor: backgroundColor!),
           ),
-
-          const BottomNavigationCenterIcon(), 
-
+          const BottomNavigationCenterIcon(),
           BottomNavigationDecoration(size: size, currentIndex: currentIndex)
         ],
       ),
