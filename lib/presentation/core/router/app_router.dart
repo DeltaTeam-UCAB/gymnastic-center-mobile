@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/presentation/screens/courses/course_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/video_player/video_player_screen.dart';
 
@@ -13,14 +14,23 @@ class RoutesManager {
           final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
           return HomeScreen(pageIndex: pageIndex );
         },
-        // routes: [] TODO: Add nested routes here.
+        routes: [
+          GoRoute(
+            path: 'course/:courseId',
+            builder: (context, state) => CourseScreen(courseId: state.pathParameters['courseId'] ?? ''),
+          ),
+
+          GoRoute(
+            path: 'video/:videoId',
+            builder: (context, state) => VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
+          ),
+        ],
       ),
       
       GoRoute(
         path: '/video-player/:videoId',
         builder: (context, state) => VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
       ),
-
     ]
   );
 }
