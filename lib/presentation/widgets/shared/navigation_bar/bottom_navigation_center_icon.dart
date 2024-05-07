@@ -7,20 +7,13 @@ class BottomNavigationCenterIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       heightFactor: 0.1,
-      child: Container(
-        width: 70,
-        height: 70,
-        decoration: const BoxDecoration(
-          color: Colors.deepPurple,
-          shape: BoxShape.circle,
-        ),
-        child: ClipOval(
-          child: Image.asset(
-            'assets/icon/icon_app.png',
-            width: 20,
-            height: 20,
-            fit: BoxFit.fill,
-          ),
+      child: SizedBox.fromSize(
+        size: const Size(65, 65),
+        child: FloatingActionButton(
+          backgroundColor: Colors.deepPurple,
+          onPressed: () {},
+          shape: const CircleBorder(),
+          child: Image.asset('assets/icon/ray.png', width: 40, height: 40),
         ),
       ),
     );
