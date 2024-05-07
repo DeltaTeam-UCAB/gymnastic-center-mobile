@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/presentation/screens/posts/post_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/video_player/video_player_screen.dart';
 
@@ -19,6 +20,11 @@ class RoutesManager {
       GoRoute(
         path: '/video-player/:videoId',
         builder: (context, state) => VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
+      ),
+
+      GoRoute(
+        path: '/post/:postId',
+        builder: (context, state) => PostScreen(postId: state.pathParameters['postId'] ?? ''),
       ),
 
     ]
