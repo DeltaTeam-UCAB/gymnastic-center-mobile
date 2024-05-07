@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/widgets/play_button.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/widgets/total_duration_text.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/widgets/video_progress_bar.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/widgets/volume_button.dart';
+import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/play_button.dart';
+import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/total_duration_text.dart';
+import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/video_progress_bar.dart';
+import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/volume_button.dart';
 
 class VideoButtons extends StatelessWidget {
   const VideoButtons({
@@ -45,18 +45,18 @@ class _VideoCompletedLayer extends StatelessWidget {
         ),
         Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('🎉Lesson finished!',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: textStyle.fontSize)),
-                TextButton.icon(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => context.pop(),
-                  label: const Text('Return to course'),
-                ),
-              ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('🎉Lesson finished!',
+                style: TextStyle(
+                    color: Colors.white, fontSize: textStyle.fontSize)),
+            TextButton.icon(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () => context.pop(),
+              label: const Text('Return to course'),
+            ),
+          ],
         )),
       ],
     );
