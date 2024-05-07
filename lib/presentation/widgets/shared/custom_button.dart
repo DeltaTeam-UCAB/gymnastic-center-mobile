@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomButtom extends StatelessWidget {
-  final Function() nextPage;
+  final Function() onPressed;
   final String title;
   final Color backgroundColor;
   final Color foregroundColor;
 
-  const CustomButtom({super.key, required this.nextPage, required this.title, required this.backgroundColor, required this.foregroundColor});
+  const CustomButtom({super.key, required this.onPressed, required this.title, required this.backgroundColor, required this.foregroundColor});
 
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () => nextPage,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: foregroundColor, backgroundColor: backgroundColor,
         minimumSize: const Size(170, 60),
