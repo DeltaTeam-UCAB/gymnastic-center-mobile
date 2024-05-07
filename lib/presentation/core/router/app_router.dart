@@ -3,19 +3,30 @@ import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
-import 'package:gymnastic_center/presentation/screens/video_player/video_player_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(initialLocation: '/home/0', routes: [
     GoRoute(
-      path: '/home/:page',
-      builder: (context, state) {
-        final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
-        return HomeScreen(pageIndex: pageIndex);
-      },
-      // routes: [] TODO: Add nested routes here.
-    ),
+        path: '/home/:page',
+        builder: (context, state) {
+          final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+          return HomeScreen(pageIndex: pageIndex);
+        },
+        routes: [
+          GoRoute(
+            path: 'courses',
+            builder: (context, state) => const AllCoursesScreen(),
+          ),
+          GoRoute(
+            path: 'posts',
+            builder: (context, state) => const AllPostsScreen(),
+          ),
+          GoRoute(
+            path: 'videos',
+            builder: (context, state) => const AllVideosScreen(),
+          )
+        ]),
     GoRoute(
       path: '/video-player/:videoId',
       builder: (context, state) =>

@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/videos_courses_listview.dart';
+import 'package:gymnastic_center/presentation/widgets/videos/videos_courses_listview.dart';
 
 class CourseScreen extends StatelessWidget {
   final String courseId;
