@@ -12,21 +12,15 @@ class RoutesManager {
         routes: [
           GoRoute(
             path: 'courses',
-            builder: (context, state) {
-              return const AllCoursesScreen();
-            },
+            builder: (context, state) => const AllCoursesScreen(),
           ),
           GoRoute(
             path: 'posts',
-            builder: (context, state) {
-              return const AllPostsScreen();
-            },
+            builder: (context, state) => const AllPostsScreen(),
           ),
           GoRoute(
             path: 'videos',
-            builder: (context, state) {
-              return const AllVideosScreen();
-            },
+            builder: (context, state) => const AllVideosScreen(),
           )
         ]),
     GoRoute(

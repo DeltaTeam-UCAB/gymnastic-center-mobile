@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/presentation/widgets/videos/video_slide.dart';
+import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
-class AllVideosScreen extends StatelessWidget {
-  const AllVideosScreen({super.key});
+class AllCoursesScreen extends StatelessWidget {
+  const AllCoursesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const double height = 150;
-    const double width = 175;
     final List<Course> courses = [
       Course(
           id: '1',
@@ -44,41 +42,42 @@ class AllVideosScreen extends StatelessWidget {
           instructor: 'aaaaaa',
           lessons: [])
     ];
-    List<Row> rows = [];
-    for (int i = 0; i < courses.length; i++) {
-      if (i % 2 == 1) {
-        rows.add(Row(children: [
-          VideoSlide(
-            course: courses[i - 1],
-            height: height,
-            width: width,
-          ),
-          VideoSlide(course: courses[i], height: height, width: width)
-        ]));
-      } else if (i == courses.length - 1) {
-        rows.add(Row(
-          children: [
-            VideoSlide(course: courses[i], height: height, width: width)
-          ],
-        ));
-      }
-    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Videos',
+          'Courses',
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-        itemCount: rows.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(2, 8, 0, 8),
-            child: rows[index],
-          );
-        },
+      body: Column(
+        children: [
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 27),
+                child: Text('Sort by: '),
+              ),
+              TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_drop_down_outlined),
+                  label: const Text('newest'))
+            ],
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1,
+              ),
+              itemCount: courses.length,
+              itemBuilder: (context, index) {
+                return CourseSlide(course: courses[index]);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

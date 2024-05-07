@@ -16,7 +16,7 @@ class PostSlide extends StatelessWidget {
       fontSize: 15,
     );
     const subTitleStyle = TextStyle(
-        color: Colors.black54, fontSize: 14, overflow: TextOverflow.fade);
+        color: Colors.black54, fontSize: 12, overflow: TextOverflow.fade);
 
     //subtitle formatting
     String subtitle = '';
@@ -75,11 +75,7 @@ class PostSlide extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(post.title, style: titleStyle),
-            Text(
-              subtitle,
-              style: subTitleStyle,
-              textAlign: TextAlign.left,
-            )
+            Text(subtitle, style: subTitleStyle)
           ],
         ),
       ),

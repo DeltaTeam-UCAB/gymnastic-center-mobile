@@ -41,19 +41,7 @@ class AllPostsScreen extends StatelessWidget {
           autor: 'Pepe',
           tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy']),
     ];
-    List<Row> rows = [];
-    for (int i = 0; i < posts.length; i++) {
-      if (i % 2 == 1) {
-        rows.add(Row(children: [
-          PostSlide(post: posts[i - 1]),
-          PostSlide(post: posts[i])
-        ]));
-      } else if (i == posts.length - 1) {
-        rows.add(Row(
-          children: [PostSlide(post: posts[i])],
-        ));
-      }
-    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -61,15 +49,32 @@ class AllPostsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-        itemCount: rows.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(2, 8, 0, 0),
-            child: rows[index],
-          );
-        },
+      body: Column(
+        children: [
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 27),
+                child: Text('Sort by: '),
+              ),
+              TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_drop_down_outlined),
+                  label: const Text('newest'))
+            ],
+          ),
+          Expanded(
+              child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+            ),
+            itemCount: posts.length,
+            itemBuilder: (context, index) {
+              return PostSlide(post: posts[index]);
+            },
+          )),
+        ],
       ),
     );
   }

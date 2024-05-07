@@ -13,8 +13,6 @@ class VideoSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //const titleStyle = TextStyle(
-    //fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
     return GestureDetector(
       onTap: () {
         //TODO: Nav to course screen
@@ -64,18 +62,6 @@ class VideoSlide extends StatelessWidget {
                       color: Colors.white,
                       size: 80,
                     )),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(13, 5, 0, 10),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /*Text(
-                        course.name,
-                        style: titleStyle,
-                      )*/
-                    ],
-                  ),
-                )
               ],
             ),
           ],

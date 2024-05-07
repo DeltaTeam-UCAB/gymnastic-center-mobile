@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
+import 'package:gymnastic_center/presentation/widgets/videos/video_slide.dart';
 
-class AllCoursesScreen extends StatelessWidget {
-  const AllCoursesScreen({super.key});
+class AllVideosScreen extends StatelessWidget {
+  const AllVideosScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const double height = 150;
+    const double width = 175;
     final List<Course> courses = [
       Course(
           id: '1',
@@ -42,23 +44,11 @@ class AllCoursesScreen extends StatelessWidget {
           instructor: 'aaaaaa',
           lessons: [])
     ];
-    List<Row> rows = [];
-    for (int i = 0; i < courses.length; i++) {
-      if (i % 2 == 1) {
-        rows.add(Row(children: [
-          CourseSlide(course: courses[i - 1]),
-          CourseSlide(course: courses[i])
-        ]));
-      } else if (i == courses.length - 1) {
-        rows.add(Row(
-          children: [CourseSlide(course: courses[i])],
-        ));
-      }
-    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Courses',
+          'Videos',
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
@@ -66,7 +56,10 @@ class AllCoursesScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('       Sort by: '),
+              const Padding(
+                padding: EdgeInsets.only(left: 27),
+                child: Text('Sort by: '),
+              ),
               TextButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.arrow_drop_down_outlined),
@@ -74,13 +67,18 @@ class AllCoursesScreen extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: rows.length,
+            child: GridView.builder(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.05,
+              ),
+              itemCount: courses.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(11, 8, 8, 8),
-                  child: rows[index],
+                return VideoSlide(
+                  course: courses[index],
+                  height: height,
+                  width: width,
                 );
               },
             ),
