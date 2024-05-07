@@ -20,7 +20,6 @@ class PostScreen extends StatelessWidget {
             body: Stack(
           children: [
             const _PostView(),
-            
             Positioned(
                 top: 0,
                 left: 0,
@@ -56,8 +55,6 @@ class _PostView extends StatelessWidget {
         return SingleChildScrollView(
           child: _PostDetailsView(),
         );
-
-
       },
     );
   }
@@ -70,7 +67,6 @@ class _PostDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final post = context.read<PostsBloc>().state.currentPost;
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
@@ -99,21 +95,19 @@ class _PostDetailsView extends StatelessWidget {
                     size: 16,
                     color: textTheme.labelLarge!.color,
                   ),
-                  Text(dateFormat.format(post.released), style: textTheme.labelLarge),
+                  Text(dateFormat.format(post.released),
+                      style: textTheme.labelLarge),
                 ]),
               ),
               Divider(
                 color: colors.primary,
               ),
               //COntent
-              Text(
-                  post.body,
-                  style: textTheme.bodyLarge),
+              Text(post.body, style: textTheme.bodyLarge),
               Divider(
                 color: colors.primary,
               ),
-              Text(
-                  'Tags: ${post.tags.join(', ')}' ,
+              Text('Tags: ${post.tags.join(', ')}',
                   style: textTheme.bodyMedium),
             ],
           ),
@@ -124,24 +118,21 @@ class _PostDetailsView extends StatelessWidget {
 }
 
 class _ImagesCarrousel extends StatelessWidget {
-
-  final height = 300.0; 
-  final List<String> urlImages; 
+  final height = 300.0;
+  final List<String> urlImages;
 
   const _ImagesCarrousel(this.urlImages);
 
   @override
   Widget build(BuildContext context) {
-
-
-    if ( urlImages.length == 1) {
+    if (urlImages.length == 1) {
       return SizedBox(
         height: height,
         width: double.infinity,
         child: Image.network(
-              urlImages[0],
-              fit: BoxFit.fill,
-            ),
+          urlImages[0],
+          fit: BoxFit.fill,
+        ),
       );
     }
 

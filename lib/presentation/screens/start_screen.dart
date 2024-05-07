@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 
 class StartScreen extends StatelessWidget {
@@ -34,8 +35,16 @@ class StartScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              FilledButton(onPressed: () {}, child: const Text("Login")),
-              FilledButton(onPressed: () {}, child: const Text("Signup")),
+              FilledButton(
+                  onPressed: () {
+                    context.go('/home/0');
+                  },
+                  child: const Text("Login")),
+              FilledButton(
+                  onPressed: () {
+                    context.go('/home/0');
+                  },
+                  child: const Text("Signup")),
             ],
           )
         ],

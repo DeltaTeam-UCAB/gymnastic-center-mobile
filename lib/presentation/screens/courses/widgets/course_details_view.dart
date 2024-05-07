@@ -5,7 +5,6 @@ import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_ima
 import 'package:gymnastic_center/presentation/widgets/videos/videos_courses_listview.dart';
 
 class CourseDetailsView extends StatelessWidget {
-
   final Course course;
   const CourseDetailsView({super.key, required this.course});
 
@@ -27,11 +26,9 @@ class CourseDetailsView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                course.description,
-                textAlign: TextAlign.justify,
-                style: const TextStyle(fontSize: 12)
-                ), 
+              Text(course.description,
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(fontSize: 12)),
             ],
           ),
         ),
@@ -41,7 +38,8 @@ class CourseDetailsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CustomIcon(icon: Icons.menu, title: 'Calories', subtitle: course.calories),
+            CustomIcon(
+                icon: Icons.menu, title: 'Calories', subtitle: course.calories),
             const CustomIcon(
                 icon: Icons.calendar_month_outlined,
                 title: 'Weeks',
