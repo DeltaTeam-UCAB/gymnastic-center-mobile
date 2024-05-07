@@ -105,7 +105,7 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
                 color: Colors.white,
               ),
             ),
-            const Expanded(child: Center(child: PlayButton())),
+            const Positioned.fill(child: Center(child: PlayButton())),
             const Positioned(bottom: 70, right: 20, child: VolumeButton()),
             const Align(
               alignment: Alignment.bottomCenter,

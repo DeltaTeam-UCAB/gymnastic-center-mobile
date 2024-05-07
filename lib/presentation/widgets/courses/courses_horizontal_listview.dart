@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
 class CourseHorizontalListView extends StatelessWidget {
@@ -88,7 +87,7 @@ class _Slide extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   height: 150,
                   width: 160,
-                  child: NewButton(courseDate: course.released),
+                  child: NewButton(courseDate: course.released!),
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(13, 5, 0, 10),
@@ -96,7 +95,7 @@ class _Slide extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        course.name,
+                        course.instructor,
                         style: titleStyle,
                       ),
                       Text(course.category, style: subTitleStyle)
