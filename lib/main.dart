@@ -10,12 +10,12 @@ import 'package:gymnastic_center/infrastructure/local_notifications/local_notifi
 import 'package:gymnastic_center/presentation/core/app_widget.dart';
 
 void main() async {
-
   // Ensure that the WidgetsBinding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register the background message handler
-  FirebaseNotificationsManager.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  FirebaseNotificationsManager.onBackgroundMessage(
+      firebaseMessagingBackgroundHandler);
 
   // Initialize Firebase, and pass the default options (firebase_options.dart)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -24,15 +24,10 @@ void main() async {
   await LocalNotifications().initializeLocalNotifications();
   await Environment.initEnvironment();
 
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(create: (_) => ThemesBloc()),
-      BlocProvider(
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (_) => ThemesBloc()),
+    BlocProvider(
         create: (_) => NotificationsBloc(
-          FirebaseNotificationsManager(LocalNotifications())
-        )
-      ),
-    ], 
-    child: const GymnasticCenterApp()
-  ));
+            FirebaseNotificationsManager(LocalNotifications()))),
+  ], child: const GymnasticCenterApp()));
 }

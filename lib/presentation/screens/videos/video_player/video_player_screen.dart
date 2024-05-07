@@ -72,3 +72,4 @@ class _VideoPlayerView extends StatelessWidget {
     );
   }
 }
+
