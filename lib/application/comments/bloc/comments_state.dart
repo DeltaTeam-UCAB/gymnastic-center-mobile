@@ -1,24 +1,38 @@
 part of 'comments_bloc.dart';
 
+enum CommentStatus{
+  error, 
+  loading,
+  loaded,
+  completed
+}
+
 class CommentsState extends Equatable {
   final List<Comment> comments;
-  final bool loading;
+  final CommentStatus status;
+  final int limit;
+  final int offset;
 
   const CommentsState({
-    this.loading = true,
-    this.comments = const []
+    this.status = CommentStatus.loading,
+    this.comments = const [],
+    this.limit = 5,
+    this.offset = 0
   });
   
   CommentsState copyWith({
     List<Comment>? comments,
-    bool? loading,
+    CommentStatus? status,
+    int? limit,
+    int? offset,
   })=>CommentsState(
     comments: comments ?? this.comments,
-    loading: loading ?? this.loading
+    status: status ?? this.status,
+    limit: limit ?? this.limit,
+    offset: offset ?? this.offset
   );
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [comments, status];
 }
 
-final class CommentsInitial extends CommentsState {}
