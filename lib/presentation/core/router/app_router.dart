@@ -1,8 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/presentation/screens/courses/course_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
-import 'package:gymnastic_center/presentation/screens/videos/video_player/video_player_screen.dart';
-
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(

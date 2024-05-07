@@ -2,11 +2,11 @@ class Course {
   final String id;
   final String title;
   final String description;
-  final String calories;
   final String instructor;
+  final String calories;
+  final DateTime? released;
   final String category;
   final String image;
-  final DateTime? released;
   final List<Lesson>? lessons;
 
   Course({
@@ -17,8 +17,8 @@ class Course {
     required this.instructor,
     required this.category,
     required this.image,
-    this.released,
-    this.lessons = const [],
+    required this.lessons,
+    required this.released,
   });
 }
 
@@ -33,13 +33,13 @@ class Lesson {
   final String burnedCalories;
 
   Lesson({
-      required this.id,
-      required this.name,
-      required this.description,
-      required this.courseId,
-      required this.videoId,
-      required this.order,
-      required this.waitTime,
-      required this.burnedCalories,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.courseId,
+    required this.videoId,
+    required this.order,
+    required this.waitTime,
+    required this.burnedCalories,
   });
 }
