@@ -6,14 +6,13 @@ class PushMessageModel {
   final Map<String, dynamic>? data;
   final String? imageUrl;
 
-  PushMessageModel({
-    required this.messageId,
-    required this.title,
-    required this.body,
-    required this.sentDate,
-    this.data,
-    this.imageUrl
-  });
+  PushMessageModel(
+      {required this.messageId,
+      required this.title,
+      required this.body,
+      required this.sentDate,
+      this.data,
+      this.imageUrl});
 
   @override
   String toString() {
@@ -27,5 +26,4 @@ pushMessage -
   imageUrl: $imageUrl
     ''';
   }
-  
 }

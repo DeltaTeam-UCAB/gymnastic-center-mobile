@@ -9,7 +9,8 @@ class BottomNavigationDecoration extends StatelessWidget {
     context.go('/home/$index');
   }
 
-  const BottomNavigationDecoration({super.key, required this.size, required this.currentIndex});
+  const BottomNavigationDecoration(
+      {super.key, required this.size, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {

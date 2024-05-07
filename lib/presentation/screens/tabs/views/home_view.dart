@@ -6,7 +6,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
@@ -18,27 +17,17 @@ class HomeView extends StatelessWidget {
             titlePadding: EdgeInsets.symmetric(),
           ),
         ),
-
-        SliverList( delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return const Column(
-              children: [
-                // TODO: Add the widgets here.
-                Placeholder(),
-                Placeholder(),
-              ],
-            );
-          }, childCount: 1
-          )
-        )
+        SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+          return const Column(
+            children: [
+              // TODO: Add the widgets here.
+              Placeholder(),
+              Placeholder(),
+            ],
+          );
+        }, childCount: 1))
       ],
     );
   }
 }
-
-
-
-
-
-
-

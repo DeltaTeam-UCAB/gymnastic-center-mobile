@@ -8,7 +8,7 @@ class BottomNavigationCenterIcon extends StatelessWidget {
     return Center(
       heightFactor: 0.1,
       child: Container(
-        width: 70, 
+        width: 70,
         height: 70,
         decoration: const BoxDecoration(
           color: Colors.deepPurple,
@@ -19,8 +19,7 @@ class BottomNavigationCenterIcon extends StatelessWidget {
             'assets/icon/icon_app.png',
             width: 20,
             height: 20,
-            fit: BoxFit
-                .fill,
+            fit: BoxFit.fill,
           ),
         ),
       ),

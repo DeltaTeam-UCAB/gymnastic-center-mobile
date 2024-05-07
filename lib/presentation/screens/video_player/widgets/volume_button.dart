@@ -5,26 +5,25 @@ import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc
 class VolumeButton extends StatelessWidget {
   const VolumeButton({super.key});
 
-  void toggleMute(BuildContext context, bool mute){
-    if ( mute ){
+  void toggleMute(BuildContext context, bool mute) {
+    if (mute) {
       context.read<VideoPlayerBloc>().unmute();
       return;
     }
     context.read<VideoPlayerBloc>().mute();
-
   }
 
   @override
   Widget build(BuildContext context) {
     final VideoPlayerState state = context.watch<VideoPlayerBloc>().state;
     return IconButton(
-      onPressed: () { 
-        toggleMute(context,state.mute);
+      onPressed: () {
+        toggleMute(context, state.mute);
       },
       icon: (state.mute)
-        ? const Icon(Icons.volume_off)
-        : const Icon(Icons.volume_up),
-        color: Colors.white,
+          ? const Icon(Icons.volume_off)
+          : const Icon(Icons.volume_up),
+      color: Colors.white,
     );
   }
 }

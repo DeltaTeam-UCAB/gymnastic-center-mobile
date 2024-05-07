@@ -5,12 +5,11 @@ import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc
 class PlayButton extends StatelessWidget {
   const PlayButton({super.key});
 
-
-  void play(BuildContext context){
+  void play(BuildContext context) {
     context.read<VideoPlayerBloc>().playVideo();
   }
 
-  void pause(BuildContext context){
+  void pause(BuildContext context) {
     context.read<VideoPlayerBloc>().pauseVideo();
   }
 
@@ -21,23 +20,21 @@ class PlayButton extends StatelessWidget {
     final VideoPlayerState state = context.watch<VideoPlayerBloc>().state;
 
     return IconButton(
-      onPressed: (){
-        if (state.status == VideoPlayerStatus.paused){
+      onPressed: () {
+        if (state.status == VideoPlayerStatus.paused) {
           play(context);
           return;
         }
         pause(context);
       },
-      icon: Icon(
-        (state.status != VideoPlayerStatus.paused)
-        ? Icons.pause
-        : Icons.play_arrow
-        ),
+      icon: Icon((state.status != VideoPlayerStatus.paused)
+          ? Icons.pause
+          : Icons.play_arrow),
       style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(colors.primary),
-          iconColor: const MaterialStatePropertyAll(Colors.white),
-          iconSize: MaterialStateProperty.all(40.0),
-          minimumSize: MaterialStateProperty.all(Size(50.0, 50.0)),
+        backgroundColor: MaterialStatePropertyAll(colors.primary),
+        iconColor: const MaterialStatePropertyAll(Colors.white),
+        iconSize: MaterialStateProperty.all(40.0),
+        minimumSize: MaterialStateProperty.all(Size(50.0, 50.0)),
       ),
     );
   }

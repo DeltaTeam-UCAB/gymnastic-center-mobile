@@ -3,33 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/videos_courses_listview.dart';
 
 class CourseScreen extends StatelessWidget {
-
   final String courseId;
   const CourseScreen({super.key, required this.courseId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          
-          SingleChildScrollView(
-            child: _CourseDetailsView(courseId: courseId),
-          ),
+        body: Stack(
+      children: [
+        SingleChildScrollView(
+          child: _CourseDetailsView(courseId: courseId),
+        ),
 
-          // Appbar
-          Positioned(
+        // Appbar
+        Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: AppBar(
-              title: const Text('Yoga Basics For Beginners', style: TextStyle(color: Colors.white, fontSize: 20)),
+              title: const Text('Yoga Basics For Beginners',
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
               elevation: 0,
-            ) 
-          ),
-        ],
-      )
-    );
+            )),
+      ],
+    ));
   }
 }
 
@@ -40,7 +37,6 @@ class _CourseDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +48,9 @@ class _CourseDetailsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Nostrud Lorem laboris commodo cillum consequat tempor incididunt cupidatat eiusmod cillum. Consectetur irure commodo consectetur tempor ad. Culpa pariatur aliqua nisi nisi dolor sint eiusmod labore est consectetur sunt. Excepteur eu cillum exercitation proident.', style: TextStyle(fontSize: 12)),
+              Text(
+                  'Nostrud Lorem laboris commodo cillum consequat tempor incididunt cupidatat eiusmod cillum. Consectetur irure commodo consectetur tempor ad. Culpa pariatur aliqua nisi nisi dolor sint eiusmod labore est consectetur sunt. Excepteur eu cillum exercitation proident.',
+                  style: TextStyle(fontSize: 12)),
             ],
           ),
         ),
@@ -63,8 +61,14 @@ class _CourseDetailsView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _CustomIcon(icon: Icons.menu, title: 'Level', subtitle: '1'),
-            _CustomIcon(icon: Icons.calendar_month_outlined, title: 'Weeks', subtitle: '3'),
-            _CustomIcon(icon: Icons.watch_later_outlined, title: 'Mins', subtitle: '22'),
+            _CustomIcon(
+                icon: Icons.calendar_month_outlined,
+                title: 'Weeks',
+                subtitle: '3'),
+            _CustomIcon(
+                icon: Icons.watch_later_outlined,
+                title: 'Mins',
+                subtitle: '22'),
           ],
         ),
 
@@ -95,7 +99,8 @@ class _CustomIcon extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  const _CustomIcon({required this.icon, required this.title, required this.subtitle});
+  const _CustomIcon(
+      {required this.icon, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +109,8 @@ class _CustomIcon extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 40, height: 40,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
             color: themeColor.withOpacity(0.2),
             shape: BoxShape.rectangle,
@@ -114,16 +120,17 @@ class _CustomIcon extends StatelessWidget {
             child: Icon(icon, color: themeColor),
           ),
         ),
-
         const SizedBox(width: 5),
-
         Column(
           children: [
             //Title
             Text(title, style: textStyles.labelSmall),
 
             //Subtitle
-            Text(subtitle, style: textStyles.labelSmall,)
+            Text(
+              subtitle,
+              style: textStyles.labelSmall,
+            )
           ],
         )
       ],
@@ -137,10 +144,10 @@ class _CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const customBorderRadius = BorderRadius.only(bottomRight: Radius.circular(60));
+    const customBorderRadius =
+        BorderRadius.only(bottomRight: Radius.circular(60));
     return Stack(
       children: [
-        
         // Image
         ClipRRect(
           borderRadius: customBorderRadius,
@@ -154,18 +161,16 @@ class _CustomImage extends StatelessWidget {
             },
           ),
         ),
-        
+
         // Gradiente
         Container(
           height: 400,
           decoration: const BoxDecoration(
-            borderRadius: customBorderRadius,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black87]
-            )
-          ),
+              borderRadius: customBorderRadius,
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black87])),
         ),
 
         // Title
@@ -177,10 +182,9 @@ class _CustomImage extends StatelessWidget {
             child: const Text(
               'Course Title',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),
