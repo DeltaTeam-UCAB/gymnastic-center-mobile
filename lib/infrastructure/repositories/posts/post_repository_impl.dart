@@ -9,8 +9,13 @@ class PostRepositoryImpl extends PostsRepository {
   PostRepositoryImpl({required this.postsDatasource});
 
   @override
-  Future<Result<Post>> getAllPosts({int limit = 5, int offset = 0}) {
-    throw UnimplementedError();
+  Future<Result<List<Post>>> getAllPosts({int limit = 5, int offset = 0}) async {
+    try {
+      final posts = await postsDatasource.getAllPosts(limit: limit, offset: offset);
+      return Result<List<Post>>.success(posts);
+    } catch (e) {
+      return Result<List<Post>>.fail(e as Exception);
+    }
   }
 
   @override

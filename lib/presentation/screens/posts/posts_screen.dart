@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/domain/entities/posts/post.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
+import 'package:gymnastic_center/infrastructure/repositories/posts/post_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/posts/post_slide.dart';
 
 class AllPostsScreen extends StatelessWidget {
@@ -7,41 +10,19 @@ class AllPostsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Post> posts = [
-      Post(
-          id: '1',
-          title: 'New yoga styles are coming next year 2025',
-          released: DateTime.utc(2024, 5, 5),
-          images: [
-            'https://newsnetwork.mayoclinic.org/n7-mcnn/7bcc9724adf7b803/uploads/2017/05/two-women-and-a-man-doing-yoga-in-front-of-a-wall-of-windows-in-a-sunny-space-16X9-1024x576.jpg'
-          ],
-          autor: 'Pepe',
-          tags: [
-            'Yoga',
-            'Lifestyle',
-            'Healthy',
-            'Trendy',
-          ], body: ''),
-      Post(
-          id: '2',
-          title: 'Researchers discovered apples are healthy',
-          released: DateTime.utc(2024, 1, 1),
-          images: [
-            'https://www.foodandwine.com/thmb/dJioehiMBM0IHtF2yqvv4fjrahI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/A-Feast-of-Apples-FT-2-MAG1123-980271d42b1a489bab239b1466588ca4.jpg'
-          ],
-          autor: 'Pepe',
-          tags: ['Food'], body: ''),
-      Post(
-          id: '2',
-          title: 'Yoga influencer married',
-          released: DateTime.utc(2024, 5, 5),
-          images: [
-            'https://www.realmenrealstyle.com/wp-content/uploads/2016/06/Sports-and-Attractiveness-athlete-couple-fit.jpg'
-          ],
-          autor: 'Pepe',
-          tags: ['Yoga', 'Lifestyle', 'Healthy', 'Trendy'], body: ''),
-    ];
+    return BlocProvider(
+      create: (_) =>
+          PostsBloc(PostRepositoryImpl(postsDatasource: APIPostDatasource())),
+      child: const _AllPostsScreen(),
+    );
+  }
+}
 
+class _AllPostsScreen extends StatelessWidget {
+  const _AllPostsScreen();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -49,33 +30,86 @@ class AllPostsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 27),
-                child: Text('Sort by: '),
-              ),
-              TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.arrow_drop_down_outlined),
-                  label: const Text('newest'))
-            ],
-          ),
-          Expanded(
-              child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
+      body: const _AllPostsView(),
+    );
+  }
+}
+
+class _AllPostsView extends StatefulWidget {
+  
+
+  const _AllPostsView();
+
+  @override
+  State<_AllPostsView> createState() => _AllPostsViewState();
+}
+
+class _AllPostsViewState extends State<_AllPostsView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    context.read<PostsBloc>().loadNextPage();
+
+    _scrollController.addListener(() { 
+      if ( _scrollController.position.pixels + 500 >= _scrollController.position.maxScrollExtent){
+        context.read<PostsBloc>().loadNextPage();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PostsBloc, PostsState>(
+      builder: (context, state) {
+        if ( state.status == PostStatus.error){
+          return const Center(
+            child: Text('Something bad happend'),
+          );
+        }
+        if ( state.loadedPosts.isEmpty ){
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Column(
+          children: [
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 27),
+                  child: Text('Sort by: '),
+                ),
+                TextButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.arrow_drop_down_outlined),
+                    label: const Text('newest'))
+              ],
             ),
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              return PostSlide(post: posts[index]);
-            },
-          )),
-        ],
-      ),
+            Expanded( 
+                child: GridView.builder(
+                  controller: _scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.8,
+              ),
+              itemCount: state.loadedPosts.length,
+              itemBuilder: (context, index) {
+                return PostSlide(post: state.loadedPosts[index]);
+              },
+            )),
+            if ( state.status == PostStatus.loading )
+               const CircularProgressIndicator()
+          ],
+        );
+      },
     );
   }
 }
