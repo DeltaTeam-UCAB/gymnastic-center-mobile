@@ -31,7 +31,7 @@ class _AllCoursesScreen extends StatefulWidget {
 class _AllCoursesScreenState extends State<_AllCoursesScreen> {
 
   
-  final List<Course> courses = [
+  List<Course> courses = [
     Course(
         id: '1',
         title: 'Tadasana Yoga',
@@ -71,16 +71,15 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
 final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    context.read<CoursesBloc>().loadNextPage();
     super.initState();
-    // Hara algo
+    context.read<CoursesBloc>().loadNextPage();
     
     _scrollController.addListener(() {
       if ( _scrollController.position.pixels + 400 >= _scrollController.position.maxScrollExtent){
         context.read<CoursesBloc>().loadNextPage();
-        // Hara algo
+        
       }
-      final courses = context.watch<CoursesBloc>().state.courses;
+      
     });
     
   }
@@ -97,6 +96,7 @@ final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    final courses = context.watch<CoursesBloc>().state.courses;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -120,6 +120,7 @@ final ScrollController _scrollController = ScrollController();
                   label: const Text('newest'))
             ],
           ),
+          
           Expanded(
             child: GridView.builder(
               controller: _scrollController,
@@ -138,5 +139,7 @@ final ScrollController _scrollController = ScrollController();
         ],
       ),
     );
+    
   }
+  
 }
