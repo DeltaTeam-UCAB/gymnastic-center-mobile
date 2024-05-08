@@ -50,6 +50,10 @@ class RoutesManager {
     ),
     GoRoute(path: '/start', builder: (context, state) => const StartScreen()),
     GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
       path: '/splash',
       builder: (context, state) => SplashScreen(
           splashScreenDurationSeconds: 3,
@@ -64,11 +68,9 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
-
     GoRoute(
-      path: '/', 
+      path: '/',
       redirect: (_, __) => '/home/0',
     )
-
   ]);
 }
