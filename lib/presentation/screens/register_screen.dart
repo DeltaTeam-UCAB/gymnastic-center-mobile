@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/custom_button.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -227,32 +226,38 @@ class RegisterScreenState extends State<RegisterScreen> {
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: CircleMaskedBackground(
-          backgroundContent: Container(color: Colors.white),
-          circleMaskContent: Container(
-            alignment: Alignment.center,
-            height: double.infinity,
-            child: SvgPicture.asset(
-              'assets/splash/splash-screen-bg.svg',
-              fit: BoxFit.cover,
-              height: MediaQuery.of(context).size.height,
-              alignment: Alignment.topLeft,
-            ),
-          ),
-          circlePosition: Offset(MediaQuery.of(context).size.width / 2,
-              MediaQuery.of(context).size.height * 0.21 + circleRadius),
-          circleRadius: circleRadius,
-          child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  horizontalPadding,
-                  0,
-                  horizontalPadding,
-                  MediaQuery.of(context).size.height * 0.064),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: children,
-              )),
-        ));
+        body: SafeArea(
+            child: SingleChildScrollView(
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: CircleMaskedBackground(
+                      backgroundContent: Container(color: Colors.white),
+                      circleMaskContent: Container(
+                        alignment: Alignment.center,
+                        height: double.infinity,
+                        child: SvgPicture.asset(
+                          'assets/splash/splash-screen-bg.svg',
+                          fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.height,
+                          alignment: Alignment.topLeft,
+                        ),
+                      ),
+                      circlePosition: Offset(
+                          MediaQuery.of(context).size.width / 2,
+                          MediaQuery.of(context).size.height * 0.21 +
+                              circleRadius),
+                      circleRadius: circleRadius,
+                      child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontalPadding,
+                              0,
+                              horizontalPadding,
+                              MediaQuery.of(context).size.height * 0.064),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: children,
+                          )),
+                    )))));
   }
 }
