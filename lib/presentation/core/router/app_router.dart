@@ -5,7 +5,7 @@ import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
-import 'package:gymnastic_center/presentation/screens/login.dart';
+import 'package:gymnastic_center/presentation/screens/login_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(initialLocation: '/splash', routes: [
@@ -65,7 +65,7 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
-    GoRoute(path: '/login', builder: (context, state) => const Login()),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
       path: '/',
       redirect: (_, __) => '/home/0',
