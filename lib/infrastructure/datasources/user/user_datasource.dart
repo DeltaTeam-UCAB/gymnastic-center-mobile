@@ -24,7 +24,7 @@ class APIUserDatasource extends UserDatasource {
 
   @override
   Future<LoginResponse> login(String email, String password) async {
-    final response = await dio.post('/user/register', data: {
+    final response = await dio.post('/user/login', data: {
       'email': email,
       'password': password,
     });
@@ -48,7 +48,7 @@ class APIUserDatasource extends UserDatasource {
 
   @override
   Future<bool> update({String? email, String? password, String? name}) async {
-    await dio.put('/user/register',
+    await dio.put('/user/update',
         data: {
           'email': email,
           'password': password,
