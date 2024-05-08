@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +20,8 @@ class RegisterScreenState extends State<RegisterScreen> {
   bool _acceptTermsAndConditions = false;
 
   bool _hidePassword = true;
+
+  final _formKey = GlobalKey<FormState>();
 
   final passwordFieldFocusNode = FocusNode();
 
@@ -66,100 +70,34 @@ class RegisterScreenState extends State<RegisterScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white)),
           top: false),
-      _textFieldPadding(TextField(
+      _textFieldPadding(GymnasticTextFormField(
         controller: _fullNameController,
-        style: const TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
-        decoration: const InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.fromLTRB(36, 15, 10, 15),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          floatingLabelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          labelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          hintStyle: TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
+        decoration: const GymnasticTextInputDecoration(
           labelText: 'Full Name',
           hintText: 'Your name here',
         ),
       )),
-      _textFieldPadding(TextField(
+      _textFieldPadding(GymnasticTextFormField(
         controller: _emailController,
-        style: const TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
-        decoration: const InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.fromLTRB(36, 15, 10, 15),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          floatingLabelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          labelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          hintStyle: TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
+        decoration: const GymnasticTextInputDecoration(
           labelText: 'Email',
           hintText: 'youremail@example.com',
           prefixIconColor: Color(0x7bc8ccd9),
           prefixIcon: Icon(Icons.email),
         ),
       )),
-      _textFieldPadding(TextField(
+      _textFieldPadding(GymnasticTextFormField(
         controller: _phoneController,
-        style: const TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
-        decoration: const InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.fromLTRB(36, 15, 10, 15),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
-              borderSide: BorderSide(
-                color: Color(0xffcdcdcd),
-              )),
-          floatingLabelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          labelStyle: TextStyle(fontSize: 17.78, color: Colors.white),
-          hintStyle: TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
+        decoration: const GymnasticTextInputDecoration(
           labelText: 'Phone',
           hintText: '+088031420698',
         ),
       )),
       _textFieldPadding(
-          TextField(
+          GymnasticTextFormField(
             controller: _passwordController,
             obscureText: _hidePassword,
-            style: const TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              contentPadding: const EdgeInsets.fromLTRB(36, 15, 10, 15),
-              enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(300)),
-                  borderSide: BorderSide(
-                    color: Color(0xffcdcdcd),
-                  )),
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(300)),
-                  borderSide: BorderSide(
-                    color: Color(0xffcdcdcd),
-                  )),
-              floatingLabelStyle:
-                  const TextStyle(fontSize: 17.78, color: Colors.white),
-              labelStyle: const TextStyle(fontSize: 17.78, color: Colors.white),
-              hintStyle:
-                  const TextStyle(fontSize: 16, color: Color(0xffcdcdcd)),
+            decoration: GymnasticTextInputDecoration(
               labelText: 'Password',
               hintText: 'Password',
               suffixIconColor: const Color(0xffc8ccd9),
@@ -253,11 +191,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                               0,
                               horizontalPadding,
                               MediaQuery.of(context).size.height * 0.064),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: children,
-                          )),
+                          child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: children,
+                              ))),
                     )))));
   }
 }
