@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/checkbox_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -52,17 +53,63 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: child);
   }
 
+  String? _validateEmail(String? value) {
+    RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (value == null || value.isEmpty) {
+      return 'You must enter an email.';
+    }
+
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email.';
+    }
+
+    return null;
+  }
+
+  String? _validatePhone(String? value) {
+    RegExp phoneRegex = RegExp(r'^[+]{1}[(]?[0-9]{1,4}[)]?[-\s0-9]*$');
+
+    if (value == null || value.isEmpty) {
+      return 'You must enter a phone number.';
+    }
+
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Please enter a valid phone number.';
+    }
+
+    return null;
+  }
+
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'You must enter your name.';
+    }
+
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'You must enter a password.';
+    }
+
+    return null;
+  }
+
+  void _pressSubmit() {
+    if (_formKey.currentState!.validate()) {
+      // If the form is valid, display a snackbar. In the real world,
+      // you'd often call a server or save the information in a database.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Processing Data')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _layout([
-      Padding(
-        padding: EdgeInsets.fromLTRB(
-            0, 0, 0, MediaQuery.of(context).size.height * 0.0628),
-        child: Image.asset(
-          'assets/icon/logoApp_purple.png',
-          height: MediaQuery.of(context).size.height * 0.127,
-        ),
-      ),
       _textFieldPadding(
           const Text('Sign up',
               style: TextStyle(
@@ -70,74 +117,96 @@ class RegisterScreenState extends State<RegisterScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white)),
           top: false),
-      _textFieldPadding(GymnasticTextFormField(
-        controller: _fullNameController,
-        decoration: const GymnasticTextInputDecoration(
-          labelText: 'Full Name',
-          hintText: 'Your name here',
-        ),
-      )),
-      _textFieldPadding(GymnasticTextFormField(
-        controller: _emailController,
-        decoration: const GymnasticTextInputDecoration(
-          labelText: 'Email',
-          hintText: 'youremail@example.com',
-          prefixIconColor: Color(0x7bc8ccd9),
-          prefixIcon: Icon(Icons.email),
-        ),
-      )),
-      _textFieldPadding(GymnasticTextFormField(
-        controller: _phoneController,
-        decoration: const GymnasticTextInputDecoration(
-          labelText: 'Phone',
-          hintText: '+088031420698',
-        ),
-      )),
       _textFieldPadding(
-          GymnasticTextFormField(
-            controller: _passwordController,
-            obscureText: _hidePassword,
-            decoration: GymnasticTextInputDecoration(
-              labelText: 'Password',
-              hintText: 'Password',
-              suffixIconColor: const Color(0xffc8ccd9),
-              suffixIcon: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                child: GestureDetector(
-                  onTap: _toggleObscured,
-                  child: Icon(
-                    _hidePassword
-                        ? Icons.visibility_rounded
-                        : Icons.visibility_off_rounded,
-                    size: 24,
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+              child: GymnasticTextFormField(
+                controller: _fullNameController,
+                validator: _validateName,
+                decoration: const GymnasticTextInputDecoration(
+                  labelText: 'Full Name',
+                  hintText: 'Your name here',
+                ),
+              )),
+          bottom: false),
+      _textFieldPadding(
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+              child: GymnasticTextFormField(
+                controller: _emailController,
+                validator: _validateEmail,
+                decoration: const GymnasticTextInputDecoration(
+                  labelText: 'Email',
+                  hintText: 'youremail@example.com',
+                  prefixIconColor: Color(0x7bc8ccd9),
+                  prefixIcon: Icon(Icons.email),
+                ),
+              )),
+          bottom: false),
+      _textFieldPadding(
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+              child: GymnasticTextFormField(
+                controller: _phoneController,
+                validator: _validatePhone,
+                decoration: const GymnasticTextInputDecoration(
+                  labelText: 'Phone',
+                  hintText: '+088031420698',
+                ),
+              )),
+          bottom: false),
+      _textFieldPadding(
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+              child: GymnasticTextFormField(
+                controller: _passwordController,
+                obscureText: _hidePassword,
+                validator: _validatePassword,
+                decoration: GymnasticTextInputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Password',
+                  suffixIconColor: const Color(0xffc8ccd9),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                    child: GestureDetector(
+                      onTap: _toggleObscured,
+                      child: Icon(
+                        _hidePassword
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        size: 24,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              )),
           bottom: false),
       Padding(
           padding: EdgeInsets.fromLTRB(
-              0,
-              MediaQuery.of(context).size.height * 0.0282,
-              0,
-              MediaQuery.of(context).size.height * 0.0449),
-          child: Row(
-            children: [
-              Checkbox(
-                  value: _acceptTermsAndConditions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _acceptTermsAndConditions = value!;
-                    });
-                  }),
-              const Text('Yes! Agree to all Terms and Conditions'),
-            ],
+              0, 0, 0, MediaQuery.of(context).size.height * 0.0449),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.0294,
+            child: CheckboxFormField(
+              onSaved: (newValue) {
+                setState(() {
+                  _acceptTermsAndConditions = newValue ?? false;
+                });
+              },
+              title: const Text('Yes! Agree to all Terms and Conditions',
+                  style: TextStyle(fontSize: 15)),
+              validator: (value) {
+                if (value == null || !value) {
+                  return 'You must agree to all Terms and Conditions.';
+                }
+
+                return null;
+              },
+            ),
           )),
       Row(children: [
         Expanded(
             child: FilledButton(
-          onPressed: () {},
+          onPressed: _pressSubmit,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(),
@@ -167,9 +236,25 @@ class RegisterScreenState extends State<RegisterScreen> {
         body: SafeArea(
             child: SingleChildScrollView(
                 child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top,
                     child: CircleMaskedBackground(
-                      backgroundContent: Container(color: Colors.white),
+                      backgroundContent: SizedBox.expand(
+                          child: Container(
+                        color: Colors.white,
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              0,
+                              MediaQuery.of(context).size.height * 0.0628,
+                              0,
+                              0),
+                          child: Image.asset(
+                            'assets/icon/logoApp_purple.png',
+                            height: MediaQuery.of(context).size.height * 0.127,
+                          ),
+                        ),
+                      )),
                       circleMaskContent: Container(
                         alignment: Alignment.center,
                         height: double.infinity,
@@ -190,7 +275,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               horizontalPadding,
                               0,
                               horizontalPadding,
-                              MediaQuery.of(context).size.height * 0.064),
+                              MediaQuery.of(context).size.height * 0.044),
                           child: Form(
                               key: _formKey,
                               child: Column(
