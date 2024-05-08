@@ -15,7 +15,8 @@ class CourseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CoursesBloc(
-          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl()))        ,
+          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl()))
+        ..getCourseById(courseId),
       child: const _CourseScreenView(),
     );
   }
