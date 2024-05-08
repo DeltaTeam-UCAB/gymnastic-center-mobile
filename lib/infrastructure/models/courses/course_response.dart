@@ -28,7 +28,9 @@ class CourseResponse {
         calories: json["calories"],
         instructor: json["instructor"],
         category: json["category"],
-        image: json["image"],
+        image: json["image"] is String
+            ? json["image"]
+            : ImageResponse.fromJson(json["image"]).src,
         creationDate: json["creationDate"] != null
             ? DateTime.parse(json["creationDate"])
             : null,
@@ -70,4 +72,19 @@ class LessonResponse {
         waitTime: json["waitTime"],
         burnedCalories: json["burnedCalories"],
       );
+}
+
+class ImageResponse {
+  final String id;
+  final String src;
+
+  ImageResponse({
+    required this.id,
+    required this.src,
+  });
+
+  factory ImageResponse.fromJson(Map<String, dynamic> json) => ImageResponse(
+    id: json["id"],
+    src: json["src"],
+  );
 }
