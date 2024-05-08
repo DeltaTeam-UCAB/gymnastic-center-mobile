@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/see_all_button.dart';
 
 import 'video_slide.dart';
 
@@ -57,21 +57,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          GestureDetector(
-              onTap: () {
-                context.push('/home/0/videos');
-              },
-              child: const Row(children: [
-                Text(
-                  'See all',
-                  style: TextStyle(fontSize: 14, color: Colors.black38),
-                ),
-                Icon(
-                  size: 14,
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.black38,
-                )
-              ])),
+          const SeeAllButton(route: '/home/0/videos'),
         ],
       ),
     );

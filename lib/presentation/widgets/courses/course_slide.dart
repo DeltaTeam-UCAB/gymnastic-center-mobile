@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
@@ -11,7 +13,10 @@ class CourseSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17);
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+        fontSize: 17,
+        overflow: TextOverflow.ellipsis);
     const subTitleStyle = TextStyle(color: Colors.white, fontSize: 14);
     return GestureDetector(
       onTap: () => context.push('/home/0/course/${course.id}'),
@@ -63,9 +68,13 @@ class CourseSlide extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        course.title,
-                        style: titleStyle,
+                      SizedBox(
+                        width: 140,
+                        child: Text(
+                          course.title,
+                          style: titleStyle,
+                          maxLines: 2,
+                        ),
                       ),
                       Text(course.category, style: subTitleStyle)
                     ],
