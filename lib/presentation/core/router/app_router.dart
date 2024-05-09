@@ -53,6 +53,10 @@ class RoutesManager {
     ),
     GoRoute(path: '/start', builder: (context, state) => const StartScreen()),
     GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
       path: '/splash',
       builder: (context, state) => SplashScreen(
           splashScreenDurationSeconds: 3,
@@ -69,8 +73,11 @@ class RoutesManager {
         builder: (context, state) => const ThemeManagerScreen()),
 
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(path: '/account', builder: (context, state) => const AccountScreen()),
-    GoRoute(path: '/account/details', builder: (context, state) => const AccountDetailsScreen()),
+    GoRoute(
+        path: '/account', builder: (context, state) => const AccountScreen()),
+    GoRoute(
+        path: '/account/details',
+        builder: (context, state) => const AccountDetailsScreen()),
     GoRoute(
       path: '/',
       redirect: (_, __) => '/home/0',
