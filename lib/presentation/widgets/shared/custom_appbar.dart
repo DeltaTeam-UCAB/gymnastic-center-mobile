@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({super.key});
@@ -21,9 +22,9 @@ class CustomAppbar extends StatelessWidget {
                 Text('Gymnastic Center', style: titleStyle),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () => context.push('/account'),
                     icon: const Icon(
-                      Icons.search,
+                      Icons.account_circle_outlined,
                       color: Colors.white,
                     ))
               ],

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/custom_button.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -151,7 +150,7 @@ class LoginScreenState extends State<LoginScreen> {
             child: FilledButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 88, 27, 173),
+            backgroundColor: const Color.fromARGB(255, 88, 27, 173),
             padding: const EdgeInsets.symmetric(),
           ),
           child: Padding(
@@ -168,18 +167,18 @@ class LoginScreenState extends State<LoginScreen> {
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight))),
         )),
       ]),
-      SizedBox(
+      const SizedBox(
         height: 15,
       ),
-      Text("Forget your password?",
+      const Text("Forget your password?",
           style: TextStyle(
               color: Color.fromARGB(255, 88, 27, 173),
               fontSize: 16.0,
               fontWeight: FontWeight.bold)),
-      SizedBox(
+      const SizedBox(
         height: 20,
       ),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      const Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
         Text("Don't have an account?",
             style: TextStyle(
                 color: Color.fromARGB(176, 0, 0, 0),

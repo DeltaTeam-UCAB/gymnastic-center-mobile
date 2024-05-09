@@ -35,7 +35,7 @@ class StartScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               CustomButtom(
-                onPressed: () => context.go('/home/0'),
+                onPressed: () => context.go('/login'),
                 title: 'Login',
                 backgroundColor: isDark ? Colors.white : Colors.deepPurple,
                 foregroundColor: isDark ? Colors.deepPurple : Colors.white,

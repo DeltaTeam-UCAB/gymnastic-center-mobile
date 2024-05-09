@@ -1,7 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/presentation/screens/account/account_details_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -14,18 +12,12 @@ class AccountScreen extends StatelessWidget {
           title: Column(
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text('Profile'),
+                const Text('Profile'),
 
                 // EDIT ICON - SETUP
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AccountDetailsScreen()),
-                    );
-                  },
-                  child: Icon(Icons.create_sharp),
+                  onTap: () => context.push('account/details'),
+                  child: const Icon(Icons.create_sharp),
                 ),
               ]),
             ],
@@ -45,7 +37,7 @@ class AccountScreen extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(60),
                     )),
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: const Column(
                   // USER DATA - UPDATE
                   children: [
