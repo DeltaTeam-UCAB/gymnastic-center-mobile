@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
 
@@ -9,14 +12,17 @@ class PostSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
-      height: 1,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-      fontSize: 15,
-    );
-    const subTitleStyle = TextStyle(
-        color: Colors.black54, fontSize: 12, overflow: TextOverflow.fade);
+    final isDark = context.watch<ThemesBloc>().isDarkMode;
+    var titleStyle = TextStyle(
+        height: 1,
+        fontWeight: FontWeight.bold,
+        color: isDark ? Colors.white : Colors.black,
+        fontSize: 16,
+        overflow: TextOverflow.ellipsis);
+    var subTitleStyle = TextStyle(
+        color: isDark ? Colors.white70 : Colors.black54,
+        fontSize: 13,
+        overflow: TextOverflow.ellipsis);
 
     //subtitle formatting
     String subtitle = '';
@@ -24,14 +30,10 @@ class PostSlide extends StatelessWidget {
       subtitle = subtitle + tag;
       if (tag != post.tags.last) subtitle = '$subtitle, ';
     }
-    if (subtitle.length > 40) {
-      subtitle = subtitle.substring(0, 39);
-      subtitle = '$subtitle...';
-    }
 
     return GestureDetector(
       onTap: () {
-        //TODO: Nav to post
+        context.push('/post/${post.id}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -74,7 +76,8 @@ class PostSlide extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-            Text(post.title, style: titleStyle),
+            Text(post.title, style: titleStyle, maxLines: 2),
+            const SizedBox(height: 4),
             Text(subtitle, style: subTitleStyle)
           ],
         ),

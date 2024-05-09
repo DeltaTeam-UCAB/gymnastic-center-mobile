@@ -1,8 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/presentation/screens/account/account_details_screen.dart';
+import 'package:gymnastic_center/presentation/screens/account/account_screen.dart';
+import 'package:gymnastic_center/presentation/screens/login_screen.dart';
 import 'package:gymnastic_center/presentation/screens/posts/post_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
-import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
+import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
@@ -36,7 +39,7 @@ class RoutesManager {
           GoRoute(
             path: 'videos',
             builder: (context, state) => const AllVideosScreen(),
-          )
+          ),
         ]),
     GoRoute(
       path: '/video-player/:videoId',
@@ -68,6 +71,12 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+    GoRoute(
+        path: '/account', builder: (context, state) => const AccountScreen()),
+    GoRoute(
+        path: '/account/details',
+        builder: (context, state) => const AccountDetailsScreen()),
     GoRoute(
       path: '/',
       redirect: (_, __) => '/home/0',

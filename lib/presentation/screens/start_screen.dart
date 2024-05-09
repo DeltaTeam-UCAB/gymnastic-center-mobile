@@ -13,44 +13,43 @@ class StartScreen extends StatelessWidget {
     const textStyle = TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
 
     return Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 150),
-            Image.asset(
-              isDark
-                ? 'assets/icon/logoApp_white.png'
-                : 'assets/icon/logoApp_purple.png',
-              width: 225,
-            ),
-            const SizedBox(height: 30),
-            const Column(
-              children: [
-                Text("Welcome to yoga ",style: textStyle),
-                Text("Online Class ", style: textStyle,),
-              ],
-            ),
-            const SizedBox(height: 80),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CustomButtom(
-                  onPressed: () => context.go('/home/0'),
-                  title: 'Login',
-                  backgroundColor: isDark ? Colors.white : Colors.deepPurple,
-                  foregroundColor: isDark ? Colors.deepPurple : Colors.white,
-                ),
-                CustomButtom(
-                  onPressed: () => context.go('/home/0'),
-                  title: 'Signup',
-                  backgroundColor: isDark ? Colors.grey : Colors.white,
-                  foregroundColor: isDark ? Colors.white : Colors.deepPurple,
-                ),
-              ],
-            )
-          ],
-        ));
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 150),
+          Image.asset(
+            isDark
+              ? 'assets/icon/logoApp_white.png'
+              : 'assets/icon/logoApp_purple.png',
+            width: 225,
+          ),
+          const SizedBox(height: 30),
+          const Column(
+            children: [
+              Text("Welcome to yoga ",style: textStyle),
+              Text("Online Class ", style: textStyle,),
+            ],
+          ),
+          const SizedBox(height: 80),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              CustomButtom(
+                onPressed: () => context.go('/login'),
+                title: 'Login',
+                backgroundColor: isDark ? Colors.white : Colors.deepPurple,
+                foregroundColor: isDark ? Colors.deepPurple : Colors.white,
+              ),
+              CustomButtom(
+                onPressed: () => context.go('/home/0'),
+                title: 'Signup',
+                backgroundColor: isDark ? Colors.grey : Colors.white,
+                foregroundColor: isDark ? Colors.white : Colors.deepPurple,
+              ),
+            ],
+          )
+        ],
+      )
+    );
   }
 }
-
-

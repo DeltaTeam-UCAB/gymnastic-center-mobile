@@ -37,7 +37,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
   void _onCoursesFetched(CoursesFetched event, Emitter<CoursesState> emit) {
     emit(state.copyWith(
-      courses: event.courses,
+      courses: [...state.courses, ...event.courses],
       isLoading: false,
       offset: state.offset + state.limit,
     ));
