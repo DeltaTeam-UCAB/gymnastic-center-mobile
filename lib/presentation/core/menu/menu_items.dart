@@ -15,7 +15,7 @@ class MenuItem {
 const appMenuItems = <MenuItem>[
   MenuItem(
     title: 'Account',
-    route: '/account',
+    route: '/account/details',
     icon: Icons.account_circle_rounded,
   ),
   MenuItem(
