@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/posts/post_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/posts/post_slide.dart';
 
@@ -12,7 +13,7 @@ class AllPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          PostsBloc(PostRepositoryImpl(postsDatasource: APIPostDatasource())),
+          PostsBloc(PostRepositoryImpl(postsDatasource: APIPostDatasource(LocalStorageService()))),
       child: const _AllPostsScreen(),
     );
   }
