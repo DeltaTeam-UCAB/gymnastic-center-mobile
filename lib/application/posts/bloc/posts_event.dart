@@ -9,4 +9,12 @@ class CurrentPostLoaded extends PostsEvent {
   CurrentPostLoaded({required this.currentPost});
 }
 
-class PostNotFound extends PostsEvent {}
+class PostsLoaded extends PostsEvent {
+  final List<Post> posts;
+  PostsLoaded({required this.posts});
+}
+class AllPostsLoaded extends PostsEvent {}
+class LoadingStarted extends PostsEvent {}
+class ErrorOnPostsLoading extends PostsEvent {}
+
+

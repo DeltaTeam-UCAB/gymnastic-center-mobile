@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
@@ -32,7 +33,7 @@ class PostSlide extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        //TODO: Nav to post
+        context.push('/post/${post.id}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
