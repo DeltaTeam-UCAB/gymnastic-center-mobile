@@ -13,7 +13,7 @@ class APIUserDatasource extends UserDatasource {
       : keyValueStorage = keyValueStorageI;
   @override
   Future<bool> register(String email, String password, String name) async {
-    await dio.post('/user/register', data: {
+    await dio.post('/user/create', data: {
       'email': email,
       'password': password,
       'name': name,
