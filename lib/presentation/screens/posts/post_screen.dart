@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
@@ -13,9 +14,9 @@ class PostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) =>
-            PostsBloc(PostRepositoryImpl(postsDatasource: APIPostDatasource()))
-              ..loadPostById(postId),
+        create: (_) => PostsBloc(PostRepositoryImpl(
+            postsDatasource: APIPostDatasource(LocalStorageService())))
+          ..loadPostById(postId),
         child: Scaffold(
             body: Stack(
           children: [

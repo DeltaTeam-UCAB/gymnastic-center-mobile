@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
@@ -13,7 +14,7 @@ class AllCoursesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CoursesBloc(
-          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl())),       
+          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl(LocalStorageService()))),       
       child: const _AllCoursesScreen(),
     );
   }
