@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
+import 'package:intl/intl.dart';
 
 class PostSlide extends StatelessWidget {
   final Post post;
@@ -21,15 +22,12 @@ class PostSlide extends StatelessWidget {
         overflow: TextOverflow.ellipsis);
     var subTitleStyle = TextStyle(
         color: isDark ? Colors.white70 : Colors.black54,
-        fontSize: 13,
+        fontSize: 12,
         overflow: TextOverflow.ellipsis);
 
     //subtitle formatting
-    String subtitle = '';
-    for (var tag in post.tags) {
-      subtitle = subtitle + tag;
-      if (tag != post.tags.last) subtitle = '$subtitle, ';
-    }
+    String subtitle =
+        '${DateFormat('mm/dd/yyyy').format(post.released)} - ${post.autor}';
 
     return GestureDetector(
       onTap: () {
