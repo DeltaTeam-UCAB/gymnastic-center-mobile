@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/see_all_button.dart';
+
 import 'course_slide.dart';
 
 class CourseHorizontalListView extends StatelessWidget {
