@@ -4,7 +4,9 @@ import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
 class LessonsListView extends StatefulWidget {
   final List<Lesson> lessons;
-  const LessonsListView({super.key, required this.lessons});
+  LessonsListView({Key? key, required this.lessons}) : super(key: key) {
+    lessons.sort((a, b) => a.order.compareTo(b.order));
+  }
 
   @override
   State<LessonsListView> createState() => _LessonsListViewState();
@@ -31,7 +33,7 @@ class _LessonsListViewState extends State<LessonsListView> {
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Text(
-              'Lecciones del curso',
+              'Lessons of the course',
               style: textStyles,
             ),
           ),

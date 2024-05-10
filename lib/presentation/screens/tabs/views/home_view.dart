@@ -24,21 +24,31 @@ class HomeView extends StatelessWidget {
         BlocProvider(
             create: (_) => CoursesBloc(
                 coursesRepository: CoursesRepositoryImpl(
-                    CoursesDatasourceImpl(LocalStorageService())))
-              ..loadNextPage()),
+                    CoursesDatasourceImpl(LocalStorageService())))),
         BlocProvider(
             create: (_) => PostsBloc(PostRepositoryImpl(
                   postsDatasource: APIPostDatasource(LocalStorageService()),
-                ))
-                  ..loadNextPage()),
+                ))),
       ],
       child: const _Home(),
     );
   }
 }
 
-class _Home extends StatelessWidget {
+class _Home extends StatefulWidget {
   const _Home();
+
+  @override
+  State<_Home> createState() => __HomeState();
+}
+
+class __HomeState extends State<_Home> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CoursesBloc>().loadNextPage();
+    context.read<PostsBloc>().loadNextPage();
+  }
 
   @override
   Widget build(BuildContext context) {

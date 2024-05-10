@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 
 class CustomIcon extends StatelessWidget {
   final IconData icon;
@@ -13,20 +15,20 @@ class CustomIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Theme.of(context).primaryColor;
     final textStyles = Theme.of(context).textTheme;
+    final isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return Row(
       children: [
         Container(
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: themeColor.withOpacity(0.2),
+            color: isDarkMode ? Colors.grey : Colors.deepPurple.shade50,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
-            child: Icon(icon, color: themeColor),
+            child: Icon(icon, color: isDarkMode ? Colors.white : Colors.deepPurple),
           ),
         ),
         const SizedBox(width: 5),
