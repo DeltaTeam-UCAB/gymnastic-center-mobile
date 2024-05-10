@@ -64,17 +64,10 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   String? _validatePassword(String? value) {
-    RegExp passwordRegex =
-        RegExp(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$');
-
+  
     if (value == null || value.isEmpty) {
       return 'You must enter a password.';
     }
-
-    if (!passwordRegex.hasMatch(value)) {
-      return 'Please enter a valid password. ';
-    }
-
     return null;
   }
 
