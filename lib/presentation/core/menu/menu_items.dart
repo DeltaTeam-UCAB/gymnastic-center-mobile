@@ -20,7 +20,7 @@ const appMenuItems = <MenuItem>[
   ),
   MenuItem(
     title: 'Notifications',
-    route: '/notifications',
+    route: '/configuration/notifications',
     icon: Icons.notifications_rounded,
   ),
   MenuItem(

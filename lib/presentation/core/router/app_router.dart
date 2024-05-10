@@ -7,6 +7,7 @@ import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
 import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/widgets/notification_status_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
 class RoutesManager {
@@ -71,6 +72,9 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
+    GoRoute(
+      path: '/configuration/notifications',
+      builder: (context, state) => const NotificationStatuScreen(),),
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
         path: '/account', builder: (context, state) => const AccountScreen()),

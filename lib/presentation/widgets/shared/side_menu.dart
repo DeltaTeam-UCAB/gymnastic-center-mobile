@@ -50,7 +50,6 @@ class _SideMenuState extends State<SideMenu> {
           padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
           child: Divider(),
         ),
-        const Spacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FilledButton.icon(
