@@ -12,13 +12,12 @@ class AllPostsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          PostsBloc(PostRepositoryImpl(postsDatasource: APIPostDatasource(LocalStorageService()))),
+      create: (_) => PostsBloc(PostRepositoryImpl(
+          postsDatasource: APIPostDatasource(LocalStorageService()))),
       child: const _AllPostsScreen(),
     );
   }
 }
-
 
 class _AllPostsScreen extends StatelessWidget {
   const _AllPostsScreen();
@@ -38,8 +37,6 @@ class _AllPostsScreen extends StatelessWidget {
 }
 
 class _AllPostsView extends StatefulWidget {
-  
-
   const _AllPostsView();
 
   @override
@@ -53,8 +50,9 @@ class _AllPostsViewState extends State<_AllPostsView> {
   void initState() {
     context.read<PostsBloc>().loadNextPage();
 
-    _scrollController.addListener(() { 
-      if ( _scrollController.position.pixels + 500 >= _scrollController.position.maxScrollExtent){
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels + 500 >=
+          _scrollController.position.maxScrollExtent) {
         context.read<PostsBloc>().loadNextPage();
       }
     });
@@ -71,12 +69,12 @@ class _AllPostsViewState extends State<_AllPostsView> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostsBloc, PostsState>(
       builder: (context, state) {
-        if ( state.status == PostStatus.error){
+        if (state.status == PostStatus.error) {
           return const Center(
             child: Text('Something bad happend'),
           );
         }
-        if ( state.loadedPosts.isEmpty ){
+        if (state.loadedPosts.isEmpty) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -95,9 +93,9 @@ class _AllPostsViewState extends State<_AllPostsView> {
                     label: const Text('newest'))
               ],
             ),
-            Expanded( 
+            Expanded(
                 child: GridView.builder(
-                  controller: _scrollController,
+              controller: _scrollController,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.8,
@@ -107,8 +105,8 @@ class _AllPostsViewState extends State<_AllPostsView> {
                 return PostSlide(post: state.loadedPosts[index]);
               },
             )),
-            if ( state.status == PostStatus.loading )
-               const CircularProgressIndicator()
+            if (state.status == PostStatus.loading)
+              const CircularProgressIndicator()
           ],
         );
       },
