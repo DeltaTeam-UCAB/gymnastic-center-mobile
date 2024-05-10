@@ -1,6 +1,6 @@
 part of 'comments_bloc.dart';
 
-enum CommentStatus{
+enum CommentsStatus{
   error, 
   loading,
   loaded,
@@ -9,12 +9,12 @@ enum CommentStatus{
 
 class CommentsState extends Equatable {
   final List<Comment> comments;
-  final CommentStatus status;
+  final CommentsStatus status;
   final int limit;
   final int offset;
 
   const CommentsState({
-    this.status = CommentStatus.loading,
+    this.status = CommentsStatus.loaded,
     this.comments = const [],
     this.limit = 5,
     this.offset = 0
@@ -22,7 +22,7 @@ class CommentsState extends Equatable {
   
   CommentsState copyWith({
     List<Comment>? comments,
-    CommentStatus? status,
+    CommentsStatus? status,
     int? limit,
     int? offset,
   })=>CommentsState(

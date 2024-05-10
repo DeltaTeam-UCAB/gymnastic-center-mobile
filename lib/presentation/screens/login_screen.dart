@@ -110,7 +110,6 @@ class _LoginScreenState extends State<_LoginScreen> {
       listener: (context, state) {
         if (state.formStatus == LoginFormStatus.invalid &&
             state.errorMessage.isNotEmpty) {
-          print('show nakbar');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage)),
           );

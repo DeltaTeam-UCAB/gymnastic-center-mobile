@@ -5,12 +5,14 @@ class CommentResponse {
     final int likes;
     final int dislikes;
     final bool userLiked;
+    final String user;
 
     CommentResponse({
         required this.comment,
         required this.likes,
         required this.dislikes,
         required this.userLiked,
+        required this.user,
     });
 
     factory CommentResponse.fromJson(Map<String, dynamic> json) => CommentResponse(
@@ -18,5 +20,6 @@ class CommentResponse {
         likes: json["likes"],
         dislikes: json["dislikes"],
         userLiked: json["userLiked"],
+        user: json['user']
     );
 }
