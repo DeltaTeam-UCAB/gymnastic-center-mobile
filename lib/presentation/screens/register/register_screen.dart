@@ -142,7 +142,6 @@ class RegisterScreenState extends State<_RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.registerFormStatus == RegisterFormStatus.invalid) {

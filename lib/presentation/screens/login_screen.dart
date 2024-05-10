@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/client/client_datasource_http.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<_LoginScreen> {
   @override
   Widget build(BuildContext context) {
     // final formStatus = context.watch<LoginBloc>().state.formStatus;
-
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return BlocConsumer<LoginBloc, LoginState>(
       listenWhen: (previous, current) =>
           previous.formStatus != current.formStatus,
@@ -128,16 +129,16 @@ class _LoginScreenState extends State<_LoginScreen> {
             padding: EdgeInsets.fromLTRB(
                 0, 0, 0, MediaQuery.of(context).size.height * 0.0628),
             child: Image.asset(
-              'assets/icon/logoApp_purple.png',
+              'assets/icon/logoApp_${isDarkMode ? 'white' : 'purple'}.png',
               height: MediaQuery.of(context).size.height * 0.127,
             ),
           ),
           _textFieldPadding(
-              const Text('Login',
+              Text('Login',
                   style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black)),
+                      color: isDarkMode ? Colors.white : Colors.black)),
               top: false),
           _textFieldPadding(
               SizedBox(
@@ -147,14 +148,22 @@ class _LoginScreenState extends State<_LoginScreen> {
                         context.read<LoginBloc>().changeEmail(value),
                     controller: _emailController,
                     validator: _validateEmail,
-                    decoration: const GymnasticTextInputDecoration(
-                      floatingLabelStyle:
-                          TextStyle(fontSize: 17.78, color: Color(0xffcdcdcd)),
-                      labelStyle:
-                          TextStyle(fontSize: 17.78, color: Color(0xffcdcdcd)),
+                    decoration: GymnasticTextInputDecoration(
+                      floatingLabelStyle: TextStyle(
+                          fontSize: 17.78,
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294)),
+                      labelStyle: TextStyle(
+                          fontSize: 17.78,
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294)),
                       labelText: 'Email',
                       hintText: 'youremail@example.com',
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
+                      prefixIconColor:
+                          isDarkMode ? Colors.white : const Color(0x7c8d95af),
                     ),
                   )),
               bottom: false),
@@ -168,10 +177,16 @@ class _LoginScreenState extends State<_LoginScreen> {
                     obscureText: _hidePassword,
                     validator: _validatePassword,
                     decoration: GymnasticTextInputDecoration(
-                      floatingLabelStyle: const TextStyle(
-                          fontSize: 17.78, color: Color(0xffcdcdcd)),
-                      labelStyle: const TextStyle(
-                          fontSize: 17.78, color: Color(0xffcdcdcd)),
+                      floatingLabelStyle: TextStyle(
+                          fontSize: 17.78,
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294)),
+                      labelStyle: TextStyle(
+                          fontSize: 17.78,
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294)),
                       labelText: 'Password',
                       hintText: 'Password',
                       suffixIconColor: const Color(0xffc8ccd9),
@@ -200,7 +215,9 @@ class _LoginScreenState extends State<_LoginScreen> {
                   ? _pressSubmit
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 88, 27, 173),
+                backgroundColor: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(255, 88, 27, 173),
                 padding: const EdgeInsets.symmetric(),
               ),
               child: Padding(
@@ -211,14 +228,19 @@ class _LoginScreenState extends State<_LoginScreen> {
                       MediaQuery.of(context).size.height * 0.0192),
                   child: (state.formStatus == LoginFormStatus.posting)
                       ? const CircularProgressIndicator()
-                      : const GradientText(
-                          textWidget:
-                              Text('Login', style: TextStyle(fontSize: 20)),
+                      : GradientText(
+                          textWidget: const Text('Login',
+                              style: TextStyle(fontSize: 20)),
                           gradient: LinearGradient(
-                              colors: [
-                                Colors.white,
-                                Colors.white,
-                              ],
+                              colors: isDarkMode
+                                  ? ([
+                                      const Color(0xff4f14a0),
+                                      const Color(0xff8066ff),
+                                    ])
+                                  : ([
+                                      Colors.white,
+                                      Colors.white,
+                                    ]),
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight))),
             )),
@@ -226,28 +248,32 @@ class _LoginScreenState extends State<_LoginScreen> {
           const SizedBox(
             height: 15,
           ),
-          const Text("Forget your password?",
+          Text("Forgot your password?",
               style: TextStyle(
-                  color: Color.fromARGB(255, 88, 27, 173),
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold)),
+                  color: isDarkMode
+                      ? Colors.white
+                      : const Color.fromARGB(255, 88, 27, 173),
+                  fontSize: 16.0)),
           const SizedBox(
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            const Text("Don't have an account?",
+            Text("Don't have an account?",
                 style: TextStyle(
-                    color: Color.fromARGB(176, 0, 0, 0),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold)),
+                    color: isDarkMode
+                        ? Colors.white
+                        : const Color.fromARGB(176, 0, 0, 0),
+                    fontSize: 16.0)),
             const SizedBox(
               width: 10,
             ),
             GestureDetector(
               onTap: () => context.go('/register'),
-              child: const Text("Sign up",
+              child: Text("Sign up",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 88, 27, 173),
+                      color: isDarkMode
+                          ? Colors.white
+                          : const Color.fromARGB(255, 88, 27, 173),
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold)),
             ),
@@ -280,7 +306,7 @@ class _LoginScreenState extends State<_LoginScreen> {
                 circleMaskContent: Container(
                   alignment: Alignment.center,
                   height: double.infinity,
-                  child: Container(color: Colors.white),
+                  child: Container(color: colors.background),
                 ),
                 circlePosition: Offset(MediaQuery.of(context).size.width / 2,
                     MediaQuery.of(context).size.height * 0.21 + circleRadius),
