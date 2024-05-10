@@ -36,9 +36,8 @@ class UserHttpRepository extends UserRepository {
       await keyValueStorage.setKeyValue('token', resp.token);
       return Result.success(true);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500) {
-        Result.fail(Exception('wrong credendials'));
-      }
+      if (e is DioException && e.response?.statusCode != 500)
+        return Result.fail(Exception('wrong credendials'));
       rethrow;
     }
   }
