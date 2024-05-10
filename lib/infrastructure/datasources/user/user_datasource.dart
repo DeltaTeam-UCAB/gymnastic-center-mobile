@@ -36,8 +36,7 @@ class APIUserDatasource extends UserDatasource {
   Future<User> current() async {
     final response = await dio.get('user/current',
         options: Options(headers: {
-          'auth':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNjRiMDM0LWNkY2YtNDEyZS04NjdlLWU5MDI2MzAyZTgyZSIsImlhdCI6MTcxNTIyODc5M30.L-6MAd_VnB2EOgvxholQx6H-s4yQOIBQeS44iGR7AYU' //await keyValueStorage.getValue<String>('token')
+          'auth': await keyValueStorage.getValue<String>('token')
         }));
     final apiUser = UserAPI.fromJson(response.data);
     return User(
@@ -56,8 +55,7 @@ class APIUserDatasource extends UserDatasource {
     await dio.put('/user/update',
         data: body,
         options: Options(headers: {
-          'auth':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNjRiMDM0LWNkY2YtNDEyZS04NjdlLWU5MDI2MzAyZTgyZSIsImlhdCI6MTcxNTIyODc5M30.L-6MAd_VnB2EOgvxholQx6H-s4yQOIBQeS44iGR7AYU' //await keyValueStorage.getValue<String>('token')
+          'auth': await keyValueStorage.getValue<String>('token')
         }));
     return true;
   }
