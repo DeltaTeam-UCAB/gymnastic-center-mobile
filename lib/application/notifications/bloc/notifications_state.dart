@@ -9,9 +9,10 @@ class NotificationsState extends Equatable {
 
   NotificationsState copyWith({
     bool? status,
-  }) => NotificationsState(
-    status: status ?? this.status,
-  );
+  }) =>
+      NotificationsState(
+        status: status ?? this.status,
+      );
 
   @override
   List<Object> get props => [status];

@@ -5,13 +5,10 @@ import 'package:gymnastic_center/application/notifications/notifications_manager
 part 'notifications_event.dart';
 part 'notifications_state.dart';
 
-
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-
   final NotificationsManager notifications;
-  
-  NotificationsBloc(this.notifications) : super(const NotificationsState()) {
 
+  NotificationsBloc(this.notifications) : super(const NotificationsState()) {
     on<NotificationStatusChanged>(_notificationStatusChanged);
 
     // Verify the current status of the notifications
@@ -42,7 +39,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     add(NotificationStatusChanged(authorizationStatus));
   }
 
-  void _notificationStatusChanged( NotificationStatusChanged event, Emitter<NotificationsState> emit) {
+  void _notificationStatusChanged(
+      NotificationStatusChanged event, Emitter<NotificationsState> emit) {
     emit(state.copyWith(status: event.status));
     _getToken();
   }
