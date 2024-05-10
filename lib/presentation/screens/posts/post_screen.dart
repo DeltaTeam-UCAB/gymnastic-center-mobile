@@ -1,7 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
+import 'package:gymnastic_center/presentation/widgets/commnets/comments_list.dart';
 import 'package:intl/intl.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
@@ -9,29 +13,41 @@ import 'package:gymnastic_center/infrastructure/repositories/posts/post_reposito
 
 class PostScreen extends StatelessWidget {
   final String postId;
-  const PostScreen({super.key, required this.postId});
+  PostScreen({super.key, required this.postId});
 
+  final LocalStorageService localStorageService = LocalStorageService();
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => PostsBloc(PostRepositoryImpl(
-            postsDatasource: APIPostDatasource(LocalStorageService())))
-          ..loadPostById(postId),
-        child: Scaffold(
-            body: Stack(
-          children: [
-            const _PostView(),
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: AppBar(
-                  title: const Text('Post Tips & Topic Details',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  elevation: 0,
-                )),
-          ],
-        )));
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => PostsBloc(PostRepositoryImpl(
+              postsDatasource: APIPostDatasource(localStorageService)))
+            ..loadPostById(postId)),
+        BlocProvider(
+          create: (_) => CommentsBloc(
+                CommentsRepositoryImpl(
+                  commentsDatasource: ApiCommentDatasource(localStorageService)
+              )
+            )..loadNextPageByPostId(postId)
+        ),
+      ],
+      child: Scaffold(
+        body: Stack(
+        children: [
+          const _PostView(),
+          Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: AppBar(
+                title: const Text('Post Tips & Topic Details',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                elevation: 0,
+              )),
+        ],
+      ))
+    );
   }
 }
 
@@ -42,7 +58,7 @@ class _PostView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostsBloc, PostsState>(
       builder: (context, state) {
-        if (state.status == PostStatus.loading) {
+        if (state.currentPost.id.isEmpty || state.status == PostStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -69,6 +85,8 @@ class _PostDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final post = context.read<PostsBloc>().state.currentPost;
+    final comments = context.watch<CommentsBloc>().state.comments;
+
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
@@ -110,6 +128,15 @@ class _PostDetailsView extends StatelessWidget {
               ),
               Text('Tags: ${post.tags.join(', ')}',
                   style: textTheme.bodyMedium),
+              Divider(
+                color: colors.primary,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text('Comentarios',
+                  style: textTheme.titleLarge),
+              CommentsList(comments),
             ],
           ),
         ),
