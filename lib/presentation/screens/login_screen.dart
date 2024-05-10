@@ -129,8 +129,8 @@ class _LoginScreenState extends State<_LoginScreen> {
             padding: EdgeInsets.fromLTRB(
                 0, 0, 0, MediaQuery.of(context).size.height * 0.0628),
             child: Image.asset(
-              'assets/icon/logoApp_${isDarkMode ? 'white' : 'purple'}.png',
-              height: MediaQuery.of(context).size.height * 0.127,
+              'assets/icon/logoApp_${isDarkMode ? 'purple' : 'white'}.png',
+              height: MediaQuery.of(context).size.height * 0.227,
             ),
           ),
           _textFieldPadding(
@@ -284,7 +284,7 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
+    double circleRadius = MediaQuery.of(context).size.height * 0.671; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -309,7 +309,7 @@ class _LoginScreenState extends State<_LoginScreen> {
                   child: Container(color: colors.background),
                 ),
                 circlePosition: Offset(MediaQuery.of(context).size.width / 2,
-                    MediaQuery.of(context).size.height * 0.21 + circleRadius),
+                    MediaQuery.of(context).size.height * 0.36 + circleRadius),
                 circleRadius: circleRadius,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
