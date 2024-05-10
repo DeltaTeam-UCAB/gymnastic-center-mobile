@@ -37,9 +37,20 @@ f5
 dart run flutter_launcher_icons
 ```
 
-2. Build the app for Android
+2. Build the app for Android (APK)
+```bash
+flutter build apk
+```
+
+3. Build the app for Android (Bundle, in case you want to publish the app in the Play Store)
 ```bash
 flutter build appbundle
+```
+
+Optionall
+Install the app in the device (Android)
+```bash
+flutter install
 ```
 
 dart run change_app_package_name:main com.deltateam.gymnastic_center
