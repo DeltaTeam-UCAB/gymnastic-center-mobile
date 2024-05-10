@@ -1,11 +1,6 @@
 part of 'posts_bloc.dart';
 
-enum PostStatus {
-  loading,
-  error,
-  loaded,
-  allPostsLoaded
-}
+enum PostStatus { loading, error, loaded, allPostsLoaded }
 
 class PostsState extends Equatable {
   final Post currentPost;
@@ -14,14 +9,12 @@ class PostsState extends Equatable {
   final int limit;
   final int offset;
 
-
-  const PostsState({
-    required this.currentPost,
-    this.loadedPosts = const [],
-    this.status = PostStatus.loaded,
-    this.limit = 8,
-    this.offset =0
-  });
+  const PostsState(
+      {required this.currentPost,
+      this.loadedPosts = const [],
+      this.status = PostStatus.loaded,
+      this.limit = 8,
+      this.offset = 0});
 
   PostsState copyWith({
     Post? currentPost,

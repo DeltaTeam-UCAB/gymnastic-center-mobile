@@ -6,20 +6,19 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 
-
-class AllCoursesScreen extends StatelessWidget {  
+class AllCoursesScreen extends StatelessWidget {
   const AllCoursesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CoursesBloc(
-          coursesRepository: CoursesRepositoryImpl(CoursesDatasourceImpl(LocalStorageService()))),       
+          coursesRepository: CoursesRepositoryImpl(
+              CoursesDatasourceImpl(LocalStorageService()))),
       child: const _AllCoursesScreen(),
     );
   }
 }
-
 
 class _AllCoursesScreen extends StatefulWidget {
   const _AllCoursesScreen({Key? key}) : super(key: key);
@@ -29,34 +28,25 @@ class _AllCoursesScreen extends StatefulWidget {
 }
 
 class _AllCoursesScreenState extends State<_AllCoursesScreen> {
-  
-  
-
-final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     context.read<CoursesBloc>().loadNextPage();
-    
+
     _scrollController.addListener(() {
-      if ( _scrollController.position.pixels + 400 >= _scrollController.position.maxScrollExtent){
+      if (_scrollController.position.pixels + 400 >=
+          _scrollController.position.maxScrollExtent) {
         context.read<CoursesBloc>().loadNextPage();
-        
       }
-      
     });
-    
   }
-  
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +74,6 @@ final ScrollController _scrollController = ScrollController();
                   label: const Text('newest'))
             ],
           ),
-          
           Expanded(
             child: GridView.builder(
               controller: _scrollController,
@@ -96,14 +85,11 @@ final ScrollController _scrollController = ScrollController();
               itemCount: courses.length,
               itemBuilder: (context, index) {
                 return CourseSlide(course: courses[index]);
-                
               },
             ),
           ),
         ],
       ),
     );
-    
   }
-  
 }

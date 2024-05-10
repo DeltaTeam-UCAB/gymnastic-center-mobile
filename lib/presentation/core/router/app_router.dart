@@ -71,7 +71,6 @@ class RoutesManager {
     GoRoute(
         path: '/configuration/theme',
         builder: (context, state) => const ThemeManagerScreen()),
-
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
         path: '/account', builder: (context, state) => const AccountScreen()),

@@ -22,11 +22,10 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) => LoginBloc(
             clientRepository: ClientRepositoryImpl(
-              clientDataSource: ClientHttpDataSource(localStorageService)
-            ),
+                clientDataSource: ClientHttpDataSource(localStorageService)),
             userRespository: UserHttpRepository(
-                userDatasource: APIUserDatasource(localStorageService),
-                keyValueStorage: localStorageService,
+              userDatasource: APIUserDatasource(localStorageService),
+              keyValueStorage: localStorageService,
             )),
         child: const _LoginScreen());
   }
@@ -64,7 +63,6 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   String? _validatePassword(String? value) {
-  
     if (value == null || value.isEmpty) {
       return 'You must enter a password.';
     }
@@ -107,21 +105,22 @@ class _LoginScreenState extends State<_LoginScreen> {
     // final formStatus = context.watch<LoginBloc>().state.formStatus;
 
     return BlocConsumer<LoginBloc, LoginState>(
-      listenWhen: (previous, current) => previous.formStatus != current.formStatus,
+      listenWhen: (previous, current) =>
+          previous.formStatus != current.formStatus,
       listener: (context, state) {
-        if ( state.formStatus == LoginFormStatus.invalid && state.errorMessage.isNotEmpty){
+        if (state.formStatus == LoginFormStatus.invalid &&
+            state.errorMessage.isNotEmpty) {
           print('show nakbar');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage)),
           );
-          return ;
+          return;
         }
 
-        if ( state.formStatus == LoginFormStatus.valid ) {
+        if (state.formStatus == LoginFormStatus.valid) {
           context.go('/home/0');
-          return ; 
+          return;
         }
-          
       },
       builder: (context, state) {
         return _layout([
@@ -197,8 +196,9 @@ class _LoginScreenState extends State<_LoginScreen> {
           Row(children: [
             Expanded(
                 child: FilledButton(
-              onPressed:
-                  state.formStatus != LoginFormStatus.posting ? _pressSubmit : null,
+              onPressed: state.formStatus != LoginFormStatus.posting
+                  ? _pressSubmit
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 88, 27, 173),
                 padding: const EdgeInsets.symmetric(),
@@ -210,16 +210,17 @@ class _LoginScreenState extends State<_LoginScreen> {
                       0,
                       MediaQuery.of(context).size.height * 0.0192),
                   child: (state.formStatus == LoginFormStatus.posting)
-                  ? const CircularProgressIndicator()
-                  : const GradientText(
-                      textWidget: Text('Login', style: TextStyle(fontSize: 20)),
-                      gradient: LinearGradient(
-                          colors: [
-                            Colors.white,
-                            Colors.white,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight))),
+                      ? const CircularProgressIndicator()
+                      : const GradientText(
+                          textWidget:
+                              Text('Login', style: TextStyle(fontSize: 20)),
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight))),
             )),
           ]),
           const SizedBox(
@@ -233,26 +234,24 @@ class _LoginScreenState extends State<_LoginScreen> {
           const SizedBox(
             height: 20,
           ),
-           Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text("Don't have an account?",
-                    style: TextStyle(
-                        color: Color.fromARGB(176, 0, 0, 0),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () => context.go('/register'),
-                  child: const Text("Sign up",
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 88, 27, 173),
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ])
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            const Text("Don't have an account?",
+                style: TextStyle(
+                    color: Color.fromARGB(176, 0, 0, 0),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              width: 10,
+            ),
+            GestureDetector(
+              onTap: () => context.go('/register'),
+              child: const Text("Sign up",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 88, 27, 173),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ])
         ]);
       },
     );
@@ -267,7 +266,7 @@ class _LoginScreenState extends State<_LoginScreen> {
           child: SingleChildScrollView(
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).padding.top,
+                  MediaQuery.of(context).padding.top,
               child: CircleMaskedBackground(
                 backgroundContent: SvgPicture.asset(
                   'assets/splash/splash-screen-bg.svg',
