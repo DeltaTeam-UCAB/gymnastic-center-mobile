@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/core/menu/menu_items.dart';
 
 class SideMenu extends StatefulWidget {
@@ -53,7 +54,11 @@ class _SideMenuState extends State<SideMenu> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FilledButton.icon(
-            onPressed: () {},
+            onPressed: () {
+                LocalStorageService().removeKey('token').then((_data) {
+                                context.go('/start');
+                            });
+                        },
             icon: const Icon(Icons.logout_rounded),
             label: Text(
               'Logout',
