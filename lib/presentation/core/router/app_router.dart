@@ -8,6 +8,7 @@ import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
 import 'package:gymnastic_center/presentation/screens/start_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/widgets/notification_status_screen.dart';
+import 'package:gymnastic_center/presentation/screens/token_screen.dart';
 import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
 class RoutesManager {
@@ -81,6 +82,7 @@ class RoutesManager {
     GoRoute(
         path: '/account/details',
         builder: (context, state) => const AccountDetailsScreen()),
+    GoRoute(path: '/token', builder: (context, state) => const TokenScreen()),
     GoRoute(
       path: '/',
       redirect: (_, __) => '/home/0',
