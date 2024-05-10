@@ -19,6 +19,9 @@ class WelcomeScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,10 +36,12 @@ class WelcomeScreenPage extends StatelessWidget {
                 gradientText,
                 style: const TextStyle(fontSize: 22),
               ),
-              gradient: const LinearGradient(
-                  colors: [Color(0xff4f14a0), Color(0xff8066ff)],
+              gradient: LinearGradient(
+                  colors: isDarkMode
+                      ? [Colors.white, Colors.white]
+                      : [const Color(0xff4f14a0), const Color(0xff8066ff)],
                   begin: Alignment.topLeft,
-                  end: Alignment(0.6, 0.6)),
+                  end: const Alignment(0.6, 0.6)),
             )),
         Text(titleText,
             style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold)),
@@ -44,7 +49,9 @@ class WelcomeScreenPage extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(45, 10, 45, 26),
             child: Text(
               descriptionText,
-              style: const TextStyle(fontSize: 15, color: Color(0xff677294)),
+              style: TextStyle(
+                  fontSize: 15,
+                  color: isDarkMode ? Colors.white : const Color(0xff677294)),
               textAlign: TextAlign.center,
             )),
       ],

@@ -4,7 +4,8 @@ import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_scr
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key, this.onPressSkip, this.onPressNextInLastPage});
+  const WelcomeScreen(
+      {super.key, this.onPressSkip, this.onPressNextInLastPage});
 
   final void Function()? onPressSkip;
   final void Function()? onPressNextInLastPage;
@@ -63,6 +64,10 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       if (value != null && value) widget.onPressSkip?.call();
     });
     final colors = Theme.of(context).colorScheme;
+
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: colors.background,
       body: Column(
@@ -83,10 +88,10 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.14,
-            child:
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: WelcomeScreenNextButton(onClickFunction: nextPressedCallback)),
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: WelcomeScreenNextButton(
+                    onClickFunction: nextPressedCallback)),
           ),
           const Divider(
             color: Color.fromRGBO(0, 0, 0, 0.07),
@@ -100,9 +105,13 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 TextButton(
                     onPressed: skipPressedCallback,
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(color: Color(0xff677294), fontSize: 16),
+                      style: TextStyle(
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294),
+                          fontSize: 16),
                     )),
                 ListView.builder(
                   shrinkWrap: true,
@@ -117,8 +126,12 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
                             color: (selectedIndex == index
-                                ? const Color(0xff222222)
-                                : const Color(0xff677294))),
+                                ? (isDarkMode
+                                    ? const Color(0xffbdbdbd)
+                                    : const Color(0xff222222))
+                                : (isDarkMode
+                                    ? Colors.white
+                                    : const Color(0xff677294)))),
                         margin: const EdgeInsets.all(5),
                         width: 5,
                         height: 5,
