@@ -18,6 +18,8 @@ class CheckboxFormField extends FormField<bool> {
                 title: title,
                 value: state.value,
                 onChanged: state.didChange,
+                side: MaterialStateBorderSide.resolveWith((states) =>
+                    const BorderSide(width: 1.0, color: Colors.white)),
                 subtitle: state.hasError
                     ? Builder(
                         builder: (BuildContext context) => Text(

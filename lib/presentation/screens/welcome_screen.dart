@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_next_button.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
@@ -64,6 +66,9 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       if (value != null && value) widget.onPressSkip?.call();
     });
     final colors = Theme.of(context).colorScheme;
+
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
+
     return Scaffold(
       backgroundColor: colors.background,
       body: Column(
@@ -101,9 +106,13 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 TextButton(
                     onPressed: skipPressedCallback,
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(color: Color(0xff677294), fontSize: 16),
+                      style: TextStyle(
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xff677294),
+                          fontSize: 16),
                     )),
                 ListView.builder(
                   shrinkWrap: true,
@@ -118,8 +127,12 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
                             color: (selectedIndex == index
-                                ? const Color(0xff222222)
-                                : const Color(0xff677294))),
+                                ? (isDarkMode
+                                    ? const Color(0xffbdbdbd)
+                                    : const Color(0xff222222))
+                                : (isDarkMode
+                                    ? Colors.white
+                                    : const Color(0xff677294)))),
                         margin: const EdgeInsets.all(5),
                         width: 5,
                         height: 5,

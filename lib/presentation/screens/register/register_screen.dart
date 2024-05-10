@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
@@ -243,7 +244,7 @@ class RegisterScreenState extends State<_RegisterForm> {
               height: MediaQuery.of(context).size.height * 0.0294,
               child: CheckboxFormField(
                 title: const Text('Yes! Agree to all Terms and Conditions',
-                    style: TextStyle(fontSize: 15)),
+                    style: TextStyle(fontSize: 15, color: Colors.white)),
                 validator: (value) {
                   if (value == null || !value) {
                     return 'You must agree to all Terms and Conditions.';
@@ -285,6 +286,9 @@ class RegisterScreenState extends State<_RegisterForm> {
   Widget _layout(List<Widget> children) {
     double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
+    ColorScheme colors = Theme.of(context).colorScheme;
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -295,7 +299,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                     child: CircleMaskedBackground(
                       backgroundContent: SizedBox.expand(
                           child: Container(
-                        color: Colors.white,
+                        color: colors.background,
                         alignment: Alignment.topCenter,
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(
@@ -304,7 +308,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                               0,
                               0),
                           child: Image.asset(
-                            'assets/icon/logoApp_purple.png',
+                            'assets/icon/logoApp_${isDarkMode ? 'white' : 'purple'}.png',
                             height: MediaQuery.of(context).size.height * 0.127,
                           ),
                         ),
