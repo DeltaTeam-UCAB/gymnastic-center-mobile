@@ -35,7 +35,7 @@ class UserHttpRepository extends UserRepository {
       return Result.success(true);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500)
-        Result.fail(Exception('wrong credendials'));
+        return Result.fail(Exception('wrong credendials'));
       rethrow;
     }
   }
