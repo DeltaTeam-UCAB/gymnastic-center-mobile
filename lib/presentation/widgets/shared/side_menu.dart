@@ -55,10 +55,10 @@ class _SideMenuState extends State<SideMenu> {
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FilledButton.icon(
             onPressed: () {
-                LocalStorageService().removeKey('token').then((_data) {
-                                context.go('/start');
-                            });
-                        },
+              LocalStorageService().removeKey('token').then((_data) {
+                context.go('/start');
+              });
+            },
             icon: const Icon(Icons.logout_rounded),
             label: Text(
               'Logout',

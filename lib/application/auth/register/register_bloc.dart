@@ -5,9 +5,7 @@ import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
 part 'register_event.dart';
 part 'register_state.dart';
 
-
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-
   final UserRepository userRepository;
 
   RegisterBloc(this.userRepository) : super(const RegisterState()) {
@@ -40,7 +38,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(fullname: event.fullname));
   }
 
-  void _onRegisterFormStatusChanged(OnRegisterFormStatusChanged event, Emitter<RegisterState> emit) {
+  void _onRegisterFormStatusChanged(
+      OnRegisterFormStatusChanged event, Emitter<RegisterState> emit) {
     emit(state.copyWith(registerFormStatus: event.registerFormStatus));
   }
 
@@ -49,15 +48,21 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> obSubmitRegister() async {
-    add(OnRegisterFormStatusChanged(registerFormStatus: RegisterFormStatus.posting));
-    final result = await userRepository.register(state.email, state.password, state.fullname);
+    add(OnRegisterFormStatusChanged(
+        registerFormStatus: RegisterFormStatus.posting));
+    final result = await userRepository.register(
+        state.email, state.password, state.fullname);
     if (result.isSuccess) {
-      add(OnRegisterFormStatusChanged(registerFormStatus: RegisterFormStatus.valid));
+      add(OnRegisterFormStatusChanged(
+          registerFormStatus: RegisterFormStatus.valid));
     } else {
       final error = result.getError();
-      add(FailRegister(errorMessage: error.toString().replaceAll('Exception: ', '')));
-      add(OnRegisterFormStatusChanged(registerFormStatus: RegisterFormStatus.invalid));
-      add(OnRegisterFormStatusChanged(registerFormStatus: RegisterFormStatus.validating)); 
+      add(FailRegister(
+          errorMessage: error.toString().replaceAll('Exception: ', '')));
+      add(OnRegisterFormStatusChanged(
+          registerFormStatus: RegisterFormStatus.invalid));
+      add(OnRegisterFormStatusChanged(
+          registerFormStatus: RegisterFormStatus.validating));
     }
   }
 

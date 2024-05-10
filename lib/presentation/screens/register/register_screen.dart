@@ -115,7 +115,6 @@ class RegisterScreenState extends State<_RegisterForm> {
   }
 
   String? _validatePassword(String? value) {
-
     final RegExp passwordRegex = RegExp(
       r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$',
     );
@@ -130,7 +129,7 @@ class RegisterScreenState extends State<_RegisterForm> {
 
     return null;
   }
-  
+
   _pressSubmit() async {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
@@ -155,7 +154,7 @@ class RegisterScreenState extends State<_RegisterForm> {
           context.go('/login');
         }
 
-        if (state.registerFormStatus == RegisterFormStatus.valid){
+        if (state.registerFormStatus == RegisterFormStatus.valid) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Register success!')),
@@ -257,9 +256,10 @@ class RegisterScreenState extends State<_RegisterForm> {
         Row(children: [
           Expanded(
               child: FilledButton(
-            onPressed: context.read<RegisterBloc>().state.registerFormStatus == RegisterFormStatus.posting
-              ? null
-              : _pressSubmit,
+            onPressed: context.read<RegisterBloc>().state.registerFormStatus ==
+                    RegisterFormStatus.posting
+                ? null
+                : _pressSubmit,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(),
