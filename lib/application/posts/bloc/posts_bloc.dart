@@ -26,7 +26,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     on<LoadingStarted>(_onLoadingStarted);
     on<ErrorOnPostsLoading>(_onErrorOnPostsLoading);
     on<AllPostsLoaded>(_onAllPostsLoaded);
-
   }
 
   void _onLoadingStarted(LoadingStarted event, Emitter<PostsState> emit) {
@@ -45,19 +44,17 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         currentPost: event.currentPost, status: PostStatus.loaded));
   }
 
-  void _onAllPostsLoaded(AllPostsLoaded event, Emitter<PostsState> emit){
-      emit(state.copyWith(
-        status: PostStatus.allPostsLoaded));
+  void _onAllPostsLoaded(AllPostsLoaded event, Emitter<PostsState> emit) {
+    emit(state.copyWith(status: PostStatus.allPostsLoaded));
   }
 
-  void _onErrorOnPostsLoading(ErrorOnPostsLoading event, Emitter<PostsState> emit) {
+  void _onErrorOnPostsLoading(
+      ErrorOnPostsLoading event, Emitter<PostsState> emit) {
     emit(state.copyWith(status: PostStatus.error));
   }
 
-  
-
   Future<void> loadPostById(String postId) async {
-    if ( state.status == PostStatus.loading ) return;
+    if (state.status == PostStatus.loading) return;
     add(LoadingStarted());
     final postResult = await postsRepository.getPostById(postId);
     if (postResult.isSuccessful()) {
@@ -69,13 +66,14 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   Future<void> loadNextPage() async {
-    if ( state.status == PostStatus.loading || state.status == PostStatus.allPostsLoaded ) return;
+    if (state.status == PostStatus.loading ||
+        state.status == PostStatus.allPostsLoaded) return;
     add(LoadingStarted());
     final postsResult = await postsRepository.getAllPosts(
         limit: state.limit, offset: state.offset);
     if (postsResult.isSuccessful()) {
       final posts = postsResult.getValue();
-      if ( posts.isNotEmpty ){
+      if (posts.isNotEmpty) {
         add(PostsLoaded(posts: posts));
         return;
       }

@@ -13,8 +13,9 @@ class PostsLoaded extends PostsEvent {
   final List<Post> posts;
   PostsLoaded({required this.posts});
 }
+
 class AllPostsLoaded extends PostsEvent {}
+
 class LoadingStarted extends PostsEvent {}
+
 class ErrorOnPostsLoading extends PostsEvent {}
-
-

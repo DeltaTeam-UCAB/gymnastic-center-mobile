@@ -4,7 +4,8 @@ import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_scr
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key, this.onPressSkip, this.onPressNextInLastPage});
+  const WelcomeScreen(
+      {super.key, this.onPressSkip, this.onPressNextInLastPage});
 
   final void Function()? onPressSkip;
   final void Function()? onPressNextInLastPage;
@@ -83,10 +84,10 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.14,
-            child:
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: WelcomeScreenNextButton(onClickFunction: nextPressedCallback)),
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: WelcomeScreenNextButton(
+                    onClickFunction: nextPressedCallback)),
           ),
           const Divider(
             color: Color.fromRGBO(0, 0, 0, 0.07),
