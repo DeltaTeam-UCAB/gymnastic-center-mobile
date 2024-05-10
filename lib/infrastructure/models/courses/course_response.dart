@@ -84,7 +84,7 @@ class ImageResponse {
   });
 
   factory ImageResponse.fromJson(Map<String, dynamic> json) => ImageResponse(
-    id: json["id"],
-    src: json["src"],
-  );
+        id: json["id"],
+        src: json["src"],
+      );
 }
