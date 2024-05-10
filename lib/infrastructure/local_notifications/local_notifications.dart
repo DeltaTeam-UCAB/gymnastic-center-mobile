@@ -1,19 +1,16 @@
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gymnastic_center/application/notifications/notifications_manager.dart';
 
-
-class LocalNotifications extends  LocalNotificationsManager{
-
+class LocalNotifications extends LocalNotificationsManager {
   @override
   void showLocalNotification({
     required int id,
     String? title,
     String? body,
     String? data,
-  }){
+  }) {
     const androidDetails = AndroidNotificationDetails(
-      'channelId', 
+      'channelId',
       'channelName',
       playSound: true,
       importance: Importance.max,
@@ -29,13 +26,15 @@ class LocalNotifications extends  LocalNotificationsManager{
 
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-    flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails ,payload: data);
+    flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails,
+        payload: data);
   }
 
   Future<void> initializeLocalNotifications() async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-    const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
     // const initializationSettingsDarwin = DarwinInitializationSettings(
     //   onDidReceiveLocalNotification: iosShowNotification,
     // );
@@ -55,8 +54,7 @@ class LocalNotifications extends  LocalNotificationsManager{
   //   showLocalNotification(id: id, title: title, body: body, data: data);
   // }
 
-
-  void onDidReceiveNotificationResponse(NotificationResponse response){
+  void onDidReceiveNotificationResponse(NotificationResponse response) {
     // Handle the notification response
-  } 
+  }
 }

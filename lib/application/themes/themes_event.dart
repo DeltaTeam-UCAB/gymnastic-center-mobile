@@ -5,3 +5,12 @@ abstract class ThemesEvent {
 }
 
 class ToggleDarkmode extends ThemesEvent {}
+
+class InitThemeSystem extends ThemesEvent {
+  final bool value;
+  InitThemeSystem({this.value = false});
+
+  bool getValue() {
+    return this.value;
+  }
+}

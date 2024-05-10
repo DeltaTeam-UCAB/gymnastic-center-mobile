@@ -22,9 +22,7 @@ class CustomBottomNavigation extends StatelessWidget {
             size: Size(size.width, 80),
             painter: BNBCustomPainter(backgroundColor: backgroundColor!),
           ),
-
-          const BottomNavigationCenterIcon(), 
-
+          const BottomNavigationCenterIcon(),
           BottomNavigationDecoration(size: size, currentIndex: currentIndex)
         ],
       ),
@@ -46,8 +44,8 @@ class BNBCustomPainter extends CustomPainter {
 
     path.moveTo(0, 0); // Start
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
-    path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 10);
-    path.arcToPoint(Offset(size.width * 0.60, 10),
+    path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 5);
+    path.arcToPoint(Offset(size.width * 0.60, 5),
         radius: const Radius.circular(10.0), clockwise: false);
     path.quadraticBezierTo(size.width * 0.60, 0, size.width * 0.65, 0);
     path.quadraticBezierTo(size.width * 0.80, 0, size.width, 0);

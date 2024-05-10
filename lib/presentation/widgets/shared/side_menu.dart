@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/presentation/core/menu/menu_items.dart';
 
 class SideMenu extends StatefulWidget {
-
   final GlobalKey<ScaffoldState> scaffoldKey;
   const SideMenu({super.key, required this.scaffoldKey});
 
@@ -24,7 +23,6 @@ class _SideMenuState extends State<SideMenu> {
       tilePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       selectedIndex: navDrawerIndex,
       onDestinationSelected: (value) {
-        
         setState(() {
           navDrawerIndex = value;
         });
@@ -34,36 +32,34 @@ class _SideMenuState extends State<SideMenu> {
         widget.scaffoldKey.currentState?.closeDrawer();
       },
       children: [
-
         const SizedBox(height: 20),
-
         Padding(
-          padding: EdgeInsets.fromLTRB(28, hasNotch ? 0 : 20, 16, 10),
-          child: Text(
-            'Gymnastic Center', 
-            style: TextStyle(fontSize: 20, color: colors.onPrimary, fontWeight: FontWeight.bold)  
-          )
-        ),
-            
+            padding: EdgeInsets.fromLTRB(28, hasNotch ? 0 : 20, 16, 10),
+            child: Text('Gymnastic Center',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: colors.onPrimary,
+                    fontWeight: FontWeight.bold))),
         ...appMenuItems.map((item) => NavigationDrawerDestination(
-          icon: Icon(item.icon, color: colors.onPrimary), 
-          label: Text(item.title, style: TextStyle(color: colors.onPrimary)),
-        )),
-
+              icon: Icon(item.icon, color: colors.onPrimary),
+              label:
+                  Text(item.title, style: TextStyle(color: colors.onPrimary)),
+            )),
         const Padding(
           padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
           child: Divider(),
         ),
-
         const Spacer(),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FilledButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.logout_rounded),
-              label: Text('Logout', style: TextStyle(color: colors.onPrimary),),
+            onPressed: () {},
+            icon: const Icon(Icons.logout_rounded),
+            label: Text(
+              'Logout',
+              style: TextStyle(color: colors.onPrimary),
             ),
+          ),
         ),
       ],
     );
