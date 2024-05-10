@@ -19,9 +19,10 @@ class UserHttpRepository extends UserRepository {
       await userDatasource.register(email, password, name);
       return Result.success(true);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500)
-        Result.fail(Exception('wrong credendials'));
-      rethrow;
+      if (e is DioException && e.response?.statusCode != 500) {
+        return Result.fail(Exception('wrong credendials'));
+      }
+      return Result.fail(Exception('Something went wrong'));
     }
   }
 
@@ -29,13 +30,15 @@ class UserHttpRepository extends UserRepository {
   Future<Result<bool>> login(String email, String password) async {
     try {
       final resp = await userDatasource.login(email, password);
-      if (resp.type == 'ADMIN')
+      if (resp.type == 'ADMIN') {
         return Result.fail(Exception('Wrong credentials'));
+      }
       await keyValueStorage.setKeyValue('token', resp.token);
       return Result.success(true);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500)
+      if (e is DioException && e.response?.statusCode != 500) {
         Result.fail(Exception('wrong credendials'));
+      }
       rethrow;
     }
   }
@@ -46,8 +49,9 @@ class UserHttpRepository extends UserRepository {
       final resp = await userDatasource.current();
       return Result.success(resp);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500)
+      if (e is DioException && e.response?.statusCode != 500) {
         Result.fail(Exception('Unathorized'));
+      }
       rethrow;
     }
   }
@@ -59,8 +63,9 @@ class UserHttpRepository extends UserRepository {
       await userDatasource.update(email: email, password: password, name: name);
       return Result.success(true);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500)
+      if (e is DioException && e.response?.statusCode != 500) {
         Result.fail(Exception('Unathorized'));
+      }
       rethrow;
     }
   }

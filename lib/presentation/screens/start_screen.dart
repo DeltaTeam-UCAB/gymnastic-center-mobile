@@ -41,7 +41,7 @@ class StartScreen extends StatelessWidget {
                 foregroundColor: isDark ? Colors.deepPurple : Colors.white,
               ),
               CustomButtom(
-                onPressed: () => context.go('/home/0'),
+                onPressed: () => context.go('/register'),
                 title: 'Signup',
                 backgroundColor: isDark ? Colors.grey : Colors.white,
                 foregroundColor: isDark ? Colors.white : Colors.deepPurple,
