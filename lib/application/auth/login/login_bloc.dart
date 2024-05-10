@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gymnastic_center/domain/repositories/client/client_repository.dart';
 import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
 
 
@@ -11,8 +12,9 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   final UserRepository userRespository; 
+  final ClientRepository clientRepository;
 
-  LoginBloc({required this.userRespository}) : super(const LoginState()) {
+  LoginBloc({required this.userRespository, required this.clientRepository}) : super(const LoginState()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<ErrorOccurred  >(_onErrorOcurred);
@@ -78,10 +80,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       return;
     }
     final isLoggedResult = await userRespository.login(state.email, state.password);
-    if ( isLoggedResult.isSuccessful() ){
+    final isInfoSettedResult = await clientRepository.setInfo();
+
+    if ( isLoggedResult.isSuccessful() && isInfoSettedResult.isSuccessful()){
       final isLogged = isLoggedResult.getValue();
-      if ( isLogged ){
-        print('is logged' +  isLogged.toString());
+      final isInfoSetted = isInfoSettedResult.getValue();
+      
+      if ( isLogged  && isInfoSetted ){
         add(LoginCompleted());
         return ; 
       }

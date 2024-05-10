@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/client/client_datasource_http.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/client/client_repository.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
@@ -20,9 +21,13 @@ class LoginScreen extends StatelessWidget {
     final LocalStorageService localStorageService = LocalStorageService();
     return BlocProvider(
         create: (context) => LoginBloc(
+            clientRepository: ClientRepositoryImpl(
+              clientDataSource: ClientHttpDataSource(localStorageService)
+            ),
             userRespository: UserHttpRepository(
                 userDatasource: APIUserDatasource(localStorageService),
-                keyValueStorage: localStorageService)),
+                keyValueStorage: localStorageService,
+            )),
         child: const _LoginScreen());
   }
 }
