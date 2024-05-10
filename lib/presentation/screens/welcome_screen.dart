@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_next_button.dart';
 import 'package:gymnastic_center/presentation/widgets/welcome_screen/welcome_screen_page.dart';
@@ -65,8 +67,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
     });
     final colors = Theme.of(context).colorScheme;
 
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
 
     return Scaffold(
       backgroundColor: colors.background,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
@@ -141,6 +142,7 @@ class RegisterScreenState extends State<_RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.registerFormStatus == RegisterFormStatus.invalid) {
@@ -243,7 +245,7 @@ class RegisterScreenState extends State<_RegisterForm> {
               height: MediaQuery.of(context).size.height * 0.0294,
               child: CheckboxFormField(
                 title: const Text('Yes! Agree to all Terms and Conditions',
-                    style: TextStyle(fontSize: 15)),
+                    style: TextStyle(fontSize: 15, color: Colors.white)),
                 validator: (value) {
                   if (value == null || !value) {
                     return 'You must agree to all Terms and Conditions.';
@@ -285,8 +287,7 @@ class RegisterScreenState extends State<_RegisterForm> {
   Widget _layout(List<Widget> children) {
     double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     var colors = Theme.of(context).colorScheme;
 
     return Scaffold(

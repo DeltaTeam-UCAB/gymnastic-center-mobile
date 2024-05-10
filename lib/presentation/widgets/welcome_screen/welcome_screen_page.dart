@@ -1,7 +1,9 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 
 class WelcomeScreenPage extends StatelessWidget {
@@ -19,8 +21,7 @@ class WelcomeScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
+    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
