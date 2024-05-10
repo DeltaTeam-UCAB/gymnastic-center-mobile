@@ -115,7 +115,6 @@ class RegisterScreenState extends State<_RegisterForm> {
   }
 
   String? _validatePassword(String? value) {
-
     final RegExp passwordRegex = RegExp(
       r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$',
     );
@@ -130,7 +129,7 @@ class RegisterScreenState extends State<_RegisterForm> {
 
     return null;
   }
-  
+
   _pressSubmit() async {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
@@ -155,7 +154,7 @@ class RegisterScreenState extends State<_RegisterForm> {
           context.go('/login');
         }
 
-        if (state.registerFormStatus == RegisterFormStatus.valid){
+        if (state.registerFormStatus == RegisterFormStatus.valid) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Register success!')),
@@ -257,9 +256,10 @@ class RegisterScreenState extends State<_RegisterForm> {
         Row(children: [
           Expanded(
               child: FilledButton(
-            onPressed: context.read<RegisterBloc>().state.registerFormStatus == RegisterFormStatus.posting
-              ? null
-              : _pressSubmit,
+            onPressed: context.read<RegisterBloc>().state.registerFormStatus ==
+                    RegisterFormStatus.posting
+                ? null
+                : _pressSubmit,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(),
@@ -285,6 +285,10 @@ class RegisterScreenState extends State<_RegisterForm> {
   Widget _layout(List<Widget> children) {
     double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+    var colors = Theme.of(context).colorScheme;
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -295,7 +299,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                     child: CircleMaskedBackground(
                       backgroundContent: SizedBox.expand(
                           child: Container(
-                        color: Colors.white,
+                        color: colors.background,
                         alignment: Alignment.topCenter,
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(
@@ -304,7 +308,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                               0,
                               0),
                           child: Image.asset(
-                            'assets/icon/logoApp_purple.png',
+                            'assets/icon/logoApp_${isDarkMode ? 'white' : 'purple'}.png',
                             height: MediaQuery.of(context).size.height * 0.127,
                           ),
                         ),
