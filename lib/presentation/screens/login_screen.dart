@@ -45,55 +45,69 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return _layout([
       Padding(
         padding: EdgeInsets.fromLTRB(
             0, 0, 0, MediaQuery.of(context).size.height * 0.0628),
         child: Image.asset(
-          'assets/icon/logoApp_purple.png',
+          'assets/icon/logoApp_${isDarkMode ? 'white' : 'purple'}.png',
           height: MediaQuery.of(context).size.height * 0.127,
         ),
       ),
       _textFieldPadding(
-          const Text('Login',
+          Text('Login',
               style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+                  color: isDarkMode ? Colors.white : Colors.black)),
           top: false),
       _textFieldPadding(TextField(
         controller: _emailController,
-        style:
-            const TextStyle(fontSize: 16, color: Color.fromARGB(176, 0, 0, 0)),
-        decoration: const InputDecoration(
+        style: TextStyle(
+            fontSize: 16,
+            color:
+                isDarkMode ? Colors.white : const Color.fromARGB(176, 0, 0, 0)),
+        decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.fromLTRB(36, 15, 10, 15),
+          contentPadding: const EdgeInsets.fromLTRB(36, 15, 10, 15),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
+              borderRadius: const BorderRadius.all(Radius.circular(300)),
               borderSide: BorderSide(
-                color: Color.fromARGB(176, 0, 0, 0),
+                color: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(176, 0, 0, 0),
               )),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(300)),
+              borderRadius: const BorderRadius.all(Radius.circular(300)),
               borderSide: BorderSide(
-                color: Color.fromARGB(132, 158, 158, 158),
+                color: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(132, 158, 158, 158),
               )),
           floatingLabelStyle: TextStyle(
               fontSize: 17.78,
-              color: Color.fromARGB(176, 0, 0, 0),
+              color: isDarkMode
+                  ? Colors.white
+                  : const Color.fromARGB(176, 0, 0, 0),
               fontWeight: FontWeight.bold),
           labelStyle: TextStyle(
               fontSize: 17.78,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold),
           hintStyle: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(176, 0, 0, 0),
+            color: isDarkMode
+                ? Colors.white54
+                : const Color.fromARGB(176, 0, 0, 0),
           ),
           labelText: 'Email',
           hintText: 'youremail@example.com',
-          prefixIconColor: Color.fromARGB(176, 0, 0, 0),
-          prefixIcon: Icon(Icons.email),
+          prefixIconColor:
+              isDarkMode ? Colors.white : const Color.fromARGB(176, 0, 0, 0),
+          prefixIcon: const Icon(Icons.email),
         ),
       )),
       _textFieldPadding(
@@ -107,29 +121,40 @@ class LoginScreenState extends State<LoginScreen> {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             contentPadding: const EdgeInsets.fromLTRB(36, 15, 10, 15),
-            enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(300)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(300)),
                 borderSide: BorderSide(
-                  color: Color.fromARGB(176, 0, 0, 0),
+                  color: isDarkMode
+                      ? Colors.white
+                      : const Color.fromARGB(176, 0, 0, 0),
                 )),
-            focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(300)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(300)),
                 borderSide: BorderSide(
-                  color: Color.fromARGB(176, 0, 0, 0),
+                  color: isDarkMode
+                      ? Colors.white
+                      : const Color.fromARGB(132, 158, 158, 158),
                 )),
-            floatingLabelStyle: const TextStyle(
+            floatingLabelStyle: TextStyle(
                 fontSize: 17.78,
-                color: Color.fromARGB(176, 0, 0, 0),
+                color: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(176, 0, 0, 0),
                 fontWeight: FontWeight.bold),
-            labelStyle: const TextStyle(
+            labelStyle: TextStyle(
                 fontSize: 17.78,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
                 fontWeight: FontWeight.bold),
-            hintStyle: const TextStyle(
-                fontSize: 16, color: Color.fromARGB(176, 0, 0, 0)),
+            hintStyle: TextStyle(
+              fontSize: 16,
+              color: isDarkMode
+                  ? Colors.white54
+                  : const Color.fromARGB(176, 0, 0, 0),
+            ),
             labelText: 'Password',
             hintText: 'Password',
-            suffixIconColor: const Color.fromARGB(176, 0, 0, 0),
+            suffixIconColor:
+                isDarkMode ? Colors.white : const Color.fromARGB(176, 0, 0, 0),
             suffixIcon: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
               child: GestureDetector(
@@ -150,7 +175,9 @@ class LoginScreenState extends State<LoginScreen> {
             child: FilledButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 88, 27, 173),
+            backgroundColor: isDarkMode
+                ? Colors.white
+                : const Color.fromARGB(255, 88, 27, 173),
             padding: const EdgeInsets.symmetric(),
           ),
           child: Padding(
@@ -159,37 +186,51 @@ class LoginScreenState extends State<LoginScreen> {
                   MediaQuery.of(context).size.height * 0.0192,
                   0,
                   MediaQuery.of(context).size.height * 0.0192),
-              child: const GradientText(
-                  textWidget: Text('Login', style: TextStyle(fontSize: 20)),
-                  gradient: LinearGradient(colors: [
-                    Colors.white,
-                    Colors.white,
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight))),
+              child: GradientText(
+                  textWidget:
+                      const Text('Login', style: TextStyle(fontSize: 20)),
+                  gradient: LinearGradient(
+                      colors: isDarkMode
+                          ? ([
+                              const Color(0xff4f14a0),
+                              const Color(0xff8066ff),
+                            ])
+                          : ([
+                              Colors.white,
+                              Colors.white,
+                            ]),
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
         )),
       ]),
       const SizedBox(
         height: 15,
       ),
-      const Text("Forget your password?",
+      Text("Forgot your password?",
           style: TextStyle(
-              color: Color.fromARGB(255, 88, 27, 173),
+              color: isDarkMode
+                  ? Colors.white
+                  : const Color.fromARGB(255, 88, 27, 173),
               fontSize: 16.0,
               fontWeight: FontWeight.bold)),
       const SizedBox(
         height: 20,
       ),
-      const Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
         Text("Don't have an account?",
             style: TextStyle(
-                color: Color.fromARGB(176, 0, 0, 0),
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold)),
-        SizedBox(
+                color: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(176, 0, 0, 0),
+                fontSize: 16.0)),
+        const SizedBox(
           width: 10,
         ),
         Text("Sign up",
             style: TextStyle(
-                color: Color.fromARGB(255, 88, 27, 173),
+                color: isDarkMode
+                    ? Colors.white
+                    : const Color.fromARGB(255, 88, 27, 173),
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold)),
       ])
@@ -199,6 +240,9 @@ class LoginScreenState extends State<LoginScreen> {
   Widget _layout(List<Widget> children) {
     double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
+
+    var colors = Theme.of(context).colorScheme;
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: CircleMaskedBackground(
@@ -211,7 +255,7 @@ class LoginScreenState extends State<LoginScreen> {
           circleMaskContent: Container(
             alignment: Alignment.center,
             height: double.infinity,
-            child: Container(color: Colors.white),
+            child: Container(color: colors.background),
           ),
           circlePosition: Offset(MediaQuery.of(context).size.width / 2,
               MediaQuery.of(context).size.height * 0.21 + circleRadius),
