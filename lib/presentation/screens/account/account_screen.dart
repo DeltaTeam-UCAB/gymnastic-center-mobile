@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -16,7 +19,7 @@ class AccountScreen extends StatelessWidget {
 
                 // EDIT ICON - SETUP
                 GestureDetector(
-                  onTap: () => context.push('account/details'),
+                  onTap: () => context.push('/account/details'),
                   child: const Icon(Icons.create_sharp),
                 ),
               ]),
@@ -138,13 +141,13 @@ class AccountScreen extends StatelessWidget {
             ),
             Container(
                 padding: const EdgeInsets.all(16.0),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Statistics',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: isDarkMode ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
@@ -154,12 +157,12 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: Colors.black38),
+                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
                           Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         )
                       ],
                     )
@@ -167,13 +170,13 @@ class AccountScreen extends StatelessWidget {
                 )),
             Container(
                 padding: const EdgeInsets.all(16.0),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'My Training',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: isDarkMode ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
@@ -183,12 +186,12 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: Colors.black38),
+                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
                           Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         )
                       ],
                     )
@@ -196,13 +199,13 @@ class AccountScreen extends StatelessWidget {
                 )),
             Container(
                 padding: const EdgeInsets.all(16.0),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'My Yoga Photos',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: isDarkMode ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
@@ -212,12 +215,12 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: Colors.black38),
+                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
                           Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         )
                       ],
                     )

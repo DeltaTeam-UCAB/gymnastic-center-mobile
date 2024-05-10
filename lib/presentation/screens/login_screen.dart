@@ -111,7 +111,6 @@ class _LoginScreenState extends State<_LoginScreen> {
       listener: (context, state) {
         if (state.formStatus == LoginFormStatus.invalid &&
             state.errorMessage.isNotEmpty) {
-          print('show nakbar');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage)),
           );
@@ -129,7 +128,7 @@ class _LoginScreenState extends State<_LoginScreen> {
             padding: EdgeInsets.fromLTRB(
                 0, 0, 0, MediaQuery.of(context).size.height * 0.0628),
             child: Image.asset(
-              'assets/icon/logoApp_${isDarkMode ? 'purple' : 'white'}.png',
+              'assets/icon/logoApp_white.png',
               height: MediaQuery.of(context).size.height * 0.227,
             ),
           ),

@@ -9,14 +9,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Row(children: [
-          Icon(
-            Icons.arrow_back_ios_outlined,
-            size: 20,
-          ),
-          SizedBox(width: 10),
-          Text('Settings'),
-        ]),
+        title: const Text('Settings'),
       ),
       body: ListView.separated(
         itemCount: appMenuItems.length,
