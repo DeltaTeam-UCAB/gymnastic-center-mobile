@@ -48,12 +48,12 @@ class APIUserDatasource extends UserDatasource {
 
   @override
   Future<bool> update({String? email, String? password, String? name}) async {
+    final body = <String, String>{};
+    if (email != null) body['email'] = email;
+    if (password != null) body['password'] = password;
+    if (name != null) body['name'] = name;
     await dio.put('/user/update',
-        data: {
-          'email': email,
-          'password': password,
-          'name': name,
-        },
+        data: body,
         options: Options(headers: {
           'auth': await keyValueStorage.getValue<String>('token')
         }));
