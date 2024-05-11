@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
+import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';
+import 'package:gymnastic_center/infrastructure/core/http/dio_http.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
@@ -22,7 +24,7 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RegisterBloc(
         UserHttpRepository(
             keyValueStorage: LocalStorageService(),
-            userDatasource: APIUserDatasource(LocalStorageService())),
+            http: DioHttpHandler(Environment.backendApi)),
       ),
       child: const _RegisterForm(),
     );

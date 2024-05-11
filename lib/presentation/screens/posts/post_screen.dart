@@ -19,35 +19,32 @@ class PostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => PostsBloc(PostRepositoryImpl(
-              postsDatasource: APIPostDatasource(localStorageService)))
-            ..loadPostById(postId)),
-        BlocProvider(
-          create: (_) => CommentsBloc(
-                CommentsRepositoryImpl(
-                  commentsDatasource: ApiCommentDatasource(localStorageService)
-              )
-            )..loadNextPageByPostId(postId)
-        ),
-      ],
-      child: Scaffold(
-        body: Stack(
-        children: [
-          const _PostView(),
-          Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: AppBar(
-                title: const Text('Post Tips & Topic Details',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-                elevation: 0,
-              )),
+        providers: [
+          BlocProvider(
+              create: (_) => PostsBloc(PostRepositoryImpl(
+                  postsDatasource: APIPostDatasource(localStorageService)))
+                ..loadPostById(postId)),
+          BlocProvider(
+              create: (_) => CommentsBloc(CommentsRepositoryImpl(
+                  commentsDatasource:
+                      ApiCommentDatasource(localStorageService)))
+                ..loadNextPageByPostId(postId)),
         ],
-      ))
-    );
+        child: Scaffold(
+            body: Stack(
+          children: [
+            const _PostView(),
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: AppBar(
+                  title: const Text('Post Tips & Topic Details',
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  elevation: 0,
+                )),
+          ],
+        )));
   }
 }
 
@@ -58,7 +55,8 @@ class _PostView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostsBloc, PostsState>(
       builder: (context, state) {
-        if (state.currentPost.id.isEmpty || state.status == PostStatus.loading) {
+        if (state.currentPost.id.isEmpty ||
+            state.status == PostStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -134,8 +132,7 @@ class _PostDetailsView extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Text('Comentarios',
-                  style: textTheme.titleLarge),
+              Text('Comentarios', style: textTheme.titleLarge),
               CommentsList(comments),
             ],
           ),

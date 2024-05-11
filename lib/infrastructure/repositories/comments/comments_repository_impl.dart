@@ -12,8 +12,8 @@ class CommentsRepositoryImpl extends CommentsRepository {
   Future<Result<List<Comment>>> getCommentsByCourseId(String courseId,
       {int limit = 5, int offset = 0}) async {
     try {
-      final comments = await commentsDatasource
-          .getCommentsByCourseId(courseId, limit: limit, offset: offset);
+      final comments = await commentsDatasource.getCommentsByCourseId(courseId,
+          limit: limit, offset: offset);
       return Result<List<Comment>>.success(comments);
     } catch (e) {
       return Result<List<Comment>>.fail(e as Exception);
@@ -24,14 +24,14 @@ class CommentsRepositoryImpl extends CommentsRepository {
   Future<Result<List<Comment>>> getCommentsByPostId(String postId,
       {int limit = 5, int offset = 0}) async {
     try {
-      final comments = await commentsDatasource
-          .getCommentsByPostId(postId, limit: limit, offset: offset);
+      final comments = await commentsDatasource.getCommentsByPostId(postId,
+          limit: limit, offset: offset);
       return Result<List<Comment>>.success(comments);
     } catch (e) {
       return Result<List<Comment>>.fail(e as Exception);
     }
   }
-  
+
   @override
   Future<Result<bool>> likeCommentById(String commentId) async {
     try {
@@ -41,11 +41,12 @@ class CommentsRepositoryImpl extends CommentsRepository {
       return Result<bool>.fail(e as Exception);
     }
   }
-  
+
   @override
   Future<Result<bool>> deleteLikeByCommentId(String commentId) async {
     try {
-      final isSuccessful = await commentsDatasource.deleteLikeByCommentId(commentId);
+      final isSuccessful =
+          await commentsDatasource.deleteLikeByCommentId(commentId);
       return Result<bool>.success(isSuccessful);
     } catch (e) {
       return Result<bool>.fail(e as Exception);

@@ -65,7 +65,8 @@ class RoutesManager {
         builder: (context, state) => const ThemeManagerScreen()),
     GoRoute(
       path: '/configuration/notifications',
-      builder: (context, state) => const NotificationStatuScreen(),),
+      builder: (context, state) => const NotificationStatuScreen(),
+    ),
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
         path: '/account', builder: (context, state) => const AccountScreen()),

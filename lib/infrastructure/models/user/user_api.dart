@@ -1,3 +1,5 @@
+import 'package:gymnastic_center/domain/entities/user/user.dart';
+
 class UserAPI {
   final String id;
   final String email;
@@ -15,3 +17,10 @@ class UserAPI {
         type: json["type"],
       );
 }
+User jsonToUser(Map<String, dynamic> json) => User(
+        id: json["id"],
+        email: json["email"],
+        name: json["name"],
+        type: json["type"],
+      );
+

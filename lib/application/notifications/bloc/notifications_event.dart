@@ -10,7 +10,6 @@ class NotificationStatusChanged extends NotificationsEvent {
   const NotificationStatusChanged(this.status);
 }
 
-
 class GetToken extends NotificationsEvent {
   final String token;
   const GetToken(this.token);

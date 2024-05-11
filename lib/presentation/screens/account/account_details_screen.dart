@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
+import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';
+import 'package:gymnastic_center/infrastructure/core/http/dio_http.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
@@ -15,7 +17,7 @@ class AccountDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => UpdateBloc(UserHttpRepository(
           keyValueStorage: LocalStorageService(),
-          userDatasource: APIUserDatasource(LocalStorageService()))),
+          http: DioHttpHandler(Environment.backendApi))),
       child: _AccountDetailsScreen(),
     );
   }

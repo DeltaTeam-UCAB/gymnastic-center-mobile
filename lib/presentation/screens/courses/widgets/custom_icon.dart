@@ -28,7 +28,8 @@ class CustomIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
-            child: Icon(icon, color: isDarkMode ? Colors.white : Colors.deepPurple),
+            child: Icon(icon,
+                color: isDarkMode ? Colors.white : Colors.deepPurple),
           ),
         ),
         const SizedBox(width: 5),

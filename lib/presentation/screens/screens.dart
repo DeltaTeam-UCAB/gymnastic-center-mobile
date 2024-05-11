@@ -18,7 +18,6 @@ export 'package:gymnastic_center/presentation/screens/notifications/notification
 export 'package:gymnastic_center/presentation/screens/notifications/notifications_screen.dart';
 export 'package:gymnastic_center/presentation/screens/notifications/token_screen.dart';
 
-
 export 'package:gymnastic_center/presentation/screens/splash/splash_screen.dart';
 
 export 'package:gymnastic_center/presentation/screens/tabs/settings_screen.dart';

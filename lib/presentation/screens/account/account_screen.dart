@@ -157,7 +157,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
@@ -186,7 +188,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
@@ -215,7 +219,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,

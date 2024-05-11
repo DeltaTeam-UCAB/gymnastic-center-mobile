@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
 
-
 class CommentsList extends StatefulWidget {
   final List<Comment> comments;
   const CommentsList(this.comments);
@@ -18,7 +17,6 @@ class CommentsListState extends State<CommentsList> {
 
   @override
   void initState() {
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels + 500 >=
           _scrollController.position.maxScrollExtent) {
@@ -87,12 +85,15 @@ class _CommentTile extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    if ( !comment.userLiked ){
-                      context.read<CommentsBloc>().likeComment(comment.id, comment.userLiked);
-                      return; 
+                    if (!comment.userLiked) {
+                      context
+                          .read<CommentsBloc>()
+                          .likeComment(comment.id, comment.userLiked);
+                      return;
                     }
-                      context.read<CommentsBloc>().deleteLike(comment.id, comment.userLiked);
-
+                    context
+                        .read<CommentsBloc>()
+                        .deleteLike(comment.id, comment.userLiked);
                   },
                   icon: (!comment.userLiked)
                       ? const Icon(Icons.thumb_up_outlined)
@@ -103,7 +104,6 @@ class _CommentTile extends StatelessWidget {
                   iconSize: 16,
                 ),
                 Text('${comment.likes}', style: textTheme.labelMedium),
-                
               ],
             ),
             const SizedBox(

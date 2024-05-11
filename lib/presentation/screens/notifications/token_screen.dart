@@ -18,10 +18,11 @@ class TokenScreen extends StatelessWidget {
           title: const Text('Token Screen'),
         ),
         body: Center(
-          child: TextField(
-            controller: TextEditingController(text: context.select((NotificationsBloc bloc) => bloc.state.token)),
-          )
-        ),
+            child: TextField(
+          controller: TextEditingController(
+              text:
+                  context.select((NotificationsBloc bloc) => bloc.state.token)),
+        )),
       ),
     );
   }
