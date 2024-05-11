@@ -1,13 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/presentation/screens/account/account_details_screen.dart';
-import 'package:gymnastic_center/presentation/screens/account/account_screen.dart';
-import 'package:gymnastic_center/presentation/screens/login_screen.dart';
-import 'package:gymnastic_center/presentation/screens/posts/post_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
-import 'package:gymnastic_center/presentation/screens/splash_screen.dart';
-import 'package:gymnastic_center/presentation/screens/start_screen.dart';
-import 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
-import 'package:gymnastic_center/presentation/screens/welcome_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(initialLocation: '/splash', routes: [
@@ -61,7 +53,7 @@ class RoutesManager {
       builder: (context, state) => SplashScreen(
           splashScreenDurationSeconds: 3,
           onSplashScreenFade: () => context.go('/welcome')),
-    ),
+    ),  
     GoRoute(
         path: '/welcome',
         builder: (context, state) => WelcomeScreen(
