@@ -91,7 +91,7 @@ class _CommentTile extends StatelessWidget {
                       context.read<CommentsBloc>().likeComment(comment.id, comment.userLiked);
                       return; 
                     }
-                      context.read<CommentsBloc>().dislikeComment(comment.id, comment.userLiked);
+                      context.read<CommentsBloc>().deleteLike(comment.id, comment.userLiked);
 
                   },
                   icon: (!comment.userLiked)

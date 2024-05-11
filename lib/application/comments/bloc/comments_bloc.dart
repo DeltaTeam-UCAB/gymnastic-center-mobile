@@ -96,8 +96,8 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     );
   }
 
-Future<void> dislikeComment(String commentId, bool userliked) async{
-  final commentDislikedResult = await commentsRepository.dislikeCommentById(commentId);
+Future<void> deleteLike(String commentId, bool userliked) async{
+  final commentDislikedResult = await commentsRepository.deleteLikeByCommentId(commentId);
   if (commentDislikedResult.isSuccessful()){
     add(CommentDisliked(commentId: commentId));
     return;
