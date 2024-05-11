@@ -9,16 +9,17 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
-class FirebaseNotifications extends NotificationsManager {
+class FirebaseNotificationsManager extends NotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final LocalNotificationsManager? localNotifications;
 
-  FirebaseNotifications(this.localNotifications);
+  FirebaseNotificationsManager(this.localNotifications);
 
-  static onBackgroundMessage(Future<void> Function(RemoteMessage message) handler) {
+  static onBackgroundMessage(
+      Future<void> Function(RemoteMessage message) handler) {
     FirebaseMessaging.onBackgroundMessage(handler);
   }
-  
+
   @override
   Future<bool> requestPermission() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -33,7 +34,7 @@ class FirebaseNotifications extends NotificationsManager {
 
     return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
-  
+
   @override
   Future<bool> checkAuthorizationStatus() async {
     final settings = await _firebaseMessaging.getNotificationSettings();
@@ -46,22 +47,21 @@ class FirebaseNotifications extends NotificationsManager {
   }
 
   void _handleRemoteMessage(RemoteMessage message) {
-    if (message.notification == null) return ;      
+    if (message.notification == null) return;
 
     final notification = PushMessageModel(
-      messageId: message.messageId
-        ?.replaceAll(':', '').replaceAll('%', '')
-        ?? '', 
-      title: message.notification!.title ?? '', 
-      body: message.notification!.body ?? '', 
-      sentDate: message.sentTime ?? DateTime.now(),
-      data: message.data,
-      imageUrl: Platform.isAndroid 
-        ? message.notification!.android?.imageUrl 
-        : message.notification!.apple?.imageUrl
-    );
+        messageId:
+            message.messageId?.replaceAll(':', '').replaceAll('%', '') ?? '',
+        title: message.notification!.title ?? '',
+        body: message.notification!.body ?? '',
+        sentDate: message.sentTime ?? DateTime.now(),
+        data: message.data,
+        imageUrl: Platform.isAndroid
+            ? message.notification!.android?.imageUrl
+            : message.notification!.apple?.imageUrl);
 
-    if(  localNotifications != null && localNotifications?.showLocalNotification != null) {
+    if (localNotifications != null &&
+        localNotifications?.showLocalNotification != null) {
       localNotifications?.showLocalNotification(
         id: 1,
         title: notification.title,
@@ -69,7 +69,6 @@ class FirebaseNotifications extends NotificationsManager {
         data: notification.data.toString(),
       );
     }
-    
   }
 
   @override

@@ -5,13 +5,10 @@ import 'package:gymnastic_center/application/notifications/notifications_manager
 part 'notifications_event.dart';
 part 'notifications_state.dart';
 
-
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-
   final NotificationsManager notifications;
-  
-  NotificationsBloc(this.notifications) : super(const NotificationsState()) {
 
+  NotificationsBloc(this.notifications) : super(const NotificationsState()) {
     on<NotificationStatusChanged>(_notificationStatusChanged);
 
     // Verify the current status of the notifications
@@ -19,17 +16,23 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     // Listen for messages when the app is in the foreground
     _onForegroundMessage();
+
+    on<GetToken>(_saveToken);
+  }
+
+  void _saveToken(GetToken event, Emitter<NotificationsState> emit) {
+    emit(state.copyWith(token: event.token));
   }
 
   void _onForegroundMessage() {
     notifications.onForegroundMessage();
   }
 
-  void _getToken() async {
+  void getToken() async {
     if (!state.status) return;
 
     final token = await notifications.getToken();
-    print(token);
+    add(GetToken(token!));
   }
 
   void requestPermission() async {
@@ -42,8 +45,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     add(NotificationStatusChanged(authorizationStatus));
   }
 
-  void _notificationStatusChanged( NotificationStatusChanged event, Emitter<NotificationsState> emit) {
+  void _notificationStatusChanged(
+      NotificationStatusChanged event, Emitter<NotificationsState> emit) {
     emit(state.copyWith(status: event.status));
-    _getToken();
+    getToken();
   }
 }

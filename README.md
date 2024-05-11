@@ -15,6 +15,10 @@ flutter clean
 flutter pub get
 ```
 
+> [!NOTE]
+> To find out which are the environment variables, you should consult the owner
+3. Rename .env.template to .env and fill the variables
+
 ## Running the app
 1. Select the device
 ```bash
@@ -33,12 +37,26 @@ f5
 dart run flutter_launcher_icons
 ```
 
-2. Build the app for Android
+2. Build the app for Android (APK)
 ```bash
-dart run build appbundle
+flutter build apk
 ```
 
+3. Build the app for Android (Bundle, in case you want to publish the app in the Play Store)
+```bash
+flutter build appbundle
+```
+
+## Optional commands
+Install the app in the device (Android)
+```bash
+flutter install
+```
+
+To change the app package name, you can use the following command:
+```bash
 dart run change_app_package_name:main com.deltateam.gymnastic_center
+```
 
 > [!NOTE]
 > In this app we are using Firebase for the push notifications, so you need to configure the Firebase in the project. > In case you don't have the Firebase configured, you can follow the steps in the [Firebase](https://firebase.flutter.dev/docs/overview).
