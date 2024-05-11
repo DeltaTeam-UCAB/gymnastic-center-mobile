@@ -70,8 +70,8 @@ class ApiCommentDatasource extends CommentsDatasource {
   }
 
   @override
-  Future<bool> dislikeCommentById(String commentId) async {
-    final response =await dio.post('/dislike',
+  Future<bool> deleteLikeByCommentId(String commentId) async {
+    final response =await dio.delete('/like/delete',
       data: {
         'idComment' : commentId
       },

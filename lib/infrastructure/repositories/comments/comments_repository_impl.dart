@@ -43,9 +43,9 @@ class CommentsRepositoryImpl extends CommentsRepository {
   }
   
   @override
-  Future<Result<bool>> dislikeCommentById(String commentId) async {
+  Future<Result<bool>> deleteLikeByCommentId(String commentId) async {
     try {
-      final isSuccessful = await commentsDatasource.dislikeCommentById(commentId);
+      final isSuccessful = await commentsDatasource.deleteLikeByCommentId(commentId);
       return Result<bool>.success(isSuccessful);
     } catch (e) {
       return Result<bool>.fail(e as Exception);
