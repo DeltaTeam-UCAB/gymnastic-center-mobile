@@ -5,7 +5,7 @@ import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/commnets/comments_list.dart';
+import 'package:gymnastic_center/presentation/widgets/comments/comments_list.dart';
 import 'package:intl/intl.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
