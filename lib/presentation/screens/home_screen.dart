@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/presentation/screens/tabs/notifications_screen.dart';
+import 'package:gymnastic_center/presentation/screens/notifications/notifications_screen.dart';
 import 'package:gymnastic_center/presentation/screens/courses/courses_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/settings_screen.dart';
 import 'package:gymnastic_center/presentation/screens/tabs/views/home_view.dart';

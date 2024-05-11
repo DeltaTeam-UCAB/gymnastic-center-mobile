@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
 
@@ -92,7 +91,7 @@ class _CommentTile extends StatelessWidget {
                       context.read<CommentsBloc>().likeComment(comment.id, comment.userLiked);
                       return; 
                     }
-                      context.read<CommentsBloc>().dislikeComment(comment.id, comment.userLiked);
+                      context.read<CommentsBloc>().deleteLike(comment.id, comment.userLiked);
 
                   },
                   icon: (!comment.userLiked)
