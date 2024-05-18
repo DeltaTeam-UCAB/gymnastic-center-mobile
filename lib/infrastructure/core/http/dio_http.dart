@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:gymnastic_center/application/core/http_service.dart';
+import 'package:gymnastic_center/infrastructure/core/http/http_service.dart';
 
 class DioHttpHandler extends HttpHandler {
   final Dio dio;

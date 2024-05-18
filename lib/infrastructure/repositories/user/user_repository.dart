@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:gymnastic_center/application/core/http_service.dart';
+import 'package:gymnastic_center/infrastructure/core/http/http_service.dart';
 import 'package:gymnastic_center/application/core/results.dart';
 import 'package:gymnastic_center/application/key_value_storage/key_value_storage.dart';
 import 'package:gymnastic_center/domain/entities/user/user.dart';
