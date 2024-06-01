@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:gymnastic_center/application/core/results.dart';
 import 'package:gymnastic_center/application/key_value_storage/key_value_storage.dart';
+import 'package:gymnastic_center/common/results.dart';
 import 'package:gymnastic_center/domain/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/domain/entities/user/user.dart';
 import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
@@ -13,10 +13,14 @@ class UserHttpRepository extends UserRepository {
   UserHttpRepository(
       {required this.userDatasource, required this.keyValueStorage});
   @override
-  Future<Result<bool>> register(
-      String email, String password, String name) async {
+  Future<Result<bool>> register({
+    required String email,
+    required String password,
+    required String name,
+    required String phone
+  }) async {
     try {
-      await userDatasource.register(email, password, name);
+      await userDatasource.register(email: email, password: password, name: name, phone: phone);
       return Result.success(true);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
@@ -36,8 +40,9 @@ class UserHttpRepository extends UserRepository {
       await keyValueStorage.setKeyValue('token', resp.token);
       return Result.success(true);
     } catch (e) {
-      if (e is DioException && e.response?.statusCode != 500)
+      if (e is DioException && e.response?.statusCode != 500) {
         return Result.fail(Exception('wrong credendials'));
+      }
       rethrow;
     }
   }
