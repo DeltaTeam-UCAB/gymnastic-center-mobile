@@ -21,8 +21,9 @@ class RegisterScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => RegisterBloc(
         UserHttpRepository(
-            keyValueStorage: LocalStorageService(),
-            userDatasource: APIUserDatasource(LocalStorageService())),
+                keyValueStorage: LocalStorageService(),
+                userDatasource: APIUserDatasource(LocalStorageService()))
+            .register
       ),
       child: const _RegisterForm(),
     );
@@ -90,15 +91,16 @@ class RegisterScreenState extends State<_RegisterForm> {
   }
 
   String? _validatePhone(String? value) {
-    // RegExp phoneRegex = RegExp(r'^[+]{1}[(]?[0-9]{1,4}[)]?[-\s0-9]*$');
+    RegExp phoneRegex = RegExp(
+        r'^\s*(\+\d{1,3})([-. \t]*(\d{3})[-. \t]*)?((\d{3})[-. \t]*(\d{2,4})(?:[-.x \t]*(\d+))?)\s*$');
 
     if (value == null || value.isEmpty) {
       return 'You must enter a phone number.';
     }
 
-    // if (!phoneRegex.hasMatch(value)) {
-    //   return 'Please enter a valid phone number.';
-    // }
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Phone number must be in the format +1234567890.';
+    }
 
     return null;
   }
@@ -135,14 +137,15 @@ class RegisterScreenState extends State<_RegisterForm> {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
       // you'd often call a server or save the information in a database.
-      print('Form is valid!');
       await context.read<RegisterBloc>().obSubmitRegister();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterBloc, RegisterState>(
+    return BlocConsumer<RegisterBloc, RegisterState>(
+      listenWhen: (previous, current) =>
+          previous.registerFormStatus != current.registerFormStatus,
       listener: (context, state) {
         if (state.registerFormStatus == RegisterFormStatus.invalid) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -162,7 +165,7 @@ class RegisterScreenState extends State<_RegisterForm> {
           );
         }
       },
-      child: _layout([
+      builder: (context, state) => _layout([
         _textFieldPadding(
             const Text('Sign up',
                 style: TextStyle(
@@ -204,6 +207,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                 child: GymnasticTextFormField(
                   controller: _phoneController,
                   validator: _validatePhone,
+                  onChanged: context.read<RegisterBloc>().phoneChanged,
                   decoration: const GymnasticTextInputDecoration(
                     labelText: 'Phone',
                     hintText: '+088031420698',
@@ -257,8 +261,7 @@ class RegisterScreenState extends State<_RegisterForm> {
         Row(children: [
           Expanded(
               child: FilledButton(
-            onPressed: context.read<RegisterBloc>().state.registerFormStatus ==
-                    RegisterFormStatus.posting
+            onPressed: state.registerFormStatus == RegisterFormStatus.posting
                 ? null
                 : _pressSubmit,
             style: ElevatedButton.styleFrom(
@@ -271,12 +274,18 @@ class RegisterScreenState extends State<_RegisterForm> {
                     MediaQuery.of(context).size.height * 0.0192,
                     0,
                     MediaQuery.of(context).size.height * 0.0192),
-                child: const GradientText(
-                    textWidget: Text('Sign up', style: TextStyle(fontSize: 20)),
-                    gradient: LinearGradient(colors: [
-                      Color(0xff4f14a0),
-                      Color(0xff8066ff),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight))),
+                child: state.registerFormStatus == RegisterFormStatus.posting
+                    ? const CircularProgressIndicator()
+                    : const GradientText(
+                        textWidget:
+                            Text('Sign up', style: TextStyle(fontSize: 20)),
+                        gradient: LinearGradient(
+                            colors: [
+                              Color(0xff4f14a0),
+                              Color(0xff8066ff),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight))),
           ))
         ]),
       ]),

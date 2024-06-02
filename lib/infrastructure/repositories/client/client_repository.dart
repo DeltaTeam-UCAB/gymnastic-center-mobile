@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:gymnastic_center/application/core/results.dart';
+import 'package:gymnastic_center/common/results.dart';
 import 'package:gymnastic_center/domain/datasources/client/client_datasource.dart';
 import 'package:gymnastic_center/domain/entities/client/client.dart';
 import 'package:gymnastic_center/domain/repositories/client/client_repository.dart';

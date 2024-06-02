@@ -1,15 +1,21 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
+import 'package:gymnastic_center/common/results.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final UserRepository userRepository;
+typedef RegisterCallBack = Future<Result<bool>> Function({
+  required String email,
+  required String password,
+  required String name,
+  required String phone,
+});
 
-  RegisterBloc(this.userRepository) : super(const RegisterState()) {
-    on<OnSubmitRegister>(_onSubmitRegister);
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+  final RegisterCallBack registerCallBack;
+
+  RegisterBloc(this.registerCallBack) : super(const RegisterState()) {
     on<OnRegisterFormStatusChanged>(_onRegisterFormStatusChanged);
     on<FullNameChanged>(_onFullNameChanged);
     on<EmailChanged>(_onEmailChanged);
@@ -19,7 +25,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   void _failRegister(FailRegister event, Emitter<RegisterState> emit) {
-    emit(state.copyWith(errorMessage: event.errorMessage));
+    emit(state.copyWith(errorMessage: event.errorMessage, registerFormStatus: RegisterFormStatus.invalid));
   }
 
   void _onPhoneChanged(PhoneChanged event, Emitter<RegisterState> emit) {
@@ -43,15 +49,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(registerFormStatus: event.registerFormStatus));
   }
 
-  void _onSubmitRegister(OnSubmitRegister event, Emitter<RegisterState> emit) {
-    emit(state.copyWith(registerFormStatus: RegisterFormStatus.posting));
-  }
-
   Future<void> obSubmitRegister() async {
     add(OnRegisterFormStatusChanged(
         registerFormStatus: RegisterFormStatus.posting));
-    final result = await userRepository.register(
-        state.email, state.password, state.fullname);
+    final result = await registerCallBack(
+        email: state.email,
+        password: state.password,
+        name: state.fullname,
+        phone: state.phone
+      );
     if (result.isSuccess) {
       add(OnRegisterFormStatusChanged(
           registerFormStatus: RegisterFormStatus.valid));
@@ -59,8 +65,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final error = result.getError();
       add(FailRegister(
           errorMessage: error.toString().replaceAll('Exception: ', '')));
-      add(OnRegisterFormStatusChanged(
-          registerFormStatus: RegisterFormStatus.invalid));
       add(OnRegisterFormStatusChanged(
           registerFormStatus: RegisterFormStatus.validating));
     }

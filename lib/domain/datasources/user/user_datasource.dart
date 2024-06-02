@@ -7,8 +7,14 @@ class LoginResponse {
 }
 
 abstract class UserDatasource {
-  Future<bool> register(String email, String password, String name);
+  Future<bool> register({
+    required String email,
+    required String password,
+    required String name,
+    required String phone
+  });
   Future<LoginResponse> login(String email, String password);
   Future<User> current();
-  Future<bool> update({String? email, String? password, String? name});
+  Future<bool> update(
+      {String? email, String? password, String? name, String? phone});
 }

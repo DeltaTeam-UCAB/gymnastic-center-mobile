@@ -8,15 +8,23 @@ import 'package:gymnastic_center/infrastructure/models/user/user_api.dart';
 
 class APIUserDatasource extends UserDatasource {
   final KeyValueStorageService keyValueStorage;
+
   final dio = Dio(BaseOptions(baseUrl: Environment.backendApi));
   APIUserDatasource(KeyValueStorageService keyValueStorageI)
       : keyValueStorage = keyValueStorageI;
+
   @override
-  Future<bool> register(String email, String password, String name) async {
-    await dio.post('/user/create', data: {
+  Future<bool> register({
+    required String email,
+    required String password,
+    required String name,
+    required String phone}
+  ) async {
+    await dio.post('/auth/register', data: {
       'email': email,
       'password': password,
       'name': name,
+      'phone': phone,
       'type': 'CLIENT'
     });
     return true;
@@ -24,7 +32,7 @@ class APIUserDatasource extends UserDatasource {
 
   @override
   Future<LoginResponse> login(String email, String password) async {
-    final response = await dio.post('/user/login', data: {
+    final response = await dio.post('/auth/login', data: {
       'email': email,
       'password': password,
     });
@@ -34,7 +42,7 @@ class APIUserDatasource extends UserDatasource {
 
   @override
   Future<User> current() async {
-    final response = await dio.get('user/current',
+    final response = await dio.get('/auth/current',
         options: Options(headers: {
           'auth': await keyValueStorage.getValue<String>('token')
         }));
@@ -47,7 +55,8 @@ class APIUserDatasource extends UserDatasource {
   }
 
   @override
-  Future<bool> update({String? email, String? password, String? name}) async {
+  Future<bool> update(
+      {String? email, String? password, String? name, String? phone}) async {
     final body = <String, String>{};
     if (email != null) body['email'] = email;
     if (password != null) body['password'] = password;

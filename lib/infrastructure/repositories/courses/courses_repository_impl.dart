@@ -1,4 +1,4 @@
-import 'package:gymnastic_center/application/core/results.dart';
+import 'package:gymnastic_center/common/results.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';

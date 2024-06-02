@@ -1,5 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/domain/repositories/client/client_repository.dart';
 import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
 
