@@ -1,45 +1,45 @@
+import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
+
 class Course {
   final String id;
   final String title;
   final String description;
-  final String instructor;
-  final String calories;
-  final DateTime? released;
+  final Trainer trainer;
   final String category;
   final String image;
+  final List<String> tags;
+  final String level;
+  final DateTime released;
   final List<Lesson>? lessons;
 
   Course({
     required this.id,
     required this.title,
     required this.description,
-    required this.calories,
-    required this.instructor,
+    required this.trainer,
     required this.category,
     required this.image,
-    required this.lessons,
+    required this.tags,
+    required this.level,
     required this.released,
+    required this.lessons,
   });
 }
 
 class Lesson {
   final String id;
-  final String name;
-  final String description;
-  final String courseId;
-  final String videoId;
-  final String order;
-  final String waitTime;
-  final String burnedCalories;
+  final String title;
+  final String content;
+  final String videoUrl;
+  final String imageUrl;
+  final int order;
 
   Lesson({
     required this.id,
-    required this.name,
-    required this.description,
-    required this.courseId,
-    required this.videoId,
+    required this.title,
+    required this.content,
+    required this.videoUrl,
+    required this.imageUrl,
     required this.order,
-    required this.waitTime,
-    required this.burnedCalories,
   });
 }
