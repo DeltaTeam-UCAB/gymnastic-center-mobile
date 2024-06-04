@@ -4,15 +4,15 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/entities/posts/post.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/posts/post_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/posts/posts_horizontal_listview.dart';
-import 'package:gymnastic_center/presentation/widgets/videos/videos_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/custom_appbar.dart';
+import 'package:gymnastic_center/presentation/widgets/videos/videos_horizontal_listview.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
         BlocProvider(
             create: (_) => CoursesBloc(
                 coursesRepository: CoursesRepositoryImpl(
-                    CoursesDatasourceImpl(LocalStorageService())))),
+                    ApiCoursesDatasource(LocalStorageService())))),
         BlocProvider(
             create: (_) => PostsBloc(PostRepositoryImpl(
                   postsDatasource: APIPostDatasource(LocalStorageService()),
@@ -57,14 +57,11 @@ class __HomeState extends State<_Home> {
 
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+        const SliverAppBar.large(
           automaticallyImplyLeading: false,
-          floating: true,
-          flexibleSpace: FlexibleSpaceBar(
-            title: CustomAppbar(),
-            centerTitle: false,
-            titlePadding: EdgeInsets.symmetric(),
-          ),
+          titleSpacing: 20,
+          expandedHeight: 160,
+          flexibleSpace: CustomAppbar(),
         ),
         SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {

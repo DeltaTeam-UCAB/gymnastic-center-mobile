@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 class NewTag extends StatelessWidget {
   final DateTime? courseDate;
+  final double width;
+  final double height;
   const NewTag({
     super.key,
     required this.courseDate,
+    this.width = 60,
+    this.height = 25,
   });
 
   @override
@@ -19,8 +23,8 @@ class NewTag extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: SizedBox(
-        height: 25,
-        width: 60,
+        height: height,
+        width: width,
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
