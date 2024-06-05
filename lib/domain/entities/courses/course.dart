@@ -30,16 +30,16 @@ class Lesson {
   final String id;
   final String title;
   final String content;
-  final String videoUrl;
-  final String imageUrl;
+  final String video;
+  final String image;
   final int order;
 
   Lesson({
     required this.id,
     required this.title,
     required this.content,
-    required this.videoUrl,
-    required this.imageUrl,
+    required this.video,
+    required this.image,
     required this.order,
   });
 }

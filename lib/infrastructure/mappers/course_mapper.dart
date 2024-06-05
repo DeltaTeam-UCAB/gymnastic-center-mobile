@@ -26,8 +26,8 @@ class LessonMapper {
               id: e.id,
               title: e.title,
               content: e.content,
-              videoUrl: e.video,
-              imageUrl: e.image,
+              video: e.video,
+              image: e.image,
               order: int.parse(e.order),
             ))
         .toList();
