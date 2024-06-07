@@ -66,7 +66,7 @@ class __HomeState extends State<_Home> {
             titlePadding: EdgeInsets.symmetric(),
           ),
         ),
-        SliverList(
+      SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [

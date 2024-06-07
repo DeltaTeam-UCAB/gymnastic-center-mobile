@@ -15,6 +15,7 @@ class VideoButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         if (state.status == VideoPlayerStatus.loading) {
           return const Center(child: CircularProgressIndicator());

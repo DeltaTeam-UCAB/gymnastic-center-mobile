@@ -3,9 +3,7 @@ class Result<T> {
   final Exception? error;
   final bool isSuccess;
 
-  Result._({this.value, this.error, required this.isSuccess})
-      : assert(value != null || error != null,
-            'Either value or error must be provided');
+  Result._({this.value, this.error, required this.isSuccess});
 
   bool isSuccessful() => isSuccess;
 

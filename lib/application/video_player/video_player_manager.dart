@@ -1,5 +1,7 @@
+import 'package:gymnastic_center/common/results.dart';
+
 abstract class VideoPlayerManager {
-  Future<void> initialize();
+  Future<Result<void>> initialize();
   void play();
   void pause();
   void setVolume(double volume);

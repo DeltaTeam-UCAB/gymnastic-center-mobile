@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/videos/api_video_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/videos/video_repository_impl.dart';
+import 'package:gymnastic_center/domain/entities/videos/video.dart';
 import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/full_screen_player.dart';
 import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/video_buttons.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
-  final String videoId;
+  final String videoURL;
 
   const VideoPlayerScreen({
-    required this.videoId,
+    required this.videoURL,
     super.key,
   });
 
@@ -20,10 +18,8 @@ class VideoPlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (_) => VideoPlayerBloc(
-            videosRepository:
-                VideoRepositoryImpl(APIVideoDatasource(LocalStorageService())))
-          ..fetchVideo(videoId),
+        create: (_) => VideoPlayerBloc()
+          ..changeCurrentVideo(Video(id: '', src: videoURL)),
         child: const _VideoPlayerView(),
       ),
     );
