@@ -4,8 +4,8 @@ class CoursesState extends Equatable {
   final List<Course> courses;
   final Course? currentCourse;
   final bool isLoading;
-  final int limit;
-  final int offset;
+  final int page;
+  final int perPage;
   final bool isLastPage;
   final bool isError;
 
@@ -13,8 +13,8 @@ class CoursesState extends Equatable {
     this.currentCourse,
     this.courses = const [],
     this.isLoading = false,
-    this.limit = 8,
-    this.offset = 0,
+    this.page = 1,
+    this.perPage = 10,
     this.isLastPage = false,
     this.isError = false,
   });
@@ -23,8 +23,8 @@ class CoursesState extends Equatable {
     List<Course>? courses,
     Course? currentCourse,
     bool? isLoading,
-    int? limit,
-    int? offset,
+    int? page,
+    int? perPage,
     bool? isLastPage,
     bool? isError,
   }) {
@@ -32,8 +32,8 @@ class CoursesState extends Equatable {
       courses: courses ?? this.courses,
       currentCourse: currentCourse ?? this.currentCourse,
       isLoading: isLoading ?? this.isLoading,
-      limit: limit ?? this.limit,
-      offset: offset ?? this.offset,
+      page: page ?? this.page,
+      perPage: perPage ?? this.perPage,
       isLastPage: isLastPage ?? this.isLastPage,
       isError: isError ?? this.isError,
     );
@@ -41,5 +41,5 @@ class CoursesState extends Equatable {
 
   @override
   List<Object> get props =>
-      [courses, isLoading, limit, offset, isLastPage, isError];
+      [courses, isLoading, page, perPage, isLastPage, isError];
 }

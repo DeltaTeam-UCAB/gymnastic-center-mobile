@@ -1,15 +1,18 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
 
 class CustomImage extends StatelessWidget {
   final String title;
   final String src;
-  final String instructor;
+  final String trainer;
+  final DateTime released;
   const CustomImage(
       {super.key,
       required this.src,
-      required this.instructor,
-      required this.title});
+      required this.trainer,
+      required this.title,
+      required this.released});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class CustomImage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                instructor,
+                trainer,
                 style: TextStyle(
                   color: Colors.grey.shade300,
                   fontSize: 14,
@@ -65,6 +68,13 @@ class CustomImage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+
+        // Tag New
+        Positioned(
+          top: 100,
+          left: 10,
+          child: NewTag(courseDate: released, width: 90, height: 35),
         ),
       ],
     );

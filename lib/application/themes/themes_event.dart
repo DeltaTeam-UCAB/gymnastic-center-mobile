@@ -11,6 +11,6 @@ class InitThemeSystem extends ThemesEvent {
   InitThemeSystem({this.value = false});
 
   bool getValue() {
-    return this.value;
+    return value;
   }
 }

@@ -6,20 +6,24 @@ import 'package:gymnastic_center/infrastructure/core/constants/environment.dart'
 import 'package:gymnastic_center/infrastructure/mappers/course_mapper.dart';
 import 'package:gymnastic_center/infrastructure/models/courses/course_response.dart';
 
-class CoursesDatasourceImpl extends CourseDatasource {
+class ApiCoursesDatasource extends CoursesDatasource {
   final KeyValueStorageService keyValueStorage;
   final dio = Dio(BaseOptions(baseUrl: Environment.backendApi));
-  CoursesDatasourceImpl(KeyValueStorageService keyValueStorageI)
-      : keyValueStorage = keyValueStorageI;
+
+  ApiCoursesDatasource(this.keyValueStorage){
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+        return handler.next(options);
+      }
+    ));
+  }
 
   @override
   Future<List<Course>> getCoursesPaginated(
-      {int limit = 5, int offset = 0}) async {
-    final response = await dio.get(
-        '/course/paginated?limit=$limit&offset=$offset',
-        options: Options(headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        }));
+      {int page = 1, int perPage = 10}) async {
+
+    final response = await dio.get('/course/many?page=$page&perPage=$perPage');
     final List<Course> courses = [];
 
     for (final course in response.data ?? []) {
@@ -32,10 +36,7 @@ class CoursesDatasourceImpl extends CourseDatasource {
 
   @override
   Future<Course> getCourseById(String id) async {
-    final response = await dio.get('/course/information/$id',
-        options: Options(headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        }));
+    final response = await dio.get('/course/one/$id');
     final courseResponse = CourseResponse.fromJson(response.data);
     return CourseMapper.courseToEntity(courseResponse);
   }
