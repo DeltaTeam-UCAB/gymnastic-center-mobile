@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
+import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/checkbox_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
@@ -20,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RegisterBloc(
-        UserHttpRepository(
+        UserRepositoryImpl(
                 keyValueStorage: LocalStorageService(),
                 userDatasource: APIUserDatasource(LocalStorageService()))
             .register
