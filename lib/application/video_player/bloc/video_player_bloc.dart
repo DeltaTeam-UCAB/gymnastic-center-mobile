@@ -4,19 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gymnastic_center/application/video_player/video_player_manager.dart';
 import 'package:gymnastic_center/domain/entities/videos/video.dart';
-import 'package:gymnastic_center/domain/repositories/videos/videos_repository.dart';
 
 part 'video_player_event.dart';
 part 'video_player_state.dart';
 
 class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
-  final VideosRepository videosRepository;
   late VideoPlayerManager videoPlayerManager;
 
-  VideoPlayerBloc({
-    required this.videosRepository,
-  }) : super(const VideoPlayerState()) {
-    on<CurrentVideoFetched>(_onCurrentVideoFetched);
+  VideoPlayerBloc() : super(const VideoPlayerState()) {
+    on<CurrentVideoChanged>(_onCurrentVideoChanged);
+    on<CurrentVideoProgressUpdated>(_onCurrentVideoProgressUpdated);
     on<CurrentVideoPlayed>(_onCurrentVideoPlayed);
     on<CurrentVideoPaused>(_onCurrentVideoPaused);
     on<CurrentVideoCompleted>(_onCurrentVideoCompleted);
@@ -29,13 +26,24 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
       CurrentVideoCompleted event, Emitter<VideoPlayerState> emit) {
     emit(state.copyWith(
       status: VideoPlayerStatus.completed,
+      progress: 1
     ));
   }
 
-  void _onCurrentVideoFetched(
-      CurrentVideoFetched event, Emitter<VideoPlayerState> emit) {
+  void _onCurrentVideoProgressUpdated(
+      CurrentVideoProgressUpdated event, Emitter<VideoPlayerState> emit) {
     emit(state.copyWith(
-        status: VideoPlayerStatus.loading, currentVideo: event.video));
+      progress: event.progress,
+      progressSeconds: event.progressSeconds
+    ));
+  }
+
+  void _onCurrentVideoChanged(
+      CurrentVideoChanged event, Emitter<VideoPlayerState> emit) {
+    emit(state.copyWith(
+      status: VideoPlayerStatus.loading,
+      currentVideo: event.video
+    ));
   }
 
   void _onCurrentVideoPlayed(
@@ -67,14 +75,8 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     this.videoPlayerManager = videoPlayerManager;
   }
 
-  Future<void> fetchVideo(String videoId) async {
-    final videoResponse = await videosRepository.getVideoById(videoId);
-    if (videoResponse.isSuccessful()) {
-      final video = videoResponse.getValue();
-      add(CurrentVideoFetched(video));
-      return;
-    }
-    add(const CurrentVideoNotFound());
+  void changeCurrentVideo(Video video) {
+    add(CurrentVideoChanged(video));
   }
 
   void playVideo() {
@@ -88,12 +90,28 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   }
 
   Future<void> initialize() async {
-    await videoPlayerManager.initialize();
-    add(const CurrentVideoPlayed());
+    final initResult = await videoPlayerManager.initialize();
+    if (initResult.isSuccessful()){
+      add(const CurrentVideoPlayed());
+      return ;
+    } 
+    add(const CurrentVideoNotFound());
   }
 
-  Duration getCurrentPosition() {
-    return videoPlayerManager.getCurrentPosition();
+  double updateProgress(){
+    final currentPosition = videoPlayerManager.getCurrentPosition().inMilliseconds;
+    final totalDuration = videoPlayerManager.getTotalDuration().inMilliseconds;
+    final progress = (currentPosition / totalDuration);
+    if (progress == 1) {
+      add(const CurrentVideoCompleted());
+      return progress;
+    }
+    add(CurrentVideoProgressUpdated(progress, videoPlayerManager.getCurrentPosition()));
+    return progress;
+  }
+
+  Duration getDurationLoaded(){
+    return videoPlayerManager.getDurationLoaded();
   }
 
   Duration getTotalDuration() {

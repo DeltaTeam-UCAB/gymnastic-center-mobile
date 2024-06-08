@@ -1,4 +1,5 @@
 import 'package:gymnastic_center/application/video_player/video_player_manager.dart';
+import 'package:gymnastic_center/common/results.dart';
 import 'package:video_player/video_player.dart';
 
 class NetworkVideoPlayerManager extends VideoPlayerManager {
@@ -22,16 +23,25 @@ class NetworkVideoPlayerManager extends VideoPlayerManager {
   }
 
   @override
-  Future<void> initialize() async {
-    videoPlayerController
-      ..setLooping(false)
-      ..play();
-    await videoPlayerController.initialize();
+  Future<Result<bool>> initialize() async {
+    try {
+      videoPlayerController
+        ..setLooping(false)
+        ..play();
+      await videoPlayerController.initialize();  
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
   }
 
   @override
   Duration getCurrentPosition() {
     return videoPlayerController.value.position;
+  }
+  @override
+  Duration getDurationLoaded() {
+    return videoPlayerController.value.buffered.toList()[0].end;
   }
 
   @override

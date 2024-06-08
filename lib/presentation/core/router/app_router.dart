@@ -19,9 +19,9 @@ class RoutesManager {
                   courseId: state.pathParameters['courseId'] ?? ''),
             ),
             GoRoute(
-              path: 'video/:videoId',
-              builder: (context, state) => VideoPlayerScreen(
-                  videoId: state.pathParameters['videoId'] ?? ''),
+              path: 'video-player',
+              builder: (context, state) =>
+                  VideoPlayerScreen(videoURL: (state.extra as String )),
             ),
             GoRoute(
               path: 'courses',
@@ -37,9 +37,10 @@ class RoutesManager {
             ),
           ]),
       GoRoute(
-        path: '/video-player/:videoId',
-        builder: (context, state) =>
-            VideoPlayerScreen(videoId: state.pathParameters['videoId'] ?? ''),
+        path: '/video-player',
+        builder: (context, state) {
+          return VideoPlayerScreen(videoURL: (state.extra as String ));
+        }
       ),
       GoRoute(
         path: '/post/:postId',

@@ -63,7 +63,7 @@ class __HomeState extends State<_Home> {
           expandedHeight: 160,
           flexibleSpace: CustomAppbar(),
         ),
-        SliverList(
+      SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [
