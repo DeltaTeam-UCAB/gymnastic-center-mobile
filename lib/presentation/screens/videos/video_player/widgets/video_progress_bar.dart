@@ -16,9 +16,17 @@ class VideoProgressBar extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           progressValue = 1;
         }
-        return LinearProgressIndicator(
-          value: progressValue,
-          backgroundColor: Color(Colors.transparent.value),
+        return SizedBox(
+          height: 40,
+          width: double.infinity,
+          child: Slider(
+            value: progressValue,
+            min: 0,
+            max: 1,
+            onChanged: (double value) {
+              print('Tocando');
+            },
+          ),
         );
       },
     );

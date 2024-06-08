@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
@@ -67,6 +68,7 @@ class __HomeState extends State<_Home> {
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [
+              IconButton(onPressed: () => context.push('/video-player', extra: 'https://res.cloudinary.com/dxl3nxp3r/video/upload/v1715038156/m4npdknyswzivhvzgbtd.mp4'), icon: const Icon(Icons.abc_outlined)),
               CourseHorizontalListView(
                   courses: courses, title: 'Popular Courses'),
               VideoHorizontalListView(courses: courses, title: 'Resume Videos'),

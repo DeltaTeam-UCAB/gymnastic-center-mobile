@@ -117,7 +117,7 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
             const Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                  padding: EdgeInsets.symmetric(horizontal: 15.5, vertical: 42),
                   child: VideoProgressBar()),
             ),
             const Positioned(
