@@ -18,6 +18,31 @@ class VideoProgressBar extends StatelessWidget {
         }
         return LinearProgressIndicator(
           value: progressValue,
+          backgroundColor: Color(Colors.transparent.value),
+        );
+      },
+    );
+  }
+}
+
+class LoadedVideoProgressBar extends StatelessWidget {
+  const LoadedVideoProgressBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Stream.periodic(const Duration(microseconds: 100), (_) {
+        return context.read<VideoPlayerBloc>().getDurationLoaded().inMilliseconds 
+            / context.read<VideoPlayerBloc>().getTotalDuration().inMilliseconds;
+      }).takeWhile((value) => value < 1),
+      builder: (context, snapshot) {
+        double progressValue = snapshot.data ?? 0;
+        if (snapshot.connectionState == ConnectionState.done) {
+          progressValue = 1;
+        }
+        return LinearProgressIndicator(
+          value: progressValue,
+          color: Color(Colors.grey.value),
         );
       },
     );

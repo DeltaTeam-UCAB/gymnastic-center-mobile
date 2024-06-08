@@ -11,7 +11,9 @@ class CurrentVideoChanged extends VideoPlayerEvent {
 
 class CurrentVideoProgressUpdated extends VideoPlayerEvent {
   final double progress;
-  const CurrentVideoProgressUpdated(this.progress);
+  final Duration progressSeconds;
+
+  const CurrentVideoProgressUpdated(this.progress, this.progressSeconds);
 }
 
 class CurrentVideoPlayed extends VideoPlayerEvent {

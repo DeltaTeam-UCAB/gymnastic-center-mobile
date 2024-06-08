@@ -33,7 +33,8 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   void _onCurrentVideoProgressUpdated(
       CurrentVideoProgressUpdated event, Emitter<VideoPlayerState> emit) {
     emit(state.copyWith(
-      progress: event.progress
+      progress: event.progress,
+      progressSeconds: event.progressSeconds
     ));
   }
 
@@ -105,8 +106,12 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
       add(const CurrentVideoCompleted());
       return progress;
     }
-    add(CurrentVideoProgressUpdated(progress));
+    add(CurrentVideoProgressUpdated(progress, videoPlayerManager.getCurrentPosition()));
     return progress;
+  }
+
+  Duration getDurationLoaded(){
+    return videoPlayerManager.getDurationLoaded();
   }
 
   Duration getTotalDuration() {

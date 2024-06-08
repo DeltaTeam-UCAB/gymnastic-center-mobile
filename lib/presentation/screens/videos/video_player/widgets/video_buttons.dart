@@ -83,7 +83,7 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (details) {
-        _handleOnTapDown(details);
+        _handleOnTapDown(details); 
       },
       child: AnimatedOpacity(
         opacity: _showLayer ? 1.0 : 0.0,
@@ -112,12 +112,23 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
               alignment: Alignment.bottomCenter,
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                  child: LoadedVideoProgressBar()),
+            ),
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
                   child: VideoProgressBar()),
             ),
             const Positioned(
               bottom: 30,
               right: 20,
               child: TotalDurationText(),
+            ),
+            const Positioned(
+              bottom: 30,
+              left: 20,
+              child: ViewedDurationText(),
             ),
           ],
         ),
