@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
 class AllCoursesScreen extends StatelessWidget {
   const AllCoursesScreen({super.key});
@@ -14,7 +14,7 @@ class AllCoursesScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => CoursesBloc(
           coursesRepository: CoursesRepositoryImpl(
-              CoursesDatasourceImpl(LocalStorageService()))),
+              ApiCoursesDatasource(LocalStorageService()))),
       child: const _AllCoursesScreen(),
     );
   }

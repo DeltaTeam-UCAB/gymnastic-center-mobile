@@ -55,7 +55,7 @@ class _LessonsListViewState extends State<LessonsListView> {
                 ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return ListTile(
-                      title: Text(lesson.name),
+                      title: Text(lesson.title),
                       leading: const Icon(Icons.video_library),
                     );
                   },
@@ -63,9 +63,9 @@ class _LessonsListViewState extends State<LessonsListView> {
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
                           onPressed: () =>
-                              context.push('/home/0/video/${lesson.videoId}'),
+                              context.push('/home/0/video/${lesson.video}'),
                           icon: const Icon(Icons.play_circle_fill),
-                          label: Text(lesson.description))),
+                          label: Text(lesson.content))),
                   isExpanded: _expansionStates[index],
                   canTapOnHeader: true,
                 ),

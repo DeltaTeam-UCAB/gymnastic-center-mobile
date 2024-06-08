@@ -1,5 +1,5 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gymnastic_center/application/key_value_storage/key_value_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService extends KeyValueStorageService {
   Future<SharedPreferences> getSharedPrefs() async {
