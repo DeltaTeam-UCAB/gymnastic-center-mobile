@@ -23,13 +23,13 @@ class NetworkVideoPlayerManager extends VideoPlayerManager {
   }
 
   @override
-  Future<Result<void>> initialize() async {
+  Future<Result<bool>> initialize() async {
     try {
       videoPlayerController
         ..setLooping(false)
         ..play();
       await videoPlayerController.initialize();  
-      return Result.success(null);
+      return Result.success(true);
     } catch (e) {
       return Result.fail(e as Exception);
     }
@@ -38,6 +38,10 @@ class NetworkVideoPlayerManager extends VideoPlayerManager {
   @override
   Duration getCurrentPosition() {
     return videoPlayerController.value.position;
+  }
+  @override
+  Duration getDurationLoaded() {
+    return videoPlayerController.value.buffered.toList()[0].end;
   }
 
   @override
