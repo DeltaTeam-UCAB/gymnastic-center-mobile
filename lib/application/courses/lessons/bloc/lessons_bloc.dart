@@ -23,7 +23,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       LessonsLoaded event, Emitter<LessonsState> emit) {
     emit(
       state.copyWith(
-        status: LessonsStatus.changingCLesson,
+        status: LessonsStatus.changingLesson,
         lessons: event.lessons,
         imgSelectedCourse: event.imgSelectedCourse,
         selectedCourseId: event.selectedCourseId,

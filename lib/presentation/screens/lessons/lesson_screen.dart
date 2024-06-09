@@ -87,7 +87,7 @@ class _LessonScreenState extends State<_LessonScreen>
               child: Text('Error has occured'),
             );
           }
-          if ( state.status == LessonsStatus.changingCLesson ){
+          if ( state.status == LessonsStatus.changingLesson ){
             context.read<LessonsBloc>().changeCurrentLesson(widget.selectedLessonId);
             return const Center(
               child: CircularProgressIndicator(),

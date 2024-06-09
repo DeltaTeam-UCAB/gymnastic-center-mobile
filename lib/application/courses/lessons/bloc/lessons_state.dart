@@ -3,7 +3,7 @@ part of 'lessons_bloc.dart';
 enum LessonsStatus {
   loading, 
   error,
-  changingCLesson,
+  changingLesson,
   loaded
 }
 
