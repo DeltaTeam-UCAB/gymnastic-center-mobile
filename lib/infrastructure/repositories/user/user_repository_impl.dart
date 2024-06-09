@@ -7,10 +7,10 @@ import 'package:gymnastic_center/domain/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/domain/entities/user/user.dart';
 import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
 
-class UserHttpRepository extends UserRepository {
+class UserRepositoryImpl extends UserRepository {
   final KeyValueStorageService keyValueStorage;
   final UserDatasource userDatasource;
-  UserHttpRepository(
+  UserRepositoryImpl(
       {required this.userDatasource, required this.keyValueStorage});
   @override
   Future<Result<bool>> register({

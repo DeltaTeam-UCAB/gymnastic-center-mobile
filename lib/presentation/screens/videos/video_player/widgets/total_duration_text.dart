@@ -29,3 +29,31 @@ class TotalDurationText extends StatelessWidget {
     );
   }
 }
+
+class ViewedDurationText extends StatelessWidget {
+  const ViewedDurationText({super.key});
+
+  String viewedDurationToString(Duration duration) {
+    int minutes = duration.inMinutes;
+    late int remainingSeconds;
+    if (minutes != 0) {
+      remainingSeconds = duration.inSeconds % minutes;
+    } else {
+      remainingSeconds = duration.inSeconds;
+    }
+
+    String minutesString = minutes.toString().padLeft(2, '0');
+    String secondsString = remainingSeconds.toString().padLeft(2, '0');
+
+    return '$minutesString:$secondsString';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Duration duration = context.watch<VideoPlayerBloc>().state.progressSeconds;
+    return Text(
+      viewedDurationToString(duration),
+      style: const TextStyle(color: Colors.white),
+    );
+  }
+}

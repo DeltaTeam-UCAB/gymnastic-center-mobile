@@ -39,7 +39,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(state.copyWith(
       courses: [...state.courses, ...event.courses],
       isLoading: false,
-      offset: state.offset + state.limit,
+      page: state.page + 1,
     ));
   }
 
@@ -48,7 +48,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     add(const CourseLoading());
 
     final coursesResponse = await coursesRepository.getCoursesPaginated(
-        limit: state.limit, offset: state.offset);
+        page: state.page, perPage: state.perPage);
 
     if (coursesResponse.isSuccessful()) {
       final courses = coursesResponse.getValue();

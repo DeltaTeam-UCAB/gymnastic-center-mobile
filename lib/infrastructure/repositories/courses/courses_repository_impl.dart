@@ -1,10 +1,10 @@
 import 'package:gymnastic_center/common/results.dart';
+import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
 
 class CoursesRepositoryImpl extends CoursesRepository {
-  final CoursesDatasourceImpl coursesDataSource;
+  final CoursesDatasource coursesDataSource;
 
   CoursesRepositoryImpl(this.coursesDataSource);
 
@@ -20,10 +20,10 @@ class CoursesRepositoryImpl extends CoursesRepository {
 
   @override
   Future<Result<List<Course>>> getCoursesPaginated(
-      {int limit = 5, int offset = 0}) async {
+      {int page = 1, int perPage= 5}) async {
     try {
       final courses = await coursesDataSource.getCoursesPaginated(
-          limit: limit, offset: offset);
+          page: page, perPage: perPage);
       return Result<List<Course>>.success(courses);
     } catch (error, _) {
       return Result<List<Course>>.fail(error as Exception);

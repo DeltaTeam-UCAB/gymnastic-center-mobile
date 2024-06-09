@@ -4,13 +4,16 @@ sealed class VideoPlayerEvent {
   const VideoPlayerEvent();
 }
 
-class CurrentVideoFetched extends VideoPlayerEvent {
+class CurrentVideoChanged extends VideoPlayerEvent {
   final Video video;
-  const CurrentVideoFetched(this.video);
+  const CurrentVideoChanged(this.video);
 }
 
-class CurrentVideoLoaded extends VideoPlayerEvent {
-  const CurrentVideoLoaded();
+class CurrentVideoProgressUpdated extends VideoPlayerEvent {
+  final double progress;
+  final Duration progressSeconds;
+
+  const CurrentVideoProgressUpdated(this.progress, this.progressSeconds);
 }
 
 class CurrentVideoPlayed extends VideoPlayerEvent {

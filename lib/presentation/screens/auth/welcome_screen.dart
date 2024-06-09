@@ -62,12 +62,8 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LocalStorageService().getValue<bool>('initialized').then((value) {
-      if (value != null && value) widget.onPressSkip?.call();
-    });
     final colors = Theme.of(context).colorScheme;
-
-    bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
+    final bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
 
     return Scaffold(
       backgroundColor: colors.background,

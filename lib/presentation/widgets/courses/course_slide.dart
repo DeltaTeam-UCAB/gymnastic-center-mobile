@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';

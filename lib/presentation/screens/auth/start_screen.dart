@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/custom_button.dart';
 
 class StartScreen extends StatelessWidget {
@@ -10,9 +9,6 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalStorageService().getValue<String>('token').then((token) {
-      if (token != null) context.go('/');
-    });
     final isDark = context.watch<ThemesBloc>().isDarkMode;
     const textStyle = TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
 
