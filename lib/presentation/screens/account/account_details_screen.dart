@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
-
-bool _isEditing = false;
+import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
   const AccountDetailsScreen({super.key});
@@ -13,7 +11,7 @@ class AccountDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UpdateBloc(UserHttpRepository(
+      create: (context) => UpdateBloc(UserRepositoryImpl(
           keyValueStorage: LocalStorageService(),
           userDatasource: APIUserDatasource(LocalStorageService()))),
       child: _AccountDetailsScreen(),

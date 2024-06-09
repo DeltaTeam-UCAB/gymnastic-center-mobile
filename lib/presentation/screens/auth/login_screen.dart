@@ -4,11 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/client/client_datasource_http.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/user_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/client/client_repository.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository.dart';
+import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
@@ -22,9 +20,7 @@ class LoginScreen extends StatelessWidget {
     final LocalStorageService localStorageService = LocalStorageService();
     return BlocProvider(
         create: (context) => LoginBloc(
-            clientRepository: ClientRepositoryImpl(
-                clientDataSource: ClientHttpDataSource(localStorageService)),
-            userRespository: UserHttpRepository(
+                userRespository: UserRepositoryImpl(
               userDatasource: APIUserDatasource(localStorageService),
               keyValueStorage: localStorageService,
             )),
@@ -283,7 +279,8 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.671; // ? Aqui puedo cambiar el radio
+    double circleRadius = MediaQuery.of(context).size.height *
+        0.671; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
