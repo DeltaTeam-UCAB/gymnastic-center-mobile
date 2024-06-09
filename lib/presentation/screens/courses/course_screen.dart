@@ -36,6 +36,7 @@ class _CourseScreenView extends StatelessWidget {
       builder: (context, state) {
         final course = state.currentCourse;
         return Scaffold(
+          //TODO: Evaluar optional o cambiarlo por status
           body: state.currentCourse != null
               ? _Details(course: course!)
               : const Center(

@@ -68,8 +68,8 @@ class LessonResponse {
         id: json["id"],
         title: json["title"],
         content: json["content"],
-        video: json["video"],
+        video: json["video"] ?? '',
         order: json["order"],
-        image: json["image"],
+        image: json["image"] ?? '',
       );
 }
