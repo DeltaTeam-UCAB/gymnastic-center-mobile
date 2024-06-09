@@ -22,7 +22,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     emit(state.copyWith(
         categories: [...state.categories, ...event.categories],
         isLoading: false,
-        page: state.page + state.perPage));
+        page: state.page + 1));
   }
 
   void _onCurrentCategory(

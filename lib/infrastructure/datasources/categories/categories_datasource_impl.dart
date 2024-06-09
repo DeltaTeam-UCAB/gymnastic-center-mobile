@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:dio/dio.dart';
 import 'package:gymnastic_center/application/key_value_storage/key_value_storage.dart';
 import 'package:gymnastic_center/domain/datasources/categories/categorie_datasource.dart';
@@ -8,14 +10,14 @@ import 'package:gymnastic_center/infrastructure/models/categories/category_respo
 
 class CategoriesDatasourceImpl extends CategoryDatasource {
   final KeyValueStorageService keyValueStorage;
-  final dio = Dio(BaseOptions(baseUrl: Environment.backendApi));
+  final dio = Dio(BaseOptions(baseUrl: '${Environment.backendApi}/category'));
   CategoriesDatasourceImpl(KeyValueStorageService keyValueStorageI)
-      : keyValueStorage = keyValueStorageI;
+      : this.keyValueStorage = keyValueStorageI;
 
   @override
   Future<List<Category>> getCategoriesPaginated(
       {int page = 1, int perPage = 10}) async {
-    final response = await dio.get('/category/many?page=$page&perPage=$perPage',
+    final response = await dio.get('/many?page=$page&perPage=$perPage',
         options: Options(headers: {
           'auth': await keyValueStorage.getValue<String>('token')
         }));
