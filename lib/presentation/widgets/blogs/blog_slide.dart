@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/domain/entities/posts/post.dart';
+import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
 import 'package:intl/intl.dart';
 
-class PostSlide extends StatelessWidget {
-  final Post post;
+class BlogSlide extends StatelessWidget {
+  final Blog blog;
 
-  const PostSlide({super.key, required this.post});
+  const BlogSlide({super.key, required this.blog});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,11 @@ class PostSlide extends StatelessWidget {
 
     //subtitle formatting
     String subtitle =
-        '${DateFormat('mm/dd/yyyy').format(post.released)} - ${post.autor}';
+        '${DateFormat('mm/dd/yyyy').format(blog.released)} - ${blog.trainer.name}';
 
     return GestureDetector(
       onTap: () {
-        context.push('/post/${post.id}');
+        context.push('/blog/${blog.id}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -48,7 +48,7 @@ class PostSlide extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      post.images[0],
+                      blog.images[0],
                       fit: BoxFit.cover,
                       //width: 150,
                       loadingBuilder: (context, child, loadingProgress) {
@@ -69,12 +69,12 @@ class PostSlide extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.bottomRight,
-                  child: NewTag(courseDate: post.released),
+                  child: NewTag(courseDate: blog.released),
                 )
               ],
             ),
             const SizedBox(height: 5),
-            Text(post.title, style: titleStyle, maxLines: 2),
+            Text(blog.title, style: titleStyle, maxLines: 2),
             const SizedBox(height: 4),
             Text(subtitle, style: subTitleStyle)
           ],

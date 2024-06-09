@@ -34,6 +34,12 @@ class AppTheme {
             ),
           ),
         ),
+        sliderTheme: SliderThemeData(
+          inactiveTrackColor: Colors.transparent,
+          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5.0),
+          trackShape: const RectangularSliderTrackShape(),
+          overlayShape: SliderComponentShape.noOverlay,
+        )
       );
 
   AppTheme copyWith({bool? isDarkMode}) => AppTheme(

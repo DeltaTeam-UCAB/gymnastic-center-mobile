@@ -1,9 +1,10 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 
-class PostsSlideShow extends StatelessWidget {
-  final List<dynamic> posts;
-  const PostsSlideShow({super.key, required this.posts});
+class BlogsSlideShow extends StatelessWidget {
+  final List<Blog> blogs;
+  const BlogsSlideShow({super.key, required this.blogs});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class PostsSlideShow extends StatelessWidget {
           viewportFraction: 0.75,
           scale: 0.8,
           // autoplay: true,
-          itemCount: posts.length,
+          itemCount: blogs.length,
           pagination: SwiperPagination(
             margin: const EdgeInsets.only(top: 0),
             builder: DotSwiperPaginationBuilder(
@@ -23,14 +24,14 @@ class PostsSlideShow extends StatelessWidget {
               activeColor: colors.primary,
             ),
           ),
-          itemBuilder: (context, index) => _SlideItem(post: posts[index]),
+          itemBuilder: (context, index) => _SlideItem(blog: blogs[index]),
         ));
   }
 }
 
 class _SlideItem extends StatelessWidget {
-  final dynamic post;
-  const _SlideItem({this.post});
+  final Blog blog;
+  const _SlideItem({required this.blog});
 
   @override
   Widget build(BuildContext context) {

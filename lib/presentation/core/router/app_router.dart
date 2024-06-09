@@ -28,8 +28,8 @@ class RoutesManager {
               builder: (context, state) => const AllCoursesScreen(),
             ),
             GoRoute(
-              path: 'posts',
-              builder: (context, state) => const AllPostsScreen(),
+              path: 'blogs',
+              builder: (context, state) => const AllBlogsScreen(),
             ),
             GoRoute(
               path: 'videos',
@@ -43,9 +43,9 @@ class RoutesManager {
         }
       ),
       GoRoute(
-        path: '/post/:postId',
+        path: '/blog/:blogId',
         builder: (context, state) =>
-            PostScreen(postId: state.pathParameters['postId'] ?? ''),
+            BlogScreen(blogId: state.pathParameters['blogId'] ?? ''),
       ),
       GoRoute(path: '/start', builder: (context, state) => const StartScreen()),
       GoRoute(
