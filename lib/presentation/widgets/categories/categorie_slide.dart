@@ -12,7 +12,7 @@ class CategorySlide extends StatelessWidget {
     const titleStyle = TextStyle(
         color: Colors.white, fontSize: 13, overflow: TextOverflow.ellipsis);
     return GestureDetector(
-      onTap: () => context.push('/home/0/course/${category.id}'),
+      onTap: () => context.push('/home/0/courses'),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(
@@ -30,7 +30,7 @@ class CategorySlide extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
                         child: Image.network(
-                          category.image,
+                          category.icon,
                           fit: BoxFit.cover,
                           //width: 150,
                           loadingBuilder: (context, child, loadingProgress) {
