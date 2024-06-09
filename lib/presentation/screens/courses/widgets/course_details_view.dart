@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_icon.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_image.dart';
@@ -58,6 +59,7 @@ class CourseDetailsView extends StatelessWidget {
 
         LessonsListView(
           lessons: course.lessons!,
+          onPressedLesson: (Lesson lesson) => context.push('/home/0/course/${course.id}/${lesson.id}'),
         ),
 
         const SizedBox(height: 100),
