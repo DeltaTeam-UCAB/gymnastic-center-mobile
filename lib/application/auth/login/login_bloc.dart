@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/domain/repositories/client/client_repository.dart';
 import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
 
 part 'login_event.dart';
@@ -8,9 +7,8 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRespository;
-  final ClientRepository clientRepository;
 
-  LoginBloc({required this.userRespository, required this.clientRepository})
+  LoginBloc({required this.userRespository})
       : super(const LoginState()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
@@ -61,13 +59,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     final isLoggedResult =
         await userRespository.login(state.email, state.password);
-    final isInfoSettedResult = await clientRepository.setInfo();
 
-    if (isLoggedResult.isSuccessful() && isInfoSettedResult.isSuccessful()) {
+    if (isLoggedResult.isSuccessful()) {
       final isLogged = isLoggedResult.getValue();
-      final isInfoSetted = isInfoSettedResult.getValue();
 
-      if (isLogged && isInfoSetted) {
+      if (isLogged) {
         add(LoginCompleted());
         return;
       }
