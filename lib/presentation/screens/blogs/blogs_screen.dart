@@ -1,59 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
+import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/posts/post_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/posts/post_slide.dart';
+import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
+import 'package:gymnastic_center/presentation/widgets/blogs/blog_slide.dart';
 
-class AllPostsScreen extends StatelessWidget {
-  const AllPostsScreen({super.key});
+class AllBlogsScreen extends StatelessWidget {
+  const AllBlogsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => PostsBloc(PostRepositoryImpl(
-          postsDatasource: APIPostDatasource(LocalStorageService()))),
-      child: const _AllPostsScreen(),
+      create: (_) => BlogsBloc(BlogRepositoryImpl(
+          blogsDatasource: APIBlogDatasource(LocalStorageService()))),
+      child: const _AllBlogsScreen(),
     );
   }
 }
 
-class _AllPostsScreen extends StatelessWidget {
-  const _AllPostsScreen();
+class _AllBlogsScreen extends StatelessWidget {
+  const _AllBlogsScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Posts',
+          'Blogs',
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
-      body: const _AllPostsView(),
+      body: const _AllBlogsView(),
     );
   }
 }
 
-class _AllPostsView extends StatefulWidget {
-  const _AllPostsView();
+class _AllBlogsView extends StatefulWidget {
+  const _AllBlogsView();
 
   @override
-  State<_AllPostsView> createState() => _AllPostsViewState();
+  State<_AllBlogsView> createState() => _AllBlogsViewState();
 }
 
-class _AllPostsViewState extends State<_AllPostsView> {
+class _AllBlogsViewState extends State<_AllBlogsView> {
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    context.read<PostsBloc>().loadNextPage();
+    context.read<BlogsBloc>().loadNextPage();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels + 500 >=
           _scrollController.position.maxScrollExtent) {
-        context.read<PostsBloc>().loadNextPage();
+        context.read<BlogsBloc>().loadNextPage();
       }
     });
     super.initState();
@@ -67,14 +67,14 @@ class _AllPostsViewState extends State<_AllPostsView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostsBloc, PostsState>(
+    return BlocBuilder<BlogsBloc, BlogsState>(
       builder: (context, state) {
-        if (state.status == PostStatus.error) {
+        if (state.status == BlogStatus.error) {
           return const Center(
             child: Text('Something bad happend'),
           );
         }
-        if (state.loadedPosts.isEmpty) {
+        if (state.loadedBlogs.isEmpty) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -100,12 +100,12 @@ class _AllPostsViewState extends State<_AllPostsView> {
                 crossAxisCount: 2,
                 childAspectRatio: 0.8,
               ),
-              itemCount: state.loadedPosts.length,
+              itemCount: state.loadedBlogs.length,
               itemBuilder: (context, index) {
-                return PostSlide(post: state.loadedPosts[index]);
+                return BlogSlide(blog: state.loadedBlogs[index]);
               },
             )),
-            if (state.status == PostStatus.loading)
+            if (state.status == BlogStatus.loading)
               const CircularProgressIndicator()
           ],
         );
