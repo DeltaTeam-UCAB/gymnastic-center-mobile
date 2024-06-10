@@ -17,8 +17,11 @@ class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
   }
 
   void _onClientFetched(ClientFetched event, Emitter<ClientsState> emit) {
-    emit(
-        state.copyWith(client: event.client, isLoading: false, isError: false));
+    emit(state.copyWith(
+        client: event.client,
+        isLoading: false,
+        isError: false,
+        isEmpty: false));
   }
 
   void _onCurrentClient(CurrentClient event, Emitter<ClientsState> emit) {
