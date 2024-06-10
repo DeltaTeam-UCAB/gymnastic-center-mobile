@@ -19,12 +19,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegisterBloc(
-        UserRepositoryImpl(
-                keyValueStorage: LocalStorageService(),
-                userDatasource: APIUserDatasource(LocalStorageService()))
-            .register
-      ),
+      create: (context) => RegisterBloc(UserRepositoryImpl(
+              keyValueStorage: LocalStorageService(),
+              userDatasource: APIUserDatasource())
+          .register),
       child: const _RegisterForm(),
     );
   }
