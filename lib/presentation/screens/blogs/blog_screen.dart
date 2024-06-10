@@ -1,90 +1,88 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/comments/comments_list.dart';
 import 'package:intl/intl.dart';
-import 'package:gymnastic_center/application/posts/bloc/posts_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/posts/api_post_datasource.dart';
-import 'package:gymnastic_center/infrastructure/repositories/posts/post_repository_impl.dart';
 
-class PostScreen extends StatelessWidget {
-  final String postId;
-  PostScreen({super.key, required this.postId});
+class BlogScreen extends StatelessWidget {
+  final String blogId;
+  BlogScreen({super.key, required this.blogId});
 
   final LocalStorageService localStorageService = LocalStorageService();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => PostsBloc(PostRepositoryImpl(
-              postsDatasource: APIPostDatasource(localStorageService)))
-            ..loadPostById(postId)),
-        BlocProvider(
-          create: (_) => CommentsBloc(
-                CommentsRepositoryImpl(
-                  commentsDatasource: ApiCommentDatasource(localStorageService)
-              )
-            )..loadNextPageByPostId(postId)
-        ),
-      ],
-      child: Scaffold(
-        body: Stack(
-        children: [
-          const _PostView(),
-          Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: AppBar(
-                title: const Text('Post Tips & Topic Details',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-                elevation: 0,
-              )),
+        providers: [
+          BlocProvider(
+              create: (_) => BlogsBloc(BlogRepositoryImpl(
+                  blogsDatasource: APIBlogDatasource(localStorageService)))
+                ..loadBlogById(blogId)),
+          BlocProvider(
+              create: (_) => CommentsBloc(CommentsRepositoryImpl(
+                  commentsDatasource:
+                      ApiCommentDatasource(localStorageService)))
+                ..loadNextPageByPostId(blogId)),
         ],
-      ))
-    );
+        child: Scaffold(
+            body: Stack(
+          children: [
+            const _BlogView(),
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: AppBar(
+                  title: const Text('Blog Tips & Topic Details',
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  elevation: 0,
+                )),
+          ],
+        )));
   }
 }
 
-class _PostView extends StatelessWidget {
-  const _PostView();
+class _BlogView extends StatelessWidget {
+  const _BlogView();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostsBloc, PostsState>(
+    return BlocBuilder<BlogsBloc, BlogsState>(
       builder: (context, state) {
-        if (state.currentPost.id.isEmpty || state.status == PostStatus.loading) {
+        if (state.currentBlog.id.isEmpty ||
+            state.status == BlogStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (state.status == PostStatus.error) {
+        if (state.status == BlogStatus.error) {
           return const Center(
-            child: Text('Post Not found'),
+            child: Text('Blog Not found'),
           );
         }
         return SingleChildScrollView(
-          child: _PostDetailsView(),
+          child: _BlogDetailsView(),
         );
       },
     );
   }
 }
 
-class _PostDetailsView extends StatelessWidget {
+class _BlogDetailsView extends StatelessWidget {
   final titleFontSize = 32.0;
   final dateFormat = DateFormat('dd-MM-yyyy');
-  _PostDetailsView();
+  _BlogDetailsView();
 
   @override
   Widget build(BuildContext context) {
-    final post = context.read<PostsBloc>().state.currentPost;
+    final Blog = context.read<BlogsBloc>().state.currentBlog;
     final comments = context.watch<CommentsBloc>().state.comments;
 
     final textTheme = Theme.of(context).textTheme;
@@ -93,28 +91,28 @@ class _PostDetailsView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ImagesCarrousel(post.images),
+        _ImagesCarrousel(Blog.images),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Title
-              Text(post.title,
+              Text(Blog.title,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: titleFontSize)),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  Text('Por ${post.autor}', style: textTheme.labelLarge),
+                  Text('Por ${Blog.trainer.name}', style: textTheme.labelLarge),
                   const Spacer(),
                   Icon(
                     Icons.calendar_month_outlined,
                     size: 16,
                     color: textTheme.labelLarge!.color,
                   ),
-                  Text(dateFormat.format(post.released),
+                  Text(dateFormat.format(Blog.released),
                       style: textTheme.labelLarge),
                 ]),
               ),
@@ -122,11 +120,11 @@ class _PostDetailsView extends StatelessWidget {
                 color: colors.primary,
               ),
               //COntent
-              Text(post.body, style: textTheme.bodyLarge),
+              Text(Blog.body, style: textTheme.bodyLarge),
               Divider(
                 color: colors.primary,
               ),
-              Text('Tags: ${post.tags.join(', ')}',
+              Text('Tags: ${Blog.tags.join(', ')}',
                   style: textTheme.bodyMedium),
               Divider(
                 color: colors.primary,
@@ -134,8 +132,7 @@ class _PostDetailsView extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Text('Comentarios',
-                  style: textTheme.titleLarge),
+              Text('Comentarios', style: textTheme.titleLarge),
               CommentsList(comments),
             ],
           ),

@@ -34,7 +34,7 @@ class Lesson {
   final String image;
   final int order;
 
-  Lesson({
+  const Lesson({
     required this.id,
     required this.title,
     required this.content,

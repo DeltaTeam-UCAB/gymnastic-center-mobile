@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/domain/entities/posts/post.dart';
+import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/see_all_button.dart';
-import 'post_slide.dart';
 
-class PostHorizontalListView extends StatelessWidget {
-  final List<Post> posts;
+import 'blog_slide.dart';
+
+class BlogHorizontalListView extends StatelessWidget {
+  final List<Blog> blogs;
   final String title;
 
-  const PostHorizontalListView(
-      {super.key, required this.posts, required this.title});
+  const BlogHorizontalListView(
+      {super.key, required this.blogs, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,11 @@ class PostHorizontalListView extends StatelessWidget {
           Expanded(
               child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  itemCount: posts.length,
+                  itemCount: blogs.length,
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return PostSlide(post: posts[index]);
+                    return BlogSlide(blog: blogs[index]);
                   }))
         ],
       ),
@@ -53,7 +54,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          const SeeAllButton(route: '/home/0/posts'),
+          const SeeAllButton(route: '/home/0/blogs'),
         ],
       ),
     );
