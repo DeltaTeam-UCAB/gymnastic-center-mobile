@@ -13,9 +13,9 @@ class ClientAPI {
       this.avatarImage});
 
   factory ClientAPI.fromJson(Map<String, dynamic> json) => ClientAPI(
-        id: json["id"],
-        email: json["email"],
-        name: json["name"],
-        phone: json["phone"],
-      );
+      id: json["id"],
+      email: json["email"],
+      name: json["name"],
+      phone: json["phone"],
+      avatarImage: json["image"]);
 }

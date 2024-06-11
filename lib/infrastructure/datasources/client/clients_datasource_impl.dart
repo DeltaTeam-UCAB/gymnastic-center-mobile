@@ -19,10 +19,7 @@ class ClientsDatasourceImpl extends ClientsDatasource {
 
   @override
   Future<Client> getClientData() async {
-    final response = await dio.get('/auth/current',
-        options: Options(headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        }));
+    final response = await dio.get('/auth/current');
     final apiClient = ClientAPI.fromJson(response.data);
     return Client(
         email: apiClient.email,
@@ -44,11 +41,10 @@ class ClientsDatasourceImpl extends ClientsDatasource {
     if (phone != null) body['phone'] = phone;
     if (avatarImage != null) body['image'] = avatarImage; //Cambiar
     if (password != null) body['password'] = password;
-    await dio.put('/user/update',
-        data: body,
-        options: Options(headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        }));
+    await dio.put(
+      '/user/update',
+      data: body,
+    );
     return true;
   }
 }

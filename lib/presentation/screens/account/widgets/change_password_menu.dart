@@ -118,7 +118,6 @@ class _ChangePasswordMenuState extends State<ChangePasswordMenu> {
                 controller: confirmPasswordController,
                 obscureText: hideConfirmPassword,
                 validator: validateConfirm,
-                //onChanged: context.read<UpdateBloc>().passwordChanged,
                 decoration: formDeco.getDecorationPassword(
                     context,
                     'Confirm Pasword',

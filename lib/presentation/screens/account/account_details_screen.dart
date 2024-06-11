@@ -115,8 +115,7 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
             ],
           ),
         ),
-        body: //SafeArea(
-            /*child:*/ SingleChildScrollView(
+        body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Form(
             key: _formKey,

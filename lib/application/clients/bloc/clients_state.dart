@@ -22,5 +22,5 @@ class ClientsState extends Equatable {
   }
 
   @override
-  List<Object> get props => [isLoading, isError, isEmpty];
+  List<Object> get props => [isLoading, isError, isEmpty, client];
 }

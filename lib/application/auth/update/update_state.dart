@@ -21,8 +21,15 @@ class UpdateState extends Equatable {
       this.avatarImage = ''});
 
   @override
-  List<Object> get props =>
-      [fullname, email, password, phone, updateFormStatus, errorMessage];
+  List<Object> get props => [
+        fullname,
+        email,
+        password,
+        phone,
+        updateFormStatus,
+        errorMessage,
+        avatarImage
+      ];
 
   UpdateState copyWith(
       {UpdateFormStatus? updateFormStatus,
