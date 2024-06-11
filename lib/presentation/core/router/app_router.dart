@@ -23,8 +23,8 @@ class RoutesManager {
               path: 'course/:courseId/:selectedLessonId',
               builder: (context, state) => LessonScreen(
                   courseId: state.pathParameters['courseId'] ?? '',
-                  selectedLessonId: state.pathParameters['selectedLessonId'] ?? ''
-                ),
+                  selectedLessonId:
+                      state.pathParameters['selectedLessonId'] ?? ''),
             ),
             GoRoute(
               path: 'video-player',
@@ -45,11 +45,10 @@ class RoutesManager {
             ),
           ]),
       GoRoute(
-        path: '/video-player',
-        builder: (context, state) {
-          return VideoPlayerScreen(videoURL: (state.extra as String ));
-        }
-      ),
+          path: '/video-player',
+          builder: (context, state) {
+            return VideoPlayerScreen(videoURL: (state.extra as String));
+          }),
       GoRoute(
         path: '/blog/:blogId',
         builder: (context, state) =>
@@ -87,11 +86,15 @@ class RoutesManager {
           builder: (context, state) => const AccountDetailsScreen()),
       GoRoute(path: '/token', builder: (context, state) => const TokenScreen()),
       GoRoute(
+          path: '/reset_password',
+          builder: (context, state) => const ResetPasswordScreen()),
+      GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
       )
     ],
     redirect: (context, state) async {
+      return '/reset_password';
       final isGoingTo = state.matchedLocation;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;
