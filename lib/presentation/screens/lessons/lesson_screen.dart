@@ -1,11 +1,16 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/lessons_listview.dart';
 
 class LessonScreen extends StatelessWidget {
@@ -17,29 +22,32 @@ class LessonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (_) => LessonsBloc(
-            coursesRepository: CoursesRepositoryImpl(
-                ApiCoursesDatasource(LocalStorageService())))
-          ..loadLessonsByCourseId(courseId),
-      )
-    ], child: Stack(
-        children:[
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => LessonsBloc(
+                coursesRepository: CoursesRepositoryImpl(
+                    ApiCoursesDatasource(LocalStorageService())))
+              ..loadLessonsByCourseId(courseId),
+          ),
+          BlocProvider(
+            create: (_) => CommentsBloc(CommentsRepositoryImpl(
+                commentsDatasource: ApiCommentDatasource(LocalStorageService())))
+          ),
+        ],
+        child: Stack(children: [
           _LessonScreen(selectedLessonId),
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AppBar(
-              titleSpacing: -10,
-              title: const Text('Lessons',
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
-              elevation: 0,
-            )),
-        ]
-      )
-    );
+              top: 0,
+              left: 0,
+              right: 0,
+              child: AppBar(
+                titleSpacing: -10,
+                title: const Text('Lessons',
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                elevation: 0,
+              )),
+        ]));
   }
 }
 
@@ -56,7 +64,7 @@ class _LessonScreenState extends State<_LessonScreen>
   late TabController _controller;
   @override
   void initState() {
-    _controller = TabController(length: 3, vsync: this, initialIndex: 0);
+    _controller = TabController(length: 3, vsync: this, initialIndex: 0);    
     super.initState();
   }
 
@@ -68,36 +76,42 @@ class _LessonScreenState extends State<_LessonScreen>
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      body: BlocBuilder<LessonsBloc, LessonsState>(
-        buildWhen: (previous, current) => 
-                    (previous.currentLesson != current.currentLesson)
-                    || (previous.status != current.status)
-                    || (previous.isFirstLesson != current.isFirstLesson)
-                    || (previous.isLastLesson != current.isLastLesson),
+      body: BlocConsumer<LessonsBloc, LessonsState>(
+        listenWhen: (previous, current) => previous.currentLesson != current.currentLesson,
+        listener: (context, state) {
+          context.read<CommentsBloc>().reset();
+        },
+        buildWhen: (previous, current) =>
+            (previous.currentLesson != current.currentLesson) ||
+            (previous.status != current.status) ||
+            (previous.isFirstLesson != current.isFirstLesson) ||
+            (previous.isLastLesson != current.isLastLesson),
         builder: (context, state) {
-          if ( state.status == LessonsStatus.loading){
+          if (state.status == LessonsStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if ( state.status == LessonsStatus.error ){
+          if (state.status == LessonsStatus.error) {
             return const Center(
               child: Text('Error has occured'),
             );
           }
-          if ( state.status == LessonsStatus.changingLesson ){
-            context.read<LessonsBloc>().changeCurrentLesson(widget.selectedLessonId);
+          if (state.status == LessonsStatus.changingLesson) {
+            context
+                .read<LessonsBloc>()
+                .changeCurrentLesson(widget.selectedLessonId);
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
           return Column(
             children: [
-              
               _VideoPreview(state.currentLesson),
-              TabBar(controller: _controller, tabs: const [
+              TabBar(
+                controller: _controller,
+                tabs: const [
                 Tab(
                   text: 'Description',
                 ),
@@ -113,15 +127,20 @@ class _LessonScreenState extends State<_LessonScreen>
                   controller: _controller,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(state.currentLesson.content)
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(state.currentLesson.content)),
+                    CommentsSection(
+                      lessonId: state.currentLesson.id,
                     ),
-                    const Center(child: Text('Comentarios')),
                     SingleChildScrollView(
                       child: LessonsListView(
-                        lessons: state.lessons, 
-                        currentLessondId: state.currentLesson.id,
-                        onPressedLesson: (lesson) => context.read<LessonsBloc>().changeCurrentLesson(lesson.id)
+                          lessons: state.lessons,
+                          currentLessondId: state.currentLesson.id,
+                          onPressedLesson: (lesson) {
+                            context
+                              .read<LessonsBloc>()
+                              .changeCurrentLesson(lesson.id);
+                          }
                       ),
                     )
                   ],
@@ -145,7 +164,6 @@ class _VideoPreview extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final isFirstLesson = context.read<LessonsBloc>().state.isFirstLesson;
     final isLastLesson = context.read<LessonsBloc>().state.isLastLesson;
-
 
     return SizedBox(
       height: _height,
@@ -181,21 +199,22 @@ class _VideoPreview extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Center(
-              child: Row(
-                children: [
-                  if ( !isFirstLesson )
-                     _CustomButton(
+              child: Row(children: [
+                if (!isFirstLesson)
+                  _CustomButton(
                       iconData: Icons.arrow_left,
-                      onPressed : context.read<LessonsBloc>().changeToPreviousLesson
-                    ),
-                  const Spacer(),
-                  if ( !isLastLesson )
-                    _CustomButton(
+                      onPressed: () {
+                        context.read<LessonsBloc>().changeToPreviousLesson();
+                      }),
+                const Spacer(),
+                if (!isLastLesson)
+                  _CustomButton(
                       iconData: Icons.arrow_right,
-                      onPressed : context.read<LessonsBloc>().changeToNextLesson
-                    ),
-                ] 
-              ),
+                      onPressed: () {
+                        context.read<LessonsBloc>().changeToNextLesson();
+                    }
+                  ),
+              ]),
             ),
           ),
         ),
@@ -205,13 +224,14 @@ class _VideoPreview extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Center(
               child: IconButton(
-                onPressed: () {},
+                onPressed: () => context.push('/video-player', extra: lesson.video),
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll(colors.inversePrimary),
                   iconColor: const MaterialStatePropertyAll(Colors.white),
                   iconSize: MaterialStateProperty.all(40.0),
-                  minimumSize: MaterialStateProperty.all(const Size(50.0, 50.0)),
+                  minimumSize:
+                      MaterialStateProperty.all(const Size(50.0, 50.0)),
                 ),
                 icon: const Icon(
                   Icons.play_arrow,
@@ -234,27 +254,23 @@ class _CustomButton extends StatelessWidget {
     required this.onPressed,
   });
 
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return IconButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        shape: const MaterialStatePropertyAll(
-          RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10),
-            )
-          )
-        ),
+        shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ))),
         backgroundColor:
             MaterialStatePropertyAll(colors.background.withOpacity(0.6)),
         iconColor: const MaterialStatePropertyAll(Colors.white),
         iconSize: const MaterialStatePropertyAll(30),
       ),
-      icon: Icon(
-        iconData
-      ),
+      icon: Icon(iconData),
     );
   }
 }
+

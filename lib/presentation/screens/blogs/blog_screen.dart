@@ -8,7 +8,7 @@ import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/comments/comments_list.dart';
+import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:intl/intl.dart';
 
 class BlogScreen extends StatelessWidget {
@@ -27,8 +27,7 @@ class BlogScreen extends StatelessWidget {
           BlocProvider(
               create: (_) => CommentsBloc(CommentsRepositoryImpl(
                   commentsDatasource:
-                      ApiCommentDatasource(localStorageService)))
-                ..loadNextPageByPostId(blogId)),
+                      ApiCommentDatasource(localStorageService)))),
         ],
         child: Scaffold(
             body: Stack(
@@ -82,8 +81,7 @@ class _BlogDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Blog = context.read<BlogsBloc>().state.currentBlog;
-    final comments = context.watch<CommentsBloc>().state.comments;
+    final blog = context.read<BlogsBloc>().state.currentBlog;
 
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
@@ -91,28 +89,28 @@ class _BlogDetailsView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ImagesCarrousel(Blog.images),
+        _ImagesCarrousel(blog.images),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Title
-              Text(Blog.title,
+              Text(blog.title,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: titleFontSize)),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  Text('Por ${Blog.trainer.name}', style: textTheme.labelLarge),
+                  Text('Por ${blog.trainer.name}', style: textTheme.labelLarge),
                   const Spacer(),
                   Icon(
                     Icons.calendar_month_outlined,
                     size: 16,
                     color: textTheme.labelLarge!.color,
                   ),
-                  Text(dateFormat.format(Blog.released),
+                  Text(dateFormat.format(blog.released),
                       style: textTheme.labelLarge),
                 ]),
               ),
@@ -120,11 +118,11 @@ class _BlogDetailsView extends StatelessWidget {
                 color: colors.primary,
               ),
               //COntent
-              Text(Blog.body, style: textTheme.bodyLarge),
+              Text(blog.body, style: textTheme.bodyLarge),
               Divider(
                 color: colors.primary,
               ),
-              Text('Tags: ${Blog.tags.join(', ')}',
+              Text('Tags: ${blog.tags.join(', ')}',
                   style: textTheme.bodyMedium),
               Divider(
                 color: colors.primary,
@@ -133,7 +131,10 @@ class _BlogDetailsView extends StatelessWidget {
                 height: 15,
               ),
               Text('Comentarios', style: textTheme.titleLarge),
-              CommentsList(comments),
+              SizedBox(
+                height: 400,
+                child: CommentsSection(blogId: blog.id,),
+              )
             ],
           ),
         ),
