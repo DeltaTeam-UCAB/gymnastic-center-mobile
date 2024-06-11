@@ -1,7 +1,9 @@
-import 'package:gymnastic_center/application/camara_gallery/camara_gallery.dart';
+import 'dart:convert';
+
+import 'package:gymnastic_center/infrastructure/camara_gallery/camara_gallery_manager.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CamaraGalleryServiceImpl extends CamaraGalleryManager {
+class CamaraGalleryImpl extends CamaraGalleryManager {
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -10,8 +12,9 @@ class CamaraGalleryServiceImpl extends CamaraGalleryManager {
       source: ImageSource.gallery,
       imageQuality: 100,
     );
+
     if (photo == null) return null;
-    return photo.path;
+    return _convertImageToBase64(photo);
   }
 
   @override
@@ -23,6 +26,11 @@ class CamaraGalleryServiceImpl extends CamaraGalleryManager {
     );
 
     if (photo == null) return null;
-    return photo.path;
+    return _convertImageToBase64(photo);
+  }
+
+  Future<String> _convertImageToBase64(XFile image) async {
+    final imageBytes = await image.readAsBytes();
+    return base64Encode(imageBytes);
   }
 }
