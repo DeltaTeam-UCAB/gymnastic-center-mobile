@@ -48,16 +48,16 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     if (state.isLastPage || state.isLoading || state.isError) return;
     add(const CategoriesLoading());
 
-    final coursesResponse = await categoryRepository.getCategoriesPaginated(
+    final categoriesResponse = await categoryRepository.getCategoriesPaginated(
         page: state.page, perPage: state.perPage);
 
-    if (coursesResponse.isSuccessful()) {
-      final courses = coursesResponse.getValue();
-      if (courses.isEmpty) {
+    if (categoriesResponse.isSuccessful()) {
+      final categories = categoriesResponse.getValue();
+      if (categories.isEmpty) {
         add(const CategoriesIsEmpty());
         return;
       }
-      add(CategoriesFetched(courses));
+      add(CategoriesFetched(categories));
       return;
     }
     add(const CategoriesError());

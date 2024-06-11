@@ -9,12 +9,14 @@ class OnSubmitUpdate extends UpdateEvent {
   final String email;
   final String password;
   final String phone;
+  final String avatarImage;
 
   OnSubmitUpdate({
     required this.fullname,
     required this.email,
     required this.password,
     required this.phone,
+    required this.avatarImage,
   });
 }
 
@@ -56,6 +58,12 @@ class PhoneChanged extends UpdateEvent {
   PhoneChanged({
     required this.phone,
   });
+}
+
+class AvatarImageChanged extends UpdateEvent {
+  final String avatarImage;
+
+  AvatarImageChanged({required this.avatarImage});
 }
 
 class FailRegister extends UpdateEvent {
