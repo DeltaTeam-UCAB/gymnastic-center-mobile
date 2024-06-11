@@ -2,31 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/client/client.dart';
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
+import 'package:gymnastic_center/presentation/screens/account/widgets/account_form_field_decoration.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
+
+import 'widgets/change_password_menu.dart';
+
+enum _AvatarImageOp { takePhoto, fromGallery }
 
 class AccountDetailsScreen extends StatelessWidget {
   const AccountDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => UpdateBloc(ClientsRepositoryImpl(
-              keyValueStorage: LocalStorageService(),
-              clientsDatasource: ClientsDatasourceImpl(LocalStorageService()))),
-        ),
-        BlocProvider(
-          create: (context) => ClientsBloc(ClientsRepositoryImpl(
-              keyValueStorage: LocalStorageService(),
-              clientsDatasource: ClientsDatasourceImpl(LocalStorageService()))),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => UpdateBloc(ClientsRepositoryImpl(
+          keyValueStorage: LocalStorageService(),
+          clientsDatasource: ClientsDatasourceImpl(LocalStorageService()))),
       child: const _AccountDetailsScreen(),
     );
   }
@@ -45,7 +41,6 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
   final TextEditingController _phoneController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -103,15 +98,14 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Client? client = context.watch<ClientsBloc>().state.client;
-    final clientEmpty = context.watch<ClientsBloc>().state.isEmpty;
-    _nameController.text = clientEmpty ? '' : client!.name;
-    _emailController.text = clientEmpty ? '' : client!.email;
-    _phoneController.text = clientEmpty ? '' : client!.phone;
-    return BlocConsumer<UpdateBloc, UpdateState>(
-      listener: (context, state) {},
+    final Client client = context.watch<ClientsBloc>().state.client;
+    _nameController.text = client.name;
+    _emailController.text = client.email;
+    _phoneController.text = client.phone;
+    final formDeco = AccountFormFieldDecoration();
+    final isDark = context.watch<ThemesBloc>().isDarkMode;
+    return BlocBuilder<UpdateBloc, UpdateState>(
       builder: (context, state) => Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Column(
             children: [
@@ -130,30 +124,51 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    const CircleAvatar(
-                      radius: 100,
-                      child: Icon(
-                        Icons.person,
-                        size: 90,
+                Stack(alignment: Alignment.bottomRight, children: [
+                  const CircleAvatar(
+                    radius: 100,
+                    child: Icon(
+                      Icons.person,
+                      size: 90,
+                    ),
+                  ),
+                  PopupMenuButton<_AvatarImageOp>(
+                    child: ElevatedButton(
+                      onPressed: null,
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(isDark
+                              ? const Color.fromARGB(255, 213, 185, 255)
+                              : Theme.of(context).primaryColor)),
+                      child: Container(
+                        width: 20,
+                        height: 60,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.edit,
+                          color: Theme.of(context).indicatorColor,
+                        ),
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        child: Container(
-                            height: 65,
-                            width: 20,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Center(
-                                child: Icon(
-                              Icons.edit,
-                            ))))
-                  ],
-                ),
+                    onSelected: (_AvatarImageOp item) {},
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<_AvatarImageOp>>[
+                      const PopupMenuItem<_AvatarImageOp>(
+                        value: _AvatarImageOp.takePhoto,
+                        child: ListTile(
+                          leading: Icon(Icons.camera_alt),
+                          title: Text('Take Photo'),
+                        ),
+                      ),
+                      const PopupMenuItem<_AvatarImageOp>(
+                        value: _AvatarImageOp.fromGallery,
+                        child: ListTile(
+                          leading: Icon(Icons.upload_rounded),
+                          title: Text('Upload from gallery'),
+                        ),
+                      )
+                    ],
+                  ),
+                ]),
                 const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.all(24.0),
@@ -162,32 +177,32 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GymnasticTextFormField(
+                          style: formDeco.getTextStyle(context),
                           controller: _nameController,
                           onChanged: context.read<UpdateBloc>().fullnameChanged,
                           validator: _validateName,
-                          decoration: const GymnasticTextInputDecoration(
-                            labelText: 'Full Name',
-                          ),
+                          decoration:
+                              formDeco.getDecoration(context, 'Full name'),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GymnasticTextFormField(
-                            controller: _emailController,
-                            onChanged: context.read<UpdateBloc>().emailChanged,
-                            validator: _validateEmail,
-                            decoration: const GymnasticTextInputDecoration(
-                              labelText: 'Email',
-                            )),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: GymnasticTextFormField(
+                              style: formDeco.getTextStyle(context),
+                              controller: _emailController,
+                              onChanged:
+                                  context.read<UpdateBloc>().emailChanged,
+                              validator: _validateEmail,
+                              decoration:
+                                  formDeco.getDecoration(context, 'Email'))),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GymnasticTextFormField(
+                          style: formDeco.getTextStyle(context),
                           controller: _phoneController,
                           onChanged: context.read<UpdateBloc>().phoneChanged,
                           validator: _validatePhone,
-                          decoration: const GymnasticTextInputDecoration(
-                              labelText: 'Phone'),
+                          decoration: formDeco.getDecoration(context, 'Phone'),
                         ),
                       ),
                       TextButton(
@@ -222,161 +237,20 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
 
   _passwordBottomSheet() => showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return BlocProvider(
-          create: (context) => UpdateBloc(ClientsRepositoryImpl(
-              keyValueStorage: LocalStorageService(),
-              clientsDatasource: ClientsDatasourceImpl(LocalStorageService()))),
-          child: const _ChangePasswordMenu(),
-        );
-      });
-}
-
-class _ChangePasswordMenu extends StatefulWidget {
-  const _ChangePasswordMenu();
-
-  @override
-  State<_ChangePasswordMenu> createState() => _ChangePasswordMenuState();
-}
-
-class _ChangePasswordMenuState extends State<_ChangePasswordMenu> {
-  final _formKey = GlobalKey<FormState>();
-  bool hidePassword = true;
-  bool hideConfirmPassword = true;
-  final passwordFieldFocusNode = FocusNode();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-
-  void toggleObscuredPassword() {
-    setState(() {
-      hidePassword = !hidePassword;
-      if (!passwordFieldFocusNode.hasPrimaryFocus) {
-        passwordFieldFocusNode.canRequestFocus = false;
-      }
-    });
-  }
-
-  void toggleObscuredConfirm() {
-    setState(() {
-      hideConfirmPassword = !hideConfirmPassword;
-      if (!passwordFieldFocusNode.hasPrimaryFocus) {
-        passwordFieldFocusNode.canRequestFocus = false;
-      }
-    });
-  }
-
-  String? validatePassword(String? value) {
-    final RegExp passwordRegex = RegExp(
-      r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$',
-    );
-
-    if (value == null || value.isEmpty) {
-      return 'You must enter a password.';
-    }
-
-    if (!passwordRegex.hasMatch(value)) {
-      return 'Password must contain at least 8 characters';
-    }
-
-    return null;
-  }
-
-  String? validateConfirm(String? value) {
-    if (value != passwordController.text) {
-      return 'Password confirmation must be equal';
-    }
-    return null;
-  }
-
-  _pressSubmit() async {
-    if (_formKey.currentState!.validate()) {
-      // If the form is valid, display a snackbar. In the real world,
-      // you'd often call a server or save the information in a database.
-      await context.read<UpdateBloc>().onSubmitUpdate();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(25.0),
-              child: Text(
-                'Change your password',
-                style: TextStyle(fontSize: 20),
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) =>
+                BlocProvider(
+              create: (context) => UpdateBloc(ClientsRepositoryImpl(
+                  keyValueStorage: LocalStorageService(),
+                  clientsDatasource:
+                      ClientsDatasourceImpl(LocalStorageService()))),
+              child: SizedBox(
+                height: constraints.maxHeight * 0.5 +
+                    MediaQuery.of(context).viewInsets.bottom * 0.8,
+                child: const ChangePasswordMenu(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GymnasticTextFormField(
-                controller: passwordController,
-                obscureText: hidePassword,
-                validator: validatePassword,
-                onChanged: context.read<UpdateBloc>().passwordChanged,
-                decoration: GymnasticTextInputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Password',
-                  suffixIconColor: const Color(0xffc8ccd9),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                    child: GestureDetector(
-                      onTap: toggleObscuredPassword,
-                      child: Icon(
-                        hidePassword
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GymnasticTextFormField(
-                controller: confirmPasswordController,
-                obscureText: hideConfirmPassword,
-                validator: validateConfirm,
-                //onChanged: context.read<UpdateBloc>().passwordChanged,
-                decoration: GymnasticTextInputDecoration(
-                  labelText: 'Confirm Password',
-                  hintText: 'Password',
-                  suffixIconColor: const Color(0xffc8ccd9),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                    child: GestureDetector(
-                      onTap: toggleObscuredConfirm,
-                      child: Icon(
-                        hideConfirmPassword
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              width: 300,
-              child: FilledButton(
-                onPressed: _pressSubmit,
-                child: const Text('Change Password',
-                    style: TextStyle(fontSize: 20)),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+          ));
 }

@@ -9,7 +9,9 @@ part 'clients_state.dart';
 class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
   final ClientsRepository clientsRepository;
 
-  ClientsBloc(this.clientsRepository) : super(ClientsInitial()) {
+  ClientsBloc(this.clientsRepository)
+      : super(ClientsState(
+            client: Client(id: '', name: '', phone: '', email: ''))) {
     on<ClientFetched>(_onClientFetched);
     on<CurrentClient>(_onCurrentClient);
     on<ClientsError>(_onClientsError);

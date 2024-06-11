@@ -1,13 +1,13 @@
 part of 'clients_bloc.dart';
 
 class ClientsState extends Equatable {
-  final Client? client;
+  final Client client;
   final bool isLoading;
   final bool isError;
   final bool isEmpty;
 
   const ClientsState(
-      {this.client,
+      {required this.client,
       this.isLoading = false,
       this.isError = false,
       this.isEmpty = true});
@@ -24,5 +24,3 @@ class ClientsState extends Equatable {
   @override
   List<Object> get props => [isLoading, isError, isEmpty];
 }
-
-final class ClientsInitial extends ClientsState {}
