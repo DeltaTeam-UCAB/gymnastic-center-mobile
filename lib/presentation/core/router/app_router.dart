@@ -89,12 +89,15 @@ class RoutesManager {
           path: '/reset_password',
           builder: (context, state) => const ResetPasswordScreen()),
       GoRoute(
+          path: '/create_password',
+          builder: (context, state) => const CreatePasswordScreen()),
+      GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
       )
     ],
     redirect: (context, state) async {
-      return '/reset_password';
+      return '/create_password';
       final isGoingTo = state.matchedLocation;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;
