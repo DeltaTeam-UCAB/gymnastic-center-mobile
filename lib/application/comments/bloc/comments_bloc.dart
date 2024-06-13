@@ -78,7 +78,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   void _onCommentsReset(CommentsReset event, Emitter<CommentsState> emit){
     emit(
       state.copyWith(
-        page: -1,
+        page: 0,
         comments: [],
         status: CommentsStatus.loaded,
         isPosting: false
