@@ -20,10 +20,18 @@ class CoursesRepositoryImpl extends CoursesRepository {
 
   @override
   Future<Result<List<Course>>> getCoursesPaginated(
-      {int page = 1, int perPage= 5}) async {
+      {page = 1,
+      perPage = 10,
+      required CourseFilter filter,
+      String? trainer,
+      String? category}) async {
     try {
       final courses = await coursesDataSource.getCoursesPaginated(
-          page: page, perPage: perPage);
+          page: page,
+          perPage: perPage,
+          filter: filter,
+          trainer: trainer,
+          category: category);
       return Result<List<Course>>.success(courses);
     } catch (error, _) {
       return Result<List<Course>>.fail(error as Exception);
