@@ -10,20 +10,37 @@ class ApiCoursesDatasource extends CoursesDatasource {
   final KeyValueStorageService keyValueStorage;
   final dio = Dio(BaseOptions(baseUrl: Environment.backendApi));
 
-  ApiCoursesDatasource(this.keyValueStorage){
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        options.headers['auth'] = await keyValueStorage.getValue<String>('token');
-        return handler.next(options);
-      }
-    ));
+  ApiCoursesDatasource(this.keyValueStorage) {
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      return handler.next(options);
+    }));
   }
 
   @override
   Future<List<Course>> getCoursesPaginated(
-      {int page = 1, int perPage = 10}) async {
+      {page = 1,
+      perPage = 10,
+      required CourseFilter filter,
+      String? trainer,
+      String? category}) async {
+    final queryParameters = {
+      'page': page,
+      'perPage': perPage,
+      'filter': filter == CourseFilter.recent ? 'RECENT' : 'POPULAR',
+    };
 
-    final response = await dio.get('/course/many?page=$page&perPage=$perPage');
+    if (trainer != null) {
+      queryParameters['trainer'] = trainer;
+    }
+
+    if (category != null) {
+      queryParameters['category'] = category;
+    }
+
+    final response =
+        await dio.get('/course/many', queryParameters: queryParameters);
     final List<Course> courses = [];
 
     for (final course in response.data ?? []) {

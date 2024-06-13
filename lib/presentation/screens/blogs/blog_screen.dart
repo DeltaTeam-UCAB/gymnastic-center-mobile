@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
@@ -39,7 +40,7 @@ class BlogScreen extends StatelessWidget {
                 right: 0,
                 child: AppBar(
                   title: const Text('Blog Tips & Topic Details',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                      style: TextStyle(color: Colors.white)),
                   elevation: 0,
                 )),
           ],
@@ -82,7 +83,6 @@ class _BlogDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blog = context.read<BlogsBloc>().state.currentBlog;
-
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
@@ -103,7 +103,16 @@ class _BlogDetailsView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  Text('Por ${blog.trainer.name}', style: textTheme.labelLarge),
+                  GestureDetector(
+                    onTap: () => context.push('/home/0/trainer/${blog.trainer.id}'),
+                    child: Text(
+                      'By: ${blog.trainer.name}',
+                      style: TextStyle(
+                          color: Colors.deepPurple.shade200,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   const Spacer(),
                   Icon(
                     Icons.calendar_month_outlined,
@@ -130,7 +139,7 @@ class _BlogDetailsView extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Text('Comentarios', style: textTheme.titleLarge),
+              Text('Comments', style: textTheme.titleLarge),
               SizedBox(
                 height: 400,
                 child: CommentsSection(blogId: blog.id,),

@@ -16,7 +16,7 @@ class CourseDetailsView extends StatelessWidget {
       children: [
         CustomImage(
           src: course.image,
-          trainer: '${course.trainer.name} - Category: ${course.category}',
+          trainer: course.trainer,
           title: course.title,
           released: course.released,
         ),
