@@ -16,7 +16,7 @@ class CommentsState extends Equatable {
   const CommentsState({
     this.status = CommentsStatus.loaded,
     this.comments = const [],
-    this.page = -1,
+    this.page = 0,
     this.isPosting = false
   });
   

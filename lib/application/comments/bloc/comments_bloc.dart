@@ -26,7 +26,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   void _onCommentPosted(CommentPosted event, Emitter<CommentsState> emit){
     emit(
       state.copyWith(
-        page: -1,
+        page: 0,
         comments: [],
         isPosting: false
       )

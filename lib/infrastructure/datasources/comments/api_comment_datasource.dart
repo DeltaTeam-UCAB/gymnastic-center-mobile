@@ -27,7 +27,6 @@ class ApiCommentDatasource extends CommentsDatasource {
         'lesson' : lessonId      
     };
 
-    // final response = await dio.get('/many?page=$page&perPage=$perPage&lesson=$lessonId');
     final response = await dio.get('/many',
       queryParameters: queryParameters
     );
