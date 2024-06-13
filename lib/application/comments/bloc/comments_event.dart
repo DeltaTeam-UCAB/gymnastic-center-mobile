@@ -9,17 +9,25 @@ class CommentsLoaded extends CommentsEvent{
   CommentsLoaded({required this.comments});
 }
 
-class CommentLiked extends CommentsEvent{
+class CommentLikesChanged extends CommentsEvent{
   final String commentId;
-  CommentLiked({required this.commentId});
+  final bool newCommentLikeState;
+  CommentLikesChanged({required this.newCommentLikeState, required this.commentId});
 }
 
-class CommentDisliked extends CommentsEvent{
+class CommentDiskesChanged extends CommentsEvent{
   final String commentId;
-  CommentDisliked({required this.commentId});
+  final bool newCommentDislikeState;
+  CommentDiskesChanged({required this.newCommentDislikeState, required this.commentId});
 }
 
-class CommentsCompleted extends CommentsEvent{}
+class CommentPosted extends CommentsEvent{}
+
+class CommentPostingStarted extends CommentsEvent{}
+
+class CommentsReset extends CommentsEvent{}
+
+class AllCommentsLoaded extends CommentsEvent{}
 
 class LoadingStarted extends CommentsEvent{}
 

@@ -4,35 +4,35 @@ enum CommentsStatus{
   error, 
   loading,
   loaded,
-  completed
+  allCommentsLoaded
 }
 
 class CommentsState extends Equatable {
   final List<Comment> comments;
   final CommentsStatus status;
-  final int limit;
-  final int offset;
+  final bool isPosting;
+  final int page;
 
   const CommentsState({
     this.status = CommentsStatus.loaded,
     this.comments = const [],
-    this.limit = 5,
-    this.offset = 0
+    this.page = 0,
+    this.isPosting = false
   });
   
   CommentsState copyWith({
     List<Comment>? comments,
     CommentsStatus? status,
-    int? limit,
-    int? offset,
+    int? page,
+    bool? isPosting,
   })=>CommentsState(
     comments: comments ?? this.comments,
     status: status ?? this.status,
-    limit: limit ?? this.limit,
-    offset: offset ?? this.offset
+    page: page ?? this.page,
+    isPosting: isPosting ?? this.isPosting,
   );
 
   @override
-  List<Object> get props => [comments, status];
+  List<Object> get props => [comments, status, isPosting];
 }
 
