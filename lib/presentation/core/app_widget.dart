@@ -14,7 +14,6 @@ class GymnasticCenterApp extends StatelessWidget {
     final LocalStorageService localStorage = LocalStorageService();
     final AppTheme appTheme = context.watch<ThemesBloc>().state.appTheme;
     final bool isThemeInit = context.watch<ThemesBloc>().state.isInitialized;
-
     var brightness =
         SchedulerBinding.instance.platformDispatcher.platformBrightness;
     final isDarkMode = brightness == Brightness.dark;

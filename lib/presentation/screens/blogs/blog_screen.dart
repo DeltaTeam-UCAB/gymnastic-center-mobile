@@ -9,7 +9,7 @@ import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/comments/comments_list.dart';
+import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:intl/intl.dart';
 
 class BlogScreen extends StatelessWidget {
@@ -28,8 +28,7 @@ class BlogScreen extends StatelessWidget {
           BlocProvider(
               create: (_) => CommentsBloc(CommentsRepositoryImpl(
                   commentsDatasource:
-                      ApiCommentDatasource(localStorageService)))
-                ..loadNextPageByPostId(blogId)),
+                      ApiCommentDatasource(localStorageService)))),
         ],
         child: Scaffold(
             body: Stack(
@@ -84,8 +83,6 @@ class _BlogDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blog = context.read<BlogsBloc>().state.currentBlog;
-    final comments = context.watch<CommentsBloc>().state.comments;
-
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
@@ -143,7 +140,10 @@ class _BlogDetailsView extends StatelessWidget {
                 height: 15,
               ),
               Text('Comments', style: textTheme.titleLarge),
-              CommentsList(comments),
+              SizedBox(
+                height: 400,
+                child: CommentsSection(blogId: blog.id,),
+              )
             ],
           ),
         ),
