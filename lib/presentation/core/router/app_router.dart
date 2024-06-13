@@ -95,12 +95,14 @@ class RoutesManager {
           path: '/verification_code',
           builder: (context, state) => const VerificationCodeScreen()),
       GoRoute(
+          path: '/password_changed',
+          builder: (context, state) => const PasswordChangedScreen()),
+      GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
       )
     ],
     redirect: (context, state) async {
-      return '/verification_code';
       final isGoingTo = state.matchedLocation;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;

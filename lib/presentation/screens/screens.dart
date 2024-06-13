@@ -20,3 +20,4 @@ export 'package:gymnastic_center/presentation/screens/videos/videos_screen.dart'
 export 'package:gymnastic_center/presentation/screens/auth/reset_password_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/create_password_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/verification_code_screen.dart';
+export 'package:gymnastic_center/presentation/screens/auth/password_changed_screen.dart';
