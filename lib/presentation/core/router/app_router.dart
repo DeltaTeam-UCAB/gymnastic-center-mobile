@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/presentation/screens/lessons/lesson_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 
 class RoutesManager {
@@ -42,6 +41,10 @@ class RoutesManager {
             GoRoute(
               path: 'videos',
               builder: (context, state) => const AllVideosScreen(),
+            ),
+            GoRoute(
+              path: 'trainer/:trainerId',
+              builder: (context, state) => TrainerScreen(trainerId: state.pathParameters['trainerId'] ?? ''),
             ),
           ]),
       GoRoute(
