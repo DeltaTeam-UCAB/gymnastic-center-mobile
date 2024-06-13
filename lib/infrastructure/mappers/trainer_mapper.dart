@@ -7,6 +7,7 @@ class TrainerMapper {
       id: json.id,
       name: json.name,
       location: json.locations,
+      followers: json.followers,
     );
   }
 }
