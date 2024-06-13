@@ -25,7 +25,8 @@ class ClientsDatasourceImpl extends ClientsDatasource {
         email: apiClient.email,
         name: apiClient.name,
         id: apiClient.id,
-        phone: apiClient.phone);
+        phone: apiClient.phone,
+        avatarImage: apiClient.avatarImage);
   }
 
   @override
