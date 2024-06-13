@@ -50,6 +50,7 @@ class _AppBarTitle extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 28,
+            color: Colors.white,
           ),
         ),
 
@@ -60,7 +61,7 @@ class _AppBarTitle extends StatelessWidget {
               FadeIn(
                 child: IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.search),
+                  icon: const Icon(Icons.search, color: Colors.white),
                   iconSize: 30,
                 )
               ),

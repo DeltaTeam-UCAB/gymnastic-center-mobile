@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
@@ -40,7 +41,7 @@ class BlogScreen extends StatelessWidget {
                 right: 0,
                 child: AppBar(
                   title: const Text('Blog Tips & Topic Details',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                      style: TextStyle(color: Colors.white)),
                   elevation: 0,
                 )),
           ],
@@ -82,7 +83,7 @@ class _BlogDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Blog = context.read<BlogsBloc>().state.currentBlog;
+    final blog = context.read<BlogsBloc>().state.currentBlog;
     final comments = context.watch<CommentsBloc>().state.comments;
 
     final textTheme = Theme.of(context).textTheme;
@@ -91,28 +92,37 @@ class _BlogDetailsView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ImagesCarrousel(Blog.images),
+        _ImagesCarrousel(blog.images),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Title
-              Text(Blog.title,
+              Text(blog.title,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: titleFontSize)),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  Text('Por ${Blog.trainer.name}', style: textTheme.labelLarge),
+                  GestureDetector(
+                    onTap: () => context.push('/home/0/trainer/${blog.trainer.id}'),
+                    child: Text(
+                      'By: ${blog.trainer.name}',
+                      style: TextStyle(
+                          color: Colors.deepPurple.shade200,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   const Spacer(),
                   Icon(
                     Icons.calendar_month_outlined,
                     size: 16,
                     color: textTheme.labelLarge!.color,
                   ),
-                  Text(dateFormat.format(Blog.released),
+                  Text(dateFormat.format(blog.released),
                       style: textTheme.labelLarge),
                 ]),
               ),
@@ -120,11 +130,11 @@ class _BlogDetailsView extends StatelessWidget {
                 color: colors.primary,
               ),
               //COntent
-              Text(Blog.body, style: textTheme.bodyLarge),
+              Text(blog.body, style: textTheme.bodyLarge),
               Divider(
                 color: colors.primary,
               ),
-              Text('Tags: ${Blog.tags.join(', ')}',
+              Text('Tags: ${blog.tags.join(', ')}',
                   style: textTheme.bodyMedium),
               Divider(
                 color: colors.primary,
@@ -132,7 +142,7 @@ class _BlogDetailsView extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Text('Comentarios', style: textTheme.titleLarge),
+              Text('Comments', style: textTheme.titleLarge),
               CommentsList(comments),
             ],
           ),
