@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
@@ -18,7 +16,7 @@ class VerificationCodeScreen extends StatelessWidget {
 }
 
 class _VerificationCodeScreen extends StatefulWidget {
-  const _VerificationCodeScreen({super.key});
+  const _VerificationCodeScreen();
 
   @override
   _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
@@ -120,7 +118,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
   }
 
   _pressSubmit() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
       // you'd often call a server or save the information in a database.
       await context.read<RecoverPasswordBloc>().validateCode();
@@ -144,6 +142,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
             previous.formStatus != current.formStatus,
         listener: (context, state) {
           if (state.formStatus == RecoverPasswordFormStatus.invalid) {
+            context.read<RecoverPasswordBloc>().changeCode('');
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage)),
