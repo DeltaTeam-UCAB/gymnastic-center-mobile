@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/presentation/screens/categories/categories_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 
 class RoutesManager {
@@ -30,6 +31,16 @@ class RoutesManager {
               path: 'video-player',
               builder: (context, state) =>
                   VideoPlayerScreen(videoURL: (state.extra as String)),
+            ),
+            GoRoute(
+              path: 'categories',
+              builder: (context, state) => const AllCategoriesScreen(),
+            ),
+            GoRoute(
+              path: 'courses/:categoryId',
+              builder: (context, state) => AllCoursesScreen(
+                selectedCategoryId: state.pathParameters['categoryId'] ?? '',
+              ),
             ),
             GoRoute(
               path: 'courses',
