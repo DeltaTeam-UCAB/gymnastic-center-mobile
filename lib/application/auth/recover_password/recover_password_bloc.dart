@@ -83,6 +83,14 @@ class RecoverPasswordBloc
     add(EmailChanged(email: email));
   }
 
+  void changePassword(String password) {
+    add(PasswordChanged(password: password));
+  }
+
+  void changeCode(String code) {
+    add(CodeChanged(code: code));
+  }
+
   Future<void> sendCode() async {
     add(RecoverPasswordCodeRequested());
     if (state.email == '') {
@@ -132,7 +140,7 @@ class RecoverPasswordBloc
         errorMessage: codeValidationResult.getError().toString()));
   }
 
-  Future<void> changePassword() async {
+  Future<void> submitPasswordChange() async {
     add(RecoverPasswordFormSubmitted());
     if (state.password == '') {
       add(ErrorOccurred(errorMessage: 'You must enter a password'));
