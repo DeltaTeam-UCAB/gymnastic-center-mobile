@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
+import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
 
   @override
-  ResetPasswordScreenState createState() => ResetPasswordScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RecoverPasswordBloc(
+          userRespository: UserRepositoryImpl(
+        userDatasource: APIUserDatasource(),
+        keyValueStorage: LocalStorageService(),
+      )),
+      child: const _ResetPasswordScreen(),
+    );
+  }
 }
 
-class ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordScreen extends StatefulWidget {
+  const _ResetPasswordScreen({super.key});
+
+  @override
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
   late TextEditingController _emailController;
 
   final _formKey = GlobalKey<FormState>();
@@ -48,93 +69,129 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: child);
   }
 
+  _pressSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      // If the form is valid, display a snackbar. In the real world,
+      // you'd often call a server or save the information in a database.
+      await context.read<RecoverPasswordBloc>().sendCode();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
 
-    return _layout([
-      _textFieldPadding(
-          Text(
-            'Reset password',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: isDarkMode ? Colors.white : Color(0xff222222),
-              fontSize: 28,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          top: false),
-      _textFieldPadding(
-          Text(
-            'Please enter your email address. You will get a link to create new password by email.',
-            style: TextStyle(
-              color: isDarkMode ? Colors.white : Color(0xff677294),
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          top: false),
-      _textFieldPadding(
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.09,
-              child: GymnasticTextFormField(
-                onChanged: (value) => {},
-                controller: _emailController,
-                validator: _validateEmail,
-                decoration: GymnasticTextInputDecoration(
-                  floatingLabelStyle: TextStyle(
-                      fontSize: 17.78,
-                      color:
-                          isDarkMode ? Colors.white : const Color(0xff677294)),
-                  labelStyle: TextStyle(
-                      fontSize: 17.78,
-                      color:
-                          isDarkMode ? Colors.white : const Color(0xff677294)),
-                  labelText: 'Email',
-                  hintText: 'youremail@example.com',
-                  prefixIcon: const Icon(Icons.email),
-                  prefixIconColor:
-                      isDarkMode ? Colors.white : const Color(0x7c8d95af),
-                ),
-              )),
-          bottom: false),
-      Padding(
-          padding: EdgeInsets.fromLTRB(
-              0, 0, 0, MediaQuery.of(context).size.height * 0.3),
-          child: Row(children: [
-            Expanded(
-                child: FilledButton(
-              onPressed: () => {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isDarkMode
-                    ? Colors.white
-                    : const Color.fromARGB(255, 88, 27, 173),
-                padding: const EdgeInsets.symmetric(),
-              ),
-              child: Padding(
+    return BlocConsumer<RecoverPasswordBloc, RecoverPasswordState>(
+        listenWhen: (previous, current) =>
+            previous.formStatus != current.formStatus,
+        listener: (context, state) {
+          if (state.formStatus == RecoverPasswordFormStatus.invalid) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage)),
+            );
+          }
+
+          if (state.formStatus == RecoverPasswordFormStatus.valid) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            context.go('/verification_code');
+          }
+        },
+        builder: (context, state) => _layout([
+              _textFieldPadding(
+                  Text(
+                    'Reset password',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: isDarkMode ? Colors.white : Color(0xff222222),
+                      fontSize: 28,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  top: false),
+              _textFieldPadding(
+                  Text(
+                    'Please enter your email address. You will get a link to create new password by email.',
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Color(0xff677294),
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  top: false),
+              _textFieldPadding(
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.09,
+                      child: GymnasticTextFormField(
+                        onChanged: (value) => context
+                            .read<RecoverPasswordBloc>()
+                            .changeEmail(value),
+                        controller: _emailController,
+                        validator: _validateEmail,
+                        decoration: GymnasticTextInputDecoration(
+                          floatingLabelStyle: TextStyle(
+                              fontSize: 17.78,
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : const Color(0xff677294)),
+                          labelStyle: TextStyle(
+                              fontSize: 17.78,
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : const Color(0xff677294)),
+                          labelText: 'Email',
+                          hintText: 'youremail@example.com',
+                          prefixIcon: const Icon(Icons.email),
+                          prefixIconColor: isDarkMode
+                              ? Colors.white
+                              : const Color(0x7c8d95af),
+                        ),
+                      )),
+                  bottom: false),
+              Padding(
                   padding: EdgeInsets.fromLTRB(
-                      0,
-                      MediaQuery.of(context).size.height * 0.0192,
-                      0,
-                      MediaQuery.of(context).size.height * 0.0192),
-                  child: GradientText(
-                      textWidget: const Text('Send verification code',
-                          style: TextStyle(fontSize: 20)),
-                      gradient: LinearGradient(
-                          colors: isDarkMode
-                              ? ([
-                                  const Color(0xff4f14a0),
-                                  const Color(0xff8066ff),
-                                ])
-                              : ([
-                                  Colors.white,
-                                  Colors.white,
-                                ]),
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight))),
-            )),
-          ]))
-    ]);
+                      0, 0, 0, MediaQuery.of(context).size.height * 0.3),
+                  child: Row(children: [
+                    Expanded(
+                        child: FilledButton(
+                      onPressed:
+                          state.formStatus == RecoverPasswordFormStatus.posting
+                              ? null
+                              : _pressSubmit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDarkMode
+                            ? Colors.white
+                            : const Color.fromARGB(255, 88, 27, 173),
+                        padding: const EdgeInsets.symmetric(),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              0,
+                              MediaQuery.of(context).size.height * 0.0192,
+                              0,
+                              MediaQuery.of(context).size.height * 0.0192),
+                          child: state.formStatus ==
+                                  RecoverPasswordFormStatus.posting
+                              ? const CircularProgressIndicator()
+                              : GradientText(
+                                  textWidget: const Text(
+                                      'Send verification code',
+                                      style: TextStyle(fontSize: 20)),
+                                  gradient: LinearGradient(
+                                      colors: isDarkMode
+                                          ? ([
+                                              const Color(0xff4f14a0),
+                                              const Color(0xff8066ff),
+                                            ])
+                                          : ([
+                                              Colors.white,
+                                              Colors.white,
+                                            ]),
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight))),
+                    )),
+                  ]))
+            ]));
   }
 
   Widget _layout(List<Widget> children) {
