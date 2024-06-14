@@ -8,6 +8,8 @@ import 'package:gymnastic_center/domain/entities/videos/video.dart';
 part 'video_player_event.dart';
 part 'video_player_state.dart';
 
+
+//TODO : Agregar state de total duration, cambiar progressInSeconds, Agregar mas errores
 class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   late VideoPlayerManager videoPlayerManager;
 
@@ -131,4 +133,20 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   void videoCompleted() {
     add(const CurrentVideoCompleted());
   }
+
+  Future<void> setNewPositition(Duration newPosition) async {
+    final result = await videoPlayerManager.setNewPosition(newPosition);
+
+    if (result.isSuccessful()){
+      final totalDuration = videoPlayerManager.getTotalDuration().inMilliseconds;
+      final progress = (newPosition.inMilliseconds / totalDuration);
+      add(CurrentVideoProgressUpdated(
+        progress,
+        newPosition
+      ));
+      return ;
+    }
+    add(const CurrentVideoNotFound());
+  }
+
 }

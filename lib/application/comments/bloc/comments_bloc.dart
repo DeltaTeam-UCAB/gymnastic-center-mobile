@@ -28,7 +28,8 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       state.copyWith(
         page: 0,
         comments: [],
-        isPosting: false
+        isPosting: false,
+        status: CommentsStatus.loaded,
       )
     );
   }

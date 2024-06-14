@@ -11,4 +11,9 @@ abstract class UserDatasource {
       required String name,
       required String phone});
   Future<LoginResponse> login(String email, String password);
+
+  // ! ESTO ES MIENTRAS TANTO!!! NO CREO QUE VAYAN AQUÍ
+  Future<bool> sendRecoveryCode(String email);
+  Future<bool> validateRecoveryCode(String email, String code);
+  Future<bool> changePassword(String email, String code, String password);
 }

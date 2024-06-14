@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
 
-class CategorySlide extends StatelessWidget {
+class AllCategoriesSlide extends StatelessWidget {
   final Category category;
 
-  const CategorySlide({super.key, required this.category});
+  const AllCategoriesSlide({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(
-        color: Colors.white, fontSize: 13, overflow: TextOverflow.ellipsis);
+        color: Colors.white, fontSize: 20, overflow: TextOverflow.ellipsis);
     return GestureDetector(
       onTap: () => context.push('/home/0/courses/${category.id}'),
       child: Container(
@@ -23,8 +23,8 @@ class CategorySlide extends StatelessWidget {
               alignment: Alignment.topCenter,
               children: [
                 SizedBox(
-                    width: 45,
-                    height: 50,
+                    width: 95,
+                    height: 100,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
                       child: Padding(
@@ -55,16 +55,16 @@ class CategorySlide extends StatelessWidget {
                       color: const Color.fromARGB(255, 63, 59, 102)
                           .withOpacity(0.4),
                       borderRadius: BorderRadius.circular(7)),
-                  height: 80,
-                  width: 90,
+                  height: 140,
+                  width: 150,
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(0, 55, 0, 7),
+                  padding: const EdgeInsets.fromLTRB(0, 105, 0, 7),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 80,
+                        width: 130,
                         child: Text(
                           category.name,
                           style: titleStyle,

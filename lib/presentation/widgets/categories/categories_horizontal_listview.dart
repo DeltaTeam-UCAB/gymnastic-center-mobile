@@ -53,7 +53,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          const SeeAllButton(route: '/home/0/courses'),
+          const SeeAllButton(route: '/home/0/categories'),
         ],
       ),
     );

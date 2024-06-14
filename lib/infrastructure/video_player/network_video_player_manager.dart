@@ -48,4 +48,14 @@ class NetworkVideoPlayerManager extends VideoPlayerManager {
   Duration getTotalDuration() {
     return videoPlayerController.value.duration;
   }
+  
+  @override
+  Future<Result<bool>> setNewPosition(Duration duration) async {
+    try {
+      await videoPlayerController.seekTo(duration);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
 }

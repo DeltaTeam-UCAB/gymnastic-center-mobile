@@ -42,7 +42,38 @@ class UserRepositoryImpl extends UserRepository {
       if (e is DioException && e.response?.statusCode != 500) {
         return Result.fail(Exception('wrong credendials'));
       }
-      rethrow;
+      return Result.fail(Exception('wrong credendials'));
+    }
+  }
+
+  @override
+  Future<Result<bool>> sendRecoveryCode(String email) async {
+    try {
+      await userDatasource.sendRecoveryCode(email);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(Exception('Something went wrong'));
+    }
+  }
+
+  @override
+  Future<Result<bool>> changePassword(
+      String email, String code, String password) async {
+    try {
+      await userDatasource.changePassword(email, code, password);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(Exception('Something went wrong'));
+    }
+  }
+
+  @override
+  Future<Result<bool>> validateRecoveryCode(String email, String code) async {
+    try {
+      await userDatasource.validateRecoveryCode(email, code);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(Exception('Something went wrong'));
     }
   }
 }
