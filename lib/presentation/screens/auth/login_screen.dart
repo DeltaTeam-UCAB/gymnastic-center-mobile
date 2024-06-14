@@ -243,12 +243,15 @@ class _LoginScreenState extends State<_LoginScreen> {
           const SizedBox(
             height: 15,
           ),
-          Text("Forgot your password?",
-              style: TextStyle(
-                  color: isDarkMode
-                      ? Colors.white
-                      : const Color.fromARGB(255, 88, 27, 173),
-                  fontSize: 16.0)),
+          GestureDetector(
+            onTap: () => context.go('/password/reset'),
+            child: Text("Forgot your password?",
+                style: TextStyle(
+                    color: isDarkMode
+                        ? Colors.white
+                        : const Color.fromARGB(255, 88, 27, 173),
+                    fontSize: 16.0)),
+          ),
           const SizedBox(
             height: 20,
           ),

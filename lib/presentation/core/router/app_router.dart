@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
@@ -22,8 +23,8 @@ class RoutesManager {
               path: 'course/:courseId/:selectedLessonId',
               builder: (context, state) => LessonScreen(
                   courseId: state.pathParameters['courseId'] ?? '',
-                  selectedLessonId: state.pathParameters['selectedLessonId'] ?? ''
-                ),
+                  selectedLessonId:
+                      state.pathParameters['selectedLessonId'] ?? ''),
             ),
             GoRoute(
               path: 'video-player',
@@ -44,15 +45,15 @@ class RoutesManager {
             ),
             GoRoute(
               path: 'trainer/:trainerId',
-              builder: (context, state) => TrainerScreen(trainerId: state.pathParameters['trainerId'] ?? ''),
+              builder: (context, state) => TrainerScreen(
+                  trainerId: state.pathParameters['trainerId'] ?? ''),
             ),
           ]),
       GoRoute(
-        path: '/video-player',
-        builder: (context, state) {
-          return VideoPlayerScreen(videoURL: (state.extra as String ));
-        }
-      ),
+          path: '/video-player',
+          builder: (context, state) {
+            return VideoPlayerScreen(videoURL: (state.extra as String));
+          }),
       GoRoute(
         path: '/blog/:blogId',
         builder: (context, state) =>
@@ -90,6 +91,18 @@ class RoutesManager {
           builder: (context, state) => const AccountDetailsScreen()),
       GoRoute(path: '/token', builder: (context, state) => const TokenScreen()),
       GoRoute(
+          path: '/password/reset',
+          builder: (context, state) => const ResetPasswordScreen()),
+      GoRoute(
+          path: '/password/create',
+          builder: (context, state) => const CreatePasswordScreen()),
+      GoRoute(
+          path: '/password/verify',
+          builder: (context, state) => const VerificationCodeScreen()),
+      GoRoute(
+          path: '/password/changed',
+          builder: (context, state) => const PasswordChangedScreen()),
+      GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
       )
@@ -104,7 +117,12 @@ class RoutesManager {
       if (isGoingTo == '/splash') return null;
 
       if (!isAutorized) {
-        if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+        if (isGoingTo == '/login' ||
+            isGoingTo == '/register' ||
+            isGoingTo == '/password/reset' ||
+            isGoingTo == '/password/create' ||
+            isGoingTo == '/password/verify' ||
+            isGoingTo == '/password/changed') return null;
         if (isGoingTo == '/welcome' && !hasSeenWelcome) return null;
         return '/start';
       }
