@@ -18,6 +18,7 @@ class RecoverPasswordBloc
     on<CodeChanged>(_onCodeChanged);
     on<ErrorOccurred>(_onErrorOcurred);
     on<RecoverPasswordCodeSent>(_onCodeSent);
+    on<RecoverPasswordCodeResent>(_onCodeResent);
     on<RecoverPasswordCodeRequested>(_onCodeRequested);
     on<RecoverPasswordCodeValidated>(_onCodeValidated);
     on<RecoverPasswordCodeValidationRequested>(_onCodeValidationRequested);
@@ -42,6 +43,11 @@ class RecoverPasswordBloc
   void _onCodeSent(
       RecoverPasswordCodeSent event, Emitter<RecoverPasswordState> emit) {
     emit(state.copyWith(formStatus: RecoverPasswordFormStatus.valid));
+  }
+
+  void _onCodeResent(
+      RecoverPasswordCodeResent event, Emitter<RecoverPasswordState> emit) {
+    emit(state.copyWith(formStatus: RecoverPasswordFormStatus.resent));
   }
 
   void _onCodeRequested(
@@ -91,7 +97,7 @@ class RecoverPasswordBloc
     add(CodeChanged(code: code));
   }
 
-  Future<void> sendCode() async {
+  Future<void> sendCode({bool resend = false}) async {
     add(RecoverPasswordCodeRequested());
     if (state.email == '') {
       add(ErrorOccurred(errorMessage: 'You must enter your email'));
@@ -104,7 +110,7 @@ class RecoverPasswordBloc
       final sentRecoveryCode = sendRecoveryCodeResult.getValue();
 
       if (sentRecoveryCode) {
-        add(RecoverPasswordCodeSent());
+        add(resend ? RecoverPasswordCodeResent() : RecoverPasswordCodeSent());
         return;
       }
     }

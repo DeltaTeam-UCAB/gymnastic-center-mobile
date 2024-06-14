@@ -24,6 +24,8 @@ class CodeChanged extends RecoverPasswordEvent {
 
 class RecoverPasswordCodeSent extends RecoverPasswordEvent {}
 
+class RecoverPasswordCodeResent extends RecoverPasswordEvent {}
+
 class RecoverPasswordCodeRequested extends RecoverPasswordEvent {}
 
 class RecoverPasswordCodeValidated extends RecoverPasswordEvent {}

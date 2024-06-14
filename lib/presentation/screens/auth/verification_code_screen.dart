@@ -1,12 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
 
 class VerificationCodeScreen extends StatelessWidget {
@@ -14,14 +13,7 @@ class VerificationCodeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RecoverPasswordBloc(
-          userRespository: UserRepositoryImpl(
-        userDatasource: APIUserDatasource(),
-        keyValueStorage: LocalStorageService(),
-      )),
-      child: const _VerificationCodeScreen(),
-    );
+    return const _VerificationCodeScreen();
   }
 }
 
@@ -60,21 +52,17 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
   }
 
   void _onCodeChanged() {
-    String firstDigit =
-        _firstDigit.text.length > 1 ? _firstDigit.text.substring(1) : '';
-    String secondDigit =
-        _secondDigit.text.length > 1 ? _secondDigit.text.substring(1) : '';
-    String thirdDigit =
-        _thirdDigit.text.length > 1 ? _thirdDigit.text.substring(1) : '';
-    String fourthDigit =
-        _fourthDigit.text.length > 1 ? _fourthDigit.text.substring(1) : '';
+    String firstDigit = _firstDigit.text.replaceAll('\u200b', '');
+    String secondDigit = _secondDigit.text.replaceAll('\u200b', '');
+    String thirdDigit = _thirdDigit.text.replaceAll('\u200b', '');
+    String fourthDigit = _fourthDigit.text.replaceAll('\u200b', '');
 
     String code = firstDigit + secondDigit + thirdDigit + fourthDigit;
 
     context.read<RecoverPasswordBloc>().changeCode(code);
 
     if (code.length == 4) {
-      context.read<RecoverPasswordBloc>().validateCode();
+      _pressSubmit();
     }
   }
 
@@ -143,6 +131,10 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
     }
   }
 
+  _resendCode() async {
+    await context.read<RecoverPasswordBloc>().sendCode(resend: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RecoverPasswordBloc, RecoverPasswordState>(
@@ -199,15 +191,27 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
                       width: 10,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        context.read<RecoverPasswordBloc>().sendCode();
-                      },
+                      onTap:
+                          state.formStatus == RecoverPasswordFormStatus.posting
+                              ? null
+                              : _resendCode,
                       child: const Text("Please resend",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold)),
                     ),
+                    SizedBox(
+                      width:
+                          state.formStatus == RecoverPasswordFormStatus.posting
+                              ? 10
+                              : 0,
+                    ),
+                    Container(
+                        child: state.formStatus ==
+                                RecoverPasswordFormStatus.posting
+                            ? const Center(child: CircularProgressIndicator())
+                            : null)
                   ]),
             ]));
   }

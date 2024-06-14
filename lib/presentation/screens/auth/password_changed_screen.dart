@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/flat_svg_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
@@ -67,7 +66,9 @@ class PasswordChangedScreenState extends State<PasswordChangedScreen> {
                         Row(children: [
                           Expanded(
                               child: FilledButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.go('/login');
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(),

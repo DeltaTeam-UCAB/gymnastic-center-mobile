@@ -14,7 +14,6 @@ class APIUserDatasource extends UserDatasource {
       required String password,
       required String name,
       required String phone}) async {
-    log(Environment.backendApi);
     await dio.post('/auth/register', data: {
       'email': email,
       'password': password,

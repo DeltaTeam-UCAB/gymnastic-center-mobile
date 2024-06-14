@@ -1,6 +1,6 @@
 part of 'recover_password_bloc.dart';
 
-enum RecoverPasswordFormStatus { invalid, valid, validating, posting }
+enum RecoverPasswordFormStatus { invalid, valid, validating, posting, resent }
 
 class RecoverPasswordState extends Equatable {
   final String email;
@@ -33,4 +33,9 @@ class RecoverPasswordState extends Equatable {
 
   @override
   List<Object> get props => [email, code, password, formStatus, errorMessage];
+
+  @override
+  String toString() {
+    return '$email $code $password';
+  }
 }
