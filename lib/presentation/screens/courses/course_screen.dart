@@ -70,7 +70,7 @@ class _Details extends StatelessWidget {
             child: AppBar(
               titleSpacing: -10,
               title: const Text('Course Details',
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+                  style: TextStyle(color: Colors.white)),
               elevation: 0,
             )),
       ],

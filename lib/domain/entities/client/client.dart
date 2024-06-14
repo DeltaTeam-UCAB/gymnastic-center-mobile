@@ -1,15 +1,14 @@
 class Client {
   final String id;
-  final int? weight;
-  final int? height;
-  final String? location;
-  final String? gender;
-  final DateTime? birthDate;
+  final String name;
+  final String phone;
+  final String email;
+  final String? avatarImage;
+
   Client(
       {required this.id,
-      this.weight,
-      this.height,
-      this.birthDate,
-      this.gender,
-      this.location});
+      required this.name,
+      required this.phone,
+      required this.email,
+      this.avatarImage});
 }

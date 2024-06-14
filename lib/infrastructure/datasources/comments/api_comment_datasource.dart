@@ -4,89 +4,106 @@ import 'package:gymnastic_center/domain/datasources/comments/comments_datasource
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
 import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';
 import 'package:gymnastic_center/infrastructure/mappers/comment_mapper.dart';
-import 'package:gymnastic_center/infrastructure/models/comments/comment_response.dart';
+import 'package:gymnastic_center/infrastructure/models/comments/comment_apiresponse.dart';
 
 class ApiCommentDatasource extends CommentsDatasource {
   final KeyValueStorageService keyValueStorage;
   final dio =
-      Dio(BaseOptions(baseUrl: Environment.backendApi ));
-  ApiCommentDatasource(KeyValueStorageService keyValueStorageI)
-      : keyValueStorage = keyValueStorageI;
+      Dio(BaseOptions(baseUrl: '${Environment.backendApi}/comment' ));
+  ApiCommentDatasource(this.keyValueStorage){
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      return handler.next(options);
+    }));
+  }
+
   @override
-  Future<List<Comment>> getCommentsByCourseId(String courseId, {int limit = 5 , int offset= 0}) async {
-    final response = await dio.get('/find-course-comments/$courseId',
-      queryParameters: {
-        'limit': limit,
-        'offset': offset
-      }, 
-      options: Options(headers: {
-        'auth': await keyValueStorage.getValue<String>('token')
-      })
+  Future<List<Comment>> getCommentsByLessonId(String lessonId, {int perPage = 5 , int page = 0}) async {
+    
+    final Map<String, dynamic> queryParameters = {
+        'page': page,
+        'perPage': perPage,
+        'lesson' : lessonId      
+    };
+
+    final response = await dio.get('/many',
+      queryParameters: queryParameters
     );
+    
+
     return _responseToComments(response.data);
   }
 
   @override
-  Future<List<Comment>> getCommentsByPostId(String postId, {int limit = 5 , int offset= 0}) async {
-    final response = await dio.get('/find-post-comments/$postId',
-      queryParameters: {
-        'limit': limit,
-        'offset': offset
-      }, 
-      options: Options(headers: {
-        'auth': await keyValueStorage.getValue<String>('token')
-      })
+  Future<List<Comment>> getCommentsByBlogId(String blogId, {int perPage = 5 , int page= 0}) async {
+
+    final Map<String, dynamic> queryParameters = {
+        'page': page,
+        'perPage': perPage,
+        'blog' : blogId      
+    };
+
+    final response = await dio.get('/many',
+      queryParameters: queryParameters
     );
+
     return _responseToComments(response.data);
   }
 
   List<Comment> _responseToComments(dynamic data){
-    final List<CommentResponse> apiCommentsResponse = (data as List)
-      .map((data) => CommentResponse.fromJson(data))
+    final List<CommentApiResponse> apiCommentsResponse = (data as List)
+      .map((data) => CommentApiResponse.fromJson(data))
       .toList();
     final List<Comment> comments = CommentMapper.apiCommentsEntity(apiCommentsResponse); 
     return comments;
   }
 
   @override
-  Future<bool> likeCommentById(String commentId) async {
-    final response = await dio.post('/like',
-      data: {
-        'idComment' : commentId
-      },
-      options: Options(
-        headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        },
-      )
-    );
-    if (response.data != null){
-      final String message = response.data['message'];
-      if (message.isNotEmpty){
-        return true;
-      }
-    }
-    return false;
+  Future<bool> toggleLikeCommentById(String commentId) async {
+    final response = await dio.post('/toggle/like/$commentId');
+    final bool like = response.data['like'];
+    return like;
   }
 
   @override
-  Future<bool> deleteLikeByCommentId(String commentId) async {
-    final response =await dio.delete('/like/delete',
-      data: {
-        'idComment' : commentId
-      },
-      options: Options(
-        headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
-        },
-      )
-    );
-    if (response.data != null){
-      final String message = response.data['message'];
-      if (message.isNotEmpty){
-        return true;
-      }
-    }
-    return false;
+  Future<bool> toggleDislikeCommentById(String commentId) async {
+    final response = await dio.post('/toggle/dislike/$commentId');
+    final bool dislike = response.data['dislike'];
+    return dislike;
   }
+  
+  @override
+  Future<String> createCommentsByLessonId(String lessonId, String message) async {
+
+    final Map<String, String> body = {
+      'target' : lessonId,
+      'targetType' : 'LESSON',
+      'body' : message
+    };
+
+    final response = await dio.post('/release',
+      data: body
+    );
+
+    return response.data['commentId'];
+
+  }
+
+  @override
+  Future<String> createCommentsByBlogId(String blogId, String message) async {
+    final Map<String, String> body = {
+      'target' : blogId,
+      'targetType' : 'BLOG',
+      'body' : message
+    };
+
+    final response = await dio.post('/release',
+      data: body
+    );
+   
+    return response.data['commentId'];
+  }
+  
+  
 }

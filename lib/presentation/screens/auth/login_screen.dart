@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) => LoginBloc(
                 userRespository: UserRepositoryImpl(
-              userDatasource: APIUserDatasource(localStorageService),
+              userDatasource: APIUserDatasource(),
               keyValueStorage: localStorageService,
             )),
         child: const _LoginScreen());

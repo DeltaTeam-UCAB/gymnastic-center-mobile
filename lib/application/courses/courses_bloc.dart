@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
 
@@ -43,12 +44,20 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     ));
   }
 
-  Future<void> loadNextPage() async {
+  Future<void> loadNextPage(
+      {CourseFilter filter = CourseFilter.recent,
+      String? categoryId,
+      String? trainerId}) async {
     if (state.isLastPage || state.isLoading || state.isError) return;
     add(const CourseLoading());
 
     final coursesResponse = await coursesRepository.getCoursesPaginated(
-        page: state.page, perPage: state.perPage);
+      page: state.page,
+      perPage: state.perPage,
+      filter: filter,
+      category: categoryId,
+      trainer: trainerId,
+    );
 
     if (coursesResponse.isSuccessful()) {
       final courses = coursesResponse.getValue();

@@ -6,8 +6,9 @@ class UpdateState extends Equatable {
   final UpdateFormStatus updateFormStatus;
   final String fullname;
   final String email;
-  final String password;
   final String phone;
+  final String avatarImage;
+  final String password;
   final String errorMessage;
 
   const UpdateState(
@@ -16,11 +17,19 @@ class UpdateState extends Equatable {
       this.email = '',
       this.password = '',
       this.phone = '',
-      this.errorMessage = ''});
+      this.errorMessage = '',
+      this.avatarImage = ''});
 
   @override
-  List<Object> get props =>
-      [fullname, email, password, phone, updateFormStatus, errorMessage];
+  List<Object> get props => [
+        fullname,
+        email,
+        password,
+        phone,
+        updateFormStatus,
+        errorMessage,
+        avatarImage
+      ];
 
   UpdateState copyWith(
       {UpdateFormStatus? updateFormStatus,
@@ -28,13 +37,16 @@ class UpdateState extends Equatable {
       String? email,
       String? password,
       String? phone,
+      String? avatarImage,
       String? errorMessage}) {
     return UpdateState(
-        updateFormStatus: updateFormStatus ?? this.updateFormStatus,
-        fullname: fullname ?? this.fullname,
-        email: email ?? this.email,
-        password: password ?? this.password,
-        phone: phone ?? this.phone,
-        errorMessage: errorMessage ?? this.errorMessage);
+      updateFormStatus: updateFormStatus ?? this.updateFormStatus,
+      fullname: fullname ?? this.fullname,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      phone: phone ?? this.phone,
+      errorMessage: errorMessage ?? this.errorMessage,
+      avatarImage: avatarImage ?? this.avatarImage,
+    );
   }
 }

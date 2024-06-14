@@ -1,12 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';
+import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications_manager.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_options.dart';
 import 'package:gymnastic_center/infrastructure/local_notifications/local_notifications.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/presentation/core/app_widget.dart';
 
 void main() async {
@@ -29,5 +33,9 @@ void main() async {
     BlocProvider(
         create: (_) => NotificationsBloc(
             FirebaseNotificationsManager(LocalNotifications()))),
+    BlocProvider(
+        create: (_) => ClientsBloc(ClientsRepositoryImpl(
+            clientsDatasource: ClientsDatasourceImpl(LocalStorageService()),
+            keyValueStorage: LocalStorageService())))
   ], child: const GymnasticCenterApp()));
 }

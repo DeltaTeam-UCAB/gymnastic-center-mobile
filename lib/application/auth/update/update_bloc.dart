@@ -2,21 +2,22 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/domain/repositories/user/user_repository.dart';
+import 'package:gymnastic_center/domain/repositories/clients/clients_repository.dart';
 
 part 'update_event.dart';
 part 'update_state.dart';
 
 class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
-  final UserRepository userRepository;
+  final ClientsRepository clientRepository;
 
-  UpdateBloc(this.userRepository) : super(const UpdateState()) {
+  UpdateBloc(this.clientRepository) : super(const UpdateState()) {
     on<OnSubmitUpdate>(_onSubmitUpdate);
     on<OnUpdateFormStatusChanged>(_onUpdateFormStatusChanged);
     on<FullNameChanged>(_onFullNameChanged);
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<PhoneChanged>(_onPhoneChanged);
+    on<AvatarImageChanged>(_onAvatarImageChanged);
     on<FailRegister>(_onFailRegister);
   }
 
@@ -49,12 +50,19 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
     emit(state.copyWith(errorMessage: event.errorMessage));
   }
 
+  void _onAvatarImageChanged(
+      AvatarImageChanged event, Emitter<UpdateState> emit) {
+    emit(state.copyWith(avatarImage: event.avatarImage));
+  }
+
   Future<void> onSubmitUpdate() async {
     add(OnUpdateFormStatusChanged(updateFormStatus: UpdateFormStatus.posting));
-    final result = await userRepository.update(
+    final result = await clientRepository.update(
         email: state.email.isEmpty ? null : state.email,
         name: state.fullname.isEmpty ? null : state.fullname,
-        password: state.password.isEmpty ? null : state.password);
+        password: state.password.isEmpty ? null : state.password,
+        phone: state.phone.isEmpty ? null : state.phone,
+        avatarImage: state.avatarImage.isEmpty ? null : state.avatarImage);
     if (result.isSuccess) {
       add(OnUpdateFormStatusChanged(updateFormStatus: UpdateFormStatus.valid));
     } else {
@@ -82,5 +90,9 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
 
   void phoneChanged(String phone) {
     add(PhoneChanged(phone: phone));
+  }
+
+  void avatarImageChanged(String avatarImage) {
+    add(AvatarImageChanged(avatarImage: avatarImage));
   }
 }
