@@ -94,7 +94,7 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
 
           if (state.formStatus == RecoverPasswordFormStatus.valid) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            context.go('/verification_code');
+            context.go('/password/verify');
           }
         },
         builder: (context, state) => _layout([

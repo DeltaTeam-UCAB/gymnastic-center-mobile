@@ -158,7 +158,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
 
           if (state.formStatus == RecoverPasswordFormStatus.valid) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            context.go('/create_password');
+            context.go('/password/create');
           }
         },
         builder: (context, state) => _layout([

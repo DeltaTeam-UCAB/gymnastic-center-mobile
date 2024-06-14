@@ -44,7 +44,8 @@ class RoutesManager {
             ),
             GoRoute(
               path: 'trainer/:trainerId',
-              builder: (context, state) => TrainerScreen(trainerId: state.pathParameters['trainerId'] ?? ''),
+              builder: (context, state) => TrainerScreen(
+                  trainerId: state.pathParameters['trainerId'] ?? ''),
             ),
           ]),
       GoRoute(
@@ -89,16 +90,16 @@ class RoutesManager {
           builder: (context, state) => const AccountDetailsScreen()),
       GoRoute(path: '/token', builder: (context, state) => const TokenScreen()),
       GoRoute(
-          path: '/reset_password',
+          path: '/password/reset',
           builder: (context, state) => const ResetPasswordScreen()),
       GoRoute(
-          path: '/create_password',
+          path: '/password/create',
           builder: (context, state) => const CreatePasswordScreen()),
       GoRoute(
-          path: '/verification_code',
+          path: '/password/verify',
           builder: (context, state) => const VerificationCodeScreen()),
       GoRoute(
-          path: '/password_changed',
+          path: '/password/changed',
           builder: (context, state) => const PasswordChangedScreen()),
       GoRoute(
         path: '/',
@@ -115,7 +116,12 @@ class RoutesManager {
       if (isGoingTo == '/splash') return null;
 
       if (!isAutorized) {
-        if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+        if (isGoingTo == '/login' ||
+            isGoingTo == '/register' ||
+            isGoingTo == '/password/reset' ||
+            isGoingTo == '/password/create' ||
+            isGoingTo == '/password/verify' ||
+            isGoingTo == '/password/changed') return null;
         if (isGoingTo == '/welcome' && !hasSeenWelcome) return null;
         return '/start';
       }

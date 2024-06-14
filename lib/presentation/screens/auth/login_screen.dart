@@ -244,7 +244,7 @@ class _LoginScreenState extends State<_LoginScreen> {
             height: 15,
           ),
           GestureDetector(
-            onTap: () => context.go('/reset_password'),
+            onTap: () => context.go('/password/reset'),
             child: Text("Forgot your password?",
                 style: TextStyle(
                     color: isDarkMode
