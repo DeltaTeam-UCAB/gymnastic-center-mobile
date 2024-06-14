@@ -21,7 +21,7 @@ class CamaraGalleryImpl extends CamaraGalleryManager {
   Future<String?> takePhoto() async {
     final XFile? photo = await _picker.pickImage(
       source: ImageSource.camera,
-      imageQuality: 100,
+      imageQuality: 80,
       preferredCameraDevice: CameraDevice.rear,
     );
 
