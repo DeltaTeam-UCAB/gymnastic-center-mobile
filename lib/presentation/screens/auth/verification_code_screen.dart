@@ -60,10 +60,6 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
     String code = firstDigit + secondDigit + thirdDigit + fourthDigit;
 
     context.read<RecoverPasswordBloc>().changeCode(code);
-
-    if (code.length == 4) {
-      _pressSubmit();
-    }
   }
 
   Widget _textFieldPadding(Widget child,
@@ -137,6 +133,12 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String storedCode = context.watch<RecoverPasswordBloc>().state.code;
+
+    if (storedCode.length == 4) {
+      _pressSubmit();
+    }
+
     return BlocConsumer<RecoverPasswordBloc, RecoverPasswordState>(
         listenWhen: (previous, current) =>
             previous.formStatus != current.formStatus,
@@ -148,7 +150,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
             );
           }
 
-          if (state.formStatus == RecoverPasswordFormStatus.valid) {
+          if (state.formStatus == RecoverPasswordFormStatus.validated) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             context.go('/password/create');
           }
@@ -162,9 +164,9 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
                           color: Colors.white)),
                   top: false),
               _textFieldPadding(
-                  const Text(
-                    'Please type the verification code sent to youremail@gmail.com',
-                    style: TextStyle(
+                  Text(
+                    'Please type the verification code sent to ${context.read<RecoverPasswordBloc>().state.email}',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),

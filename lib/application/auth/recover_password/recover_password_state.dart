@@ -1,6 +1,14 @@
 part of 'recover_password_bloc.dart';
 
-enum RecoverPasswordFormStatus { invalid, valid, validating, posting, resent }
+enum RecoverPasswordFormStatus {
+  invalid,
+  sent,
+  validated,
+  validating,
+  posting,
+  resent,
+  finished
+}
 
 class RecoverPasswordState extends Equatable {
   final String email;

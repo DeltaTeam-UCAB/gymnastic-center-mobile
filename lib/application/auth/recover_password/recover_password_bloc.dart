@@ -29,7 +29,7 @@ class RecoverPasswordBloc
   void _onRecoverCompleted(
       RecoverPasswordCompleted event, Emitter<RecoverPasswordState> emit) {
     emit(state.copyWith(
-      formStatus: RecoverPasswordFormStatus.valid,
+      formStatus: RecoverPasswordFormStatus.finished,
     ));
   }
 
@@ -42,7 +42,7 @@ class RecoverPasswordBloc
 
   void _onCodeSent(
       RecoverPasswordCodeSent event, Emitter<RecoverPasswordState> emit) {
-    emit(state.copyWith(formStatus: RecoverPasswordFormStatus.valid));
+    emit(state.copyWith(formStatus: RecoverPasswordFormStatus.sent));
   }
 
   void _onCodeResent(
@@ -57,7 +57,7 @@ class RecoverPasswordBloc
 
   void _onCodeValidated(
       RecoverPasswordCodeValidated event, Emitter<RecoverPasswordState> emit) {
-    emit(state.copyWith(formStatus: RecoverPasswordFormStatus.valid));
+    emit(state.copyWith(formStatus: RecoverPasswordFormStatus.validated));
   }
 
   void _onCodeValidationRequested(RecoverPasswordCodeValidationRequested event,
@@ -127,7 +127,8 @@ class RecoverPasswordBloc
 
     if (state.code.length < 4) {
       add(ErrorOccurred(
-          errorMessage: 'You must enter all of the code\'s digits'));
+          errorMessage:
+              'You must enter all of the code\'s digits (entered code ${state.code})'));
       return;
     }
 

@@ -97,7 +97,7 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
             );
           }
 
-          if (state.formStatus == RecoverPasswordFormStatus.valid) {
+          if (state.formStatus == RecoverPasswordFormStatus.finished) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             context.go('/password/changed');
           }

@@ -82,7 +82,7 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
             );
           }
 
-          if (state.formStatus == RecoverPasswordFormStatus.valid) {
+          if (state.formStatus == RecoverPasswordFormStatus.sent) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             context.go('/password/verify');
           }
