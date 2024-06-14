@@ -29,7 +29,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   }
 
   void _onCourseIsEmpty(CoursesIsEmpty event, Emitter<CoursesState> emit) {
-    emit(state.copyWith(isLastPage: true));
+    emit(state.copyWith(isLastPage: true, isLoading: false));
   }
 
   void _onCourseLoading(CourseLoading event, Emitter<CoursesState> emit) {
