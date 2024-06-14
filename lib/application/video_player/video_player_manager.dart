@@ -7,5 +7,6 @@ abstract class VideoPlayerManager {
   void setVolume(double volume);
   Duration getTotalDuration();
   Duration getCurrentPosition();
+  Future<Result<bool>> setNewPosition( Duration duration );
   Duration getDurationLoaded();
 }

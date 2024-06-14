@@ -81,20 +81,21 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) {
-        _handleOnTapDown(details); 
-      },
-      child: AnimatedOpacity(
+    return  AnimatedOpacity(
         opacity: _showLayer ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
         child: Stack(
           children: [
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
-                ),
+              child: GestureDetector(
+                onTapDown: (details) {
+                  _handleOnTapDown(details);
+                },
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ),
               ),
             ),
             Positioned(
@@ -132,7 +133,6 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
