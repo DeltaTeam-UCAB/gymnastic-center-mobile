@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:gymnastic_center/domain/datasources/user/user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';

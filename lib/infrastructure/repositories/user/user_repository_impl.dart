@@ -42,7 +42,7 @@ class UserRepositoryImpl extends UserRepository {
       if (e is DioException && e.response?.statusCode != 500) {
         return Result.fail(Exception('wrong credendials'));
       }
-      rethrow;
+      return Result.fail(Exception('wrong credendials'));
     }
   }
 

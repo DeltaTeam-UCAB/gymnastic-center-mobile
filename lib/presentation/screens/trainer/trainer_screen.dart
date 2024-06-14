@@ -130,6 +130,7 @@ class _TrainerDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return IntrinsicHeight(
       child: Container(
         decoration: const BoxDecoration(
@@ -155,7 +156,7 @@ class _TrainerDetails extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         trainer.name.length > 18
@@ -169,8 +170,8 @@ class _TrainerDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _MetricView(
                             metricValue: trainer.followers,
@@ -189,11 +190,18 @@ class _TrainerDetails extends StatelessWidget {
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 25,
-                        width: double.infinity,
+                        width: 250,
                         child: ElevatedButton(
                           onPressed: toggleFollow,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isFollowing ?  colors.inversePrimary : Colors.white,
+                          ),
                           child: Text(
-                            isFollowing ? 'Unfollow' : 'Follow',
+                            isFollowing ? 'Following' : 'Follow',
+                            style: TextStyle(
+                              color: isFollowing ? Colors.white : colors.inversePrimary,
+                              fontWeight: FontWeight.bold,
+                            )
                           ),
                         ),
                       )
