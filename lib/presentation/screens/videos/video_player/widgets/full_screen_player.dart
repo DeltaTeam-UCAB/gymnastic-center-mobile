@@ -7,7 +7,7 @@ import 'package:video_player/video_player.dart';
 
 class FullScreenPlayer extends StatefulWidget {
   final Video video;
-
+  
   const FullScreenPlayer({super.key, required this.video});
 
   @override
@@ -16,14 +16,14 @@ class FullScreenPlayer extends StatefulWidget {
 
 class _FullScreenPlayerState extends State<FullScreenPlayer> {
   late VideoPlayerController _controller;
-  late NetworkVideoPlayerManager service;
+  late NetworkVideoPlayerManager manager;
 
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.video.src));
-
-    service = NetworkVideoPlayerManager(_controller);
+    manager = NetworkVideoPlayerManager(_controller);
+    context.read<VideoPlayerBloc>().setVideoPlayerManager(manager);
   }
 
   @override
@@ -38,7 +38,6 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<VideoPlayerBloc>().setVideoPlayerManager(service);
     return FutureBuilder(
         future: initialize(context),
         builder: (context, snapshot) {

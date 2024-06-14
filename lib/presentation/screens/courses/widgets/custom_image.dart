@@ -1,15 +1,20 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/new_tag.dart';
 
 class CustomImage extends StatelessWidget {
   final String title;
   final String src;
-  final String instructor;
+  final Trainer trainer;
+  final DateTime released;
   const CustomImage(
       {super.key,
       required this.src,
-      required this.instructor,
-      required this.title});
+      required this.trainer,
+      required this.title,
+      required this.released});
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +58,29 @@ class CustomImage extends StatelessWidget {
                 title,
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold),
               ),
-              Text(
-                instructor,
-                style: TextStyle(
-                  color: Colors.grey.shade300,
-                  fontSize: 14,
+              GestureDetector(
+                onTap: () => context.push('/home/0/trainer/${trainer.id}'),
+                child: Text(
+                  trainer.name,
+                  style: TextStyle(
+                    color: Colors.deepPurple.shade200,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
             ],
           ),
+        ),
+
+        // Tag New
+        Positioned(
+          top: 100,
+          left: 10,
+          child: NewTag(courseDate: released, width: 90, height: 35),
         ),
       ],
     );

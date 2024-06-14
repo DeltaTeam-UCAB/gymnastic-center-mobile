@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
 
@@ -28,7 +29,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   }
 
   void _onCourseIsEmpty(CoursesIsEmpty event, Emitter<CoursesState> emit) {
-    emit(state.copyWith(isLastPage: true));
+    emit(state.copyWith(isLastPage: true, isLoading: false));
   }
 
   void _onCourseLoading(CourseLoading event, Emitter<CoursesState> emit) {
@@ -39,16 +40,24 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(state.copyWith(
       courses: [...state.courses, ...event.courses],
       isLoading: false,
-      offset: state.offset + state.limit,
+      page: state.page + 1,
     ));
   }
 
-  Future<void> loadNextPage() async {
+  Future<void> loadNextPage(
+      {CourseFilter filter = CourseFilter.recent,
+      String? categoryId,
+      String? trainerId}) async {
     if (state.isLastPage || state.isLoading || state.isError) return;
     add(const CourseLoading());
 
     final coursesResponse = await coursesRepository.getCoursesPaginated(
-        limit: state.limit, offset: state.offset);
+      page: state.page,
+      perPage: state.perPage,
+      filter: filter,
+      category: categoryId,
+      trainer: trainerId,
+    );
 
     if (coursesResponse.isSuccessful()) {
       final courses = coursesResponse.getValue();

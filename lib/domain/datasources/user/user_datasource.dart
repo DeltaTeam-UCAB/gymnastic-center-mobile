@@ -1,5 +1,3 @@
-import 'package:gymnastic_center/domain/entities/user/user.dart';
-
 class LoginResponse {
   final String token;
   final String type;
@@ -7,8 +5,15 @@ class LoginResponse {
 }
 
 abstract class UserDatasource {
-  Future<bool> register(String email, String password, String name);
+  Future<bool> register(
+      {required String email,
+      required String password,
+      required String name,
+      required String phone});
   Future<LoginResponse> login(String email, String password);
-  Future<User> current();
-  Future<bool> update({String? email, String? password, String? name});
+
+  // ! ESTO ES MIENTRAS TANTO!!! NO CREO QUE VAYAN AQUÍ
+  Future<bool> sendRecoveryCode(String email);
+  Future<bool> validateRecoveryCode(String email, String code);
+  Future<bool> changePassword(String email, String code, String password);
 }

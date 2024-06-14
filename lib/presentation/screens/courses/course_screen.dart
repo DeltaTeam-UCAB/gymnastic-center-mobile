@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/course_details_view.dart';
@@ -17,7 +17,7 @@ class CourseScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => CoursesBloc(
           coursesRepository: CoursesRepositoryImpl(
-              CoursesDatasourceImpl(LocalStorageService())))
+              ApiCoursesDatasource(LocalStorageService())))
         ..getCourseById(courseId),
       child: const _CourseScreenView(),
     );
@@ -36,6 +36,7 @@ class _CourseScreenView extends StatelessWidget {
       builder: (context, state) {
         final course = state.currentCourse;
         return Scaffold(
+          //TODO: Evaluar optional o cambiarlo por status
           body: state.currentCourse != null
               ? _Details(course: course!)
               : const Center(
@@ -68,8 +69,8 @@ class _Details extends StatelessWidget {
             right: 0,
             child: AppBar(
               titleSpacing: -10,
-              title: Text('Category: ${course.category}',
-                  style: const TextStyle(color: Colors.white, fontSize: 16)),
+              title: const Text('Course Details',
+                  style: TextStyle(color: Colors.white)),
               elevation: 0,
             )),
       ],

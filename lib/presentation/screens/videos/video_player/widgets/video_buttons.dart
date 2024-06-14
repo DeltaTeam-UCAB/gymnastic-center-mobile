@@ -15,6 +15,7 @@ class VideoButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         if (state.status == VideoPlayerStatus.loading) {
           return const Center(child: CircularProgressIndicator());
@@ -80,20 +81,21 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) {
-        _handleOnTapDown(details);
-      },
-      child: AnimatedOpacity(
+    return  AnimatedOpacity(
         opacity: _showLayer ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
         child: Stack(
           children: [
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
-                ),
+              child: GestureDetector(
+                onTapDown: (details) {
+                  _handleOnTapDown(details);
+                },
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ),
               ),
             ),
             Positioned(
@@ -111,6 +113,12 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
               alignment: Alignment.bottomCenter,
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                  child: LoadedVideoProgressBar()),
+            ),
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.5, vertical: 42),
                   child: VideoProgressBar()),
             ),
             const Positioned(
@@ -118,9 +126,13 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
               right: 20,
               child: TotalDurationText(),
             ),
+            const Positioned(
+              bottom: 30,
+              left: 20,
+              child: ViewedDurationText(),
+            ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

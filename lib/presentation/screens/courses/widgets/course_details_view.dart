@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_icon.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_image.dart';
@@ -15,17 +16,22 @@ class CourseDetailsView extends StatelessWidget {
       children: [
         CustomImage(
           src: course.image,
-          instructor: course.instructor,
+          trainer: course.trainer,
           title: course.title,
+          released: course.released,
         ),
 
         // Course Details
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding:
+              const EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text('tags: ${course.tags.join(', ')}',
+                  style: const TextStyle(fontSize: 12)),
+              const SizedBox(height: 5),
               Text(course.description,
                   textAlign: TextAlign.justify,
                   style: const TextStyle(fontSize: 12)),
@@ -39,7 +45,7 @@ class CourseDetailsView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CustomIcon(
-                icon: Icons.menu, title: 'Calories', subtitle: course.calories),
+                icon: Icons.menu, title: 'Level', subtitle: course.level),
             const CustomIcon(
                 icon: Icons.calendar_month_outlined,
                 title: 'Weeks',
@@ -53,6 +59,7 @@ class CourseDetailsView extends StatelessWidget {
 
         LessonsListView(
           lessons: course.lessons!,
+          onPressedLesson: (Lesson lesson) => context.push('/home/0/course/${course.id}/${lesson.id}'),
         ),
 
         const SizedBox(height: 100),

@@ -1,90 +1,75 @@
+import 'package:gymnastic_center/infrastructure/models/trainer/trainer_response.dart';
+
 class CourseResponse {
+  final List<String> tags;
+  final String level;
   final String id;
   final String title;
   final String description;
-  final String calories;
-  final String instructor;
+  final TrainerResponse trainer;
   final String category;
   final String image;
-  final List<LessonResponse>? lessons;
-  final DateTime? creationDate;
+  final List<LessonResponse> lessons;
+  final DateTime date;
 
   CourseResponse({
+    required this.tags,
+    required this.level,
     required this.id,
     required this.title,
     required this.description,
-    required this.calories,
-    required this.instructor,
+    required this.trainer,
     required this.category,
     required this.image,
-    this.lessons,
-    this.creationDate,
+    required this.lessons,
+    required this.date,
   });
 
   factory CourseResponse.fromJson(Map<String, dynamic> json) => CourseResponse(
-        id: json["id"] ?? "",
-        title: json["title"],
-        description: json["description"],
-        calories: json["calories"],
-        instructor: json["instructor"],
-        category: json["category"],
-        image: json["image"] is String
-            ? json["image"]
-            : ImageResponse.fromJson(json["image"]).src,
-        creationDate: json["creationDate"] != null
-            ? DateTime.parse(json["creationDate"])
-            : null,
+        id: json["id"], // Viene
+        title: json["title"], // Viene
+        description: json["description"], // Viene
+        trainer: json["trainer"] is String // Viene pero diferente segun el caso
+            ? TrainerResponse(id: '', name: json["trainer"])
+            : TrainerResponse.fromJson(json["trainer"]),
+        category: json["category"], // Viene
+        image: json["image"], // Viene
+
+        tags: json["tags"] != null
+            ? List<String>.from(json["tags"].map((x) => x))
+            : [],
+        date: DateTime.parse(json["date"]),
         lessons: json["lessons"] != null
             ? List<LessonResponse>.from(
                 json["lessons"].map((x) => LessonResponse.fromJson(x)))
-            : null,
+            : [],
+        level: json["level"] ?? '',
       );
 }
 
 class LessonResponse {
   final String id;
-  final String name;
-  final String description;
-  final String courseId;
-  final String videoId;
+  final String title;
+  final String content;
+  final String video;
   final String order;
-  final String waitTime;
-  final String burnedCalories;
+  final String image;
 
   LessonResponse({
     required this.id,
-    required this.name,
-    required this.description,
-    required this.courseId,
-    required this.videoId,
+    required this.title,
+    required this.content,
+    required this.video,
     required this.order,
-    required this.waitTime,
-    required this.burnedCalories,
+    required this.image,
   });
 
   factory LessonResponse.fromJson(Map<String, dynamic> json) => LessonResponse(
         id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        courseId: json["courseId"],
-        videoId: json["videoId"],
+        title: json["title"],
+        content: json["content"],
+        video: json["video"] ?? '',
         order: json["order"],
-        waitTime: json["waitTime"],
-        burnedCalories: json["burnedCalories"],
-      );
-}
-
-class ImageResponse {
-  final String id;
-  final String src;
-
-  ImageResponse({
-    required this.id,
-    required this.src,
-  });
-
-  factory ImageResponse.fromJson(Map<String, dynamic> json) => ImageResponse(
-        id: json["id"],
-        src: json["src"],
+        image: json["image"] ?? '',
       );
 }

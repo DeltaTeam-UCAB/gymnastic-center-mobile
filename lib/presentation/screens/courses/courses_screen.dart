@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/courses_datasource_impl.dart';
+import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/infrastructure/repositories/categories/categories_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
 class AllCoursesScreen extends StatelessWidget {
-  const AllCoursesScreen({super.key});
+  final String? selectedCategoryId;
+
+  const AllCoursesScreen({super.key, this.selectedCategoryId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CoursesBloc(
-          coursesRepository: CoursesRepositoryImpl(
-              CoursesDatasourceImpl(LocalStorageService()))),
-      child: const _AllCoursesScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => CoursesBloc(
+              coursesRepository: CoursesRepositoryImpl(
+                  ApiCoursesDatasource(LocalStorageService()))),
+        ),
+        BlocProvider(
+          create: (_) => CategoriesBloc(
+              categoryRepository: CategoriesRespositoryImpl(
+                  categoryDatasource:
+                      CategoriesDatasourceImpl(LocalStorageService()))),
+        ),
+      ],
+      child: _AllCoursesScreen(
+        selectedCategoryId:
+            selectedCategoryId == null ? '' : selectedCategoryId!,
+      ),
     );
   }
 }
 
 class _AllCoursesScreen extends StatefulWidget {
-  const _AllCoursesScreen({Key? key}) : super(key: key);
+  final String selectedCategoryId;
+  const _AllCoursesScreen({Key? key, required this.selectedCategoryId})
+      : super(key: key);
 
   @override
   _AllCoursesScreenState createState() => _AllCoursesScreenState();
@@ -32,7 +53,14 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CoursesBloc>().loadNextPage();
+    if (widget.selectedCategoryId.isEmpty) {
+      context.read<CoursesBloc>().loadNextPage();
+    } else {
+      context
+          .read<CoursesBloc>()
+          .loadNextPage(categoryId: widget.selectedCategoryId);
+    }
+    context.read<CategoriesBloc>().loadNextPage();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels + 400 >=
@@ -58,37 +86,53 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
           style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
         ),
       ),
-      body: Column(
-        children: [
-          Row(
+      body: BlocBuilder<CoursesBloc, CoursesState>(
+        builder: (context, state) {
+          if (state.isLoading && state.courses.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.isError) {
+            return const Center(child: Text('Error loading courses'));
+          }
+
+          return Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 27),
-                child: Text('Sort by: '),
+              const SizedBox(
+                height: 20,
               ),
-              TextButton.icon(
-                  onPressed: () {
-                    // Add your sorting logic here
-                  },
-                  icon: const Icon(Icons.arrow_drop_down_outlined),
-                  label: const Text('newest'))
+              _CoursesView(
+                  scrollController: _scrollController, courses: courses),
             ],
-          ),
-          Expanded(
-            child: GridView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-              ),
-              itemCount: courses.length,
-              itemBuilder: (context, index) {
-                return CourseSlide(course: courses[index]);
-              },
-            ),
-          ),
-        ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CoursesView extends StatelessWidget {
+  const _CoursesView(
+      {required ScrollController scrollController, required this.courses})
+      : _scrollController = scrollController;
+
+  final ScrollController _scrollController;
+  final List<Course> courses;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GridView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+        ),
+        itemCount: courses.length,
+        itemBuilder: (context, index) {
+          return CourseSlide(course: courses[index]);
+        },
       ),
     );
   }
