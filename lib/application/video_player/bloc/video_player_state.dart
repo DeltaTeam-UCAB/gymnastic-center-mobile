@@ -4,6 +4,7 @@ enum VideoPlayerStatus {
   loading,
   paused,
   error,
+  isBuffering,
   completed,
   fetching,
   playing,

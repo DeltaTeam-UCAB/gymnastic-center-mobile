@@ -15,13 +15,13 @@ class CommentsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocSelector<CommentsBloc, CommentsState, bool>(
-      selector: (state) => state.isPosting,
+    return BlocBuilder<CommentsBloc, CommentsState>(
+      buildWhen: (previous, current) => previous.isPosting && !current.isPosting,
       builder: (context, state) {
-        if (lessonId != null){
+        if (lessonId != null && state.comments.isEmpty){
           context.read<CommentsBloc>().loadNextPageByLessonId(lessonId!);
         }
-        if (blogId != null){
+        if (blogId != null && state.comments.isEmpty){
           context.read<CommentsBloc>().loadNextPageByBlogId(blogId!);
         }
         return _CommentsSection(
@@ -44,16 +44,18 @@ class _CommentsSection extends StatelessWidget {
     late void Function(String message) onPostComment;
 
     return BlocBuilder<CommentsBloc, CommentsState>(
+      buildWhen: (previous, current) => previous.status != current.status || previous.comments != current.comments,
       builder: (context, state) {
+
         if (lessonId != null) {
-          onLoadNextComments = () =>
-              context.read<CommentsBloc>().loadNextPageByLessonId(lessonId!);
+          onLoadNextComments = 
+              () => context.read<CommentsBloc>().loadNextPageByLessonId(lessonId!);
           onPostComment = (message) => context.read<CommentsBloc>().createCommentByLessonId(lessonId!, message);
         }
+        
 
         if (blogId != null) {
-          onLoadNextComments =
-              () => context.read<CommentsBloc>().loadNextPageByBlogId(blogId!);
+          onLoadNextComments =()  => context.read<CommentsBloc>().loadNextPageByBlogId(blogId!);
           onPostComment = (message) => context.read<CommentsBloc>().createCommentByBlogId(blogId!, message);
         }
 
@@ -83,7 +85,6 @@ class _CommentsSection extends StatelessWidget {
                 ),
               ),
             _CommentInput(onPostSuccess: () {
-              context.read<CommentsBloc>().reset();
             }, onValue: onPostComment),
           ]),
         );
