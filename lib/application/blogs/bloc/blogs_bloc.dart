@@ -57,10 +57,10 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
     emit(state.copyWith(status: BlogStatus.error));
   }
 
-  Future<void> loadBlogById(String BlogId) async {
+  Future<void> loadBlogById(String blogId) async {
     if (state.status == BlogStatus.loading) return;
     add(LoadingStarted());
-    final blogResult = await blogsRepository.getBlogById(BlogId);
+    final blogResult = await blogsRepository.getBlogById(blogId);
     if (blogResult.isSuccessful()) {
       final blog = blogResult.getValue();
       add(CurrentBlogLoaded(currentBlog: blog));
