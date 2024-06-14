@@ -42,7 +42,7 @@ class ClientsDatasourceImpl extends ClientsDatasource {
     if (phone != null) body['phone'] = phone;
     if (avatarImage != null) body['image'] = avatarImage; //Cambiar
     if (password != null) body['password'] = password;
-    await dio.put(
+    await dio.post(
       '/user/update',
       data: body,
     );

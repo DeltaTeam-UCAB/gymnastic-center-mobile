@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
-import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/client/client.dart';
 import 'package:gymnastic_center/infrastructure/camara_gallery/camara_gallery_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
@@ -47,16 +46,16 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ClientsBloc>().getClientData();
   }
 
   _pressSubmit() async {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
       // you'd often call a server or save the information in a database.
+
       await context.read<UpdateBloc>().onSubmitUpdate();
-      context.read<ClientsBloc>().getClientData();
       canPop = true;
+      context.read<ClientsBloc>().getClientData();
     }
   }
 
@@ -148,10 +147,16 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
     _nameController.text = client.name;
     _emailController.text = client.email;
     _phoneController.text = client.phone;
+
     var avatar = client.avatarImage;
     final formDeco = AccountFormFieldDecoration();
-    final isDark = context.watch<ThemesBloc>().isDarkMode;
     return BlocBuilder<UpdateBloc, UpdateState>(
+      buildWhen: (previous, current) {
+        if (previous.avatarImage != current.avatarImage) {
+          return true;
+        }
+        return false;
+      },
       builder: (context, state) => PopScope(
         canPop: canPop,
         onPopInvoked: (bool didPop) async {
@@ -198,20 +203,14 @@ class _AccountDetailsScreenState extends State<_AccountDetailsScreen> {
                                   ClipOval(child: ImageView(image: avatar!))),
                     ),
                     PopupMenuButton<_AvatarImageOp>(
-                      child: ElevatedButton(
-                        onPressed: null,
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(isDark
-                                ? const Color.fromARGB(255, 213, 185, 255)
-                                : Theme.of(context).primaryColor)),
+                      child: ClipOval(
                         child: Container(
-                          width: 20,
-                          height: 60,
-                          decoration:
-                              const BoxDecoration(shape: BoxShape.circle),
-                          child: Icon(
+                          color: Colors.deepPurple, // Set the circle color
+                          width: 50, // Adjust the size as needed
+                          height: 50,
+                          child: const Icon(
                             Icons.edit,
-                            color: Theme.of(context).indicatorColor,
+                            color: Colors.white,
                           ),
                         ),
                       ),
