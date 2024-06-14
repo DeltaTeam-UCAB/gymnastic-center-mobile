@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
-import 'package:gymnastic_center/domain/entities/categories/category.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
@@ -80,7 +79,6 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   @override
   Widget build(BuildContext context) {
     final courses = context.watch<CoursesBloc>().state.courses;
-    final categories = context.watch<CategoriesBloc>().state.categories;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -89,9 +87,6 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
         ),
       ),
       body: BlocBuilder<CoursesBloc, CoursesState>(
-        /*buildWhen: (previous, current) {
-          return previous.courses != current.courses;
-        },*/
         builder: (context, state) {
           if (state.isLoading && state.courses.isEmpty) {
             return const Center(child: CircularProgressIndicator());
@@ -103,24 +98,8 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
 
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 15, 15, 15),
-                child: DropdownMenu<Category>(
-                  width: 175,
-                  onSelected: (value) {
-                    if (value != null) {
-                      setState(() {
-                        context
-                            .read<CoursesBloc>()
-                            .loadNextPage(categoryId: value.id);
-                      });
-                    }
-                  },
-                  label: const Text('Category'),
-                  dropdownMenuEntries: categories.map((e) {
-                    return DropdownMenuEntry(value: e, label: e.name);
-                  }).toList(),
-                ),
+              const SizedBox(
+                height: 20,
               ),
               _CoursesView(
                   scrollController: _scrollController, courses: courses),
