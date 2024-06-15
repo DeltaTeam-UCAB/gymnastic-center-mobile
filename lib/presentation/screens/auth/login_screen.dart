@@ -282,8 +282,8 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height *
-        0.671; // ? Aqui puedo cambiar el radio
+    double ellipseRadiusY = MediaQuery.of(context).size.height *
+        0.8692; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -295,21 +295,22 @@ class _LoginScreenState extends State<_LoginScreen> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top,
-              child: EllipseMaskedBackground.circle(
+              child: EllipseMaskedBackground(
                 backgroundContent: SvgPicture.asset(
                   'assets/splash/splash-screen-bg.svg',
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height,
                   alignment: Alignment.topLeft,
                 ),
-                circleMaskContent: Container(
+                ellipseMaskContent: Container(
                   alignment: Alignment.center,
                   height: double.infinity,
                   child: Container(color: colors.background),
                 ),
-                circlePosition: Offset(MediaQuery.of(context).size.width / 2,
-                    MediaQuery.of(context).size.height * 0.36 + circleRadius),
-                circleRadius: circleRadius,
+                ellipsePosition: Offset(
+                    MediaQuery.of(context).size.width / 2,
+                    MediaQuery.of(context).size.height * 0.391 +
+                        ellipseRadiusY),
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         horizontalPadding,

@@ -291,7 +291,7 @@ class RegisterScreenState extends State<_RegisterForm> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
+    double ellipseRadiusY = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -303,7 +303,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: EllipseMaskedBackground.circle(
+                    child: EllipseMaskedBackground(
                       backgroundContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,
@@ -320,7 +320,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                           ),
                         ),
                       )),
-                      circleMaskContent: Container(
+                      ellipseMaskContent: Container(
                         alignment: Alignment.center,
                         height: double.infinity,
                         child: SvgPicture.asset(
@@ -330,11 +330,10 @@ class RegisterScreenState extends State<_RegisterForm> {
                           alignment: Alignment.topLeft,
                         ),
                       ),
-                      circlePosition: Offset(
+                      ellipsePosition: Offset(
                           MediaQuery.of(context).size.width / 2,
                           MediaQuery.of(context).size.height * 0.21 +
-                              circleRadius),
-                      circleRadius: circleRadius,
+                              ellipseRadiusY),
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,
