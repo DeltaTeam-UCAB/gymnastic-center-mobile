@@ -66,13 +66,23 @@ class EllipseMaskedBackground extends Background {
   final double? ellipseRadiusX;
   final double? ellipseRadiusY;
 
+  static double getDefaultEllipseRadiusXForContext(BuildContext context) {
+    return MediaQuery.of(context).size.width * 1.9028;
+  }
+
+  static double getDefaultEllipseRadiusYForContext(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.8692;
+  }
+
   @protected
   Offset getEllipsePosition(BuildContext context) {
     if (ellipsePosition != null) {
       return ellipsePosition!;
     } else {
-      return Offset(MediaQuery.of(context).size.width / 2,
-          MediaQuery.of(context).size.height * 0.826);
+      return Offset(
+          MediaQuery.of(context).size.width / 2,
+          MediaQuery.of(context).size.height * 0.21 +
+              getDefaultEllipseRadiusYForContext(context));
     }
   }
 
@@ -81,7 +91,8 @@ class EllipseMaskedBackground extends Background {
     if (ellipseRadiusX != null) {
       return ellipseRadiusX!;
     } else {
-      return MediaQuery.of(context).size.width * 1.9028;
+      return EllipseMaskedBackground.getDefaultEllipseRadiusXForContext(
+          context);
     }
   }
 
@@ -90,7 +101,8 @@ class EllipseMaskedBackground extends Background {
     if (ellipseRadiusY != null) {
       return ellipseRadiusX!;
     } else {
-      return MediaQuery.of(context).size.height * 0.8692;
+      return EllipseMaskedBackground.getDefaultEllipseRadiusYForContext(
+          context);
     }
   }
 

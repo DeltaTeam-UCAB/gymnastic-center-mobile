@@ -248,7 +248,6 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double ellipseRadiusY = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     ColorScheme colors = Theme.of(context).colorScheme;
 
@@ -290,10 +289,6 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                               )
                             ],
                           )),
-                      ellipsePosition: Offset(
-                          MediaQuery.of(context).size.width / 2,
-                          MediaQuery.of(context).size.height * 0.21 +
-                              ellipseRadiusY),
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,

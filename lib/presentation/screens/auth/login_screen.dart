@@ -282,8 +282,6 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double ellipseRadiusY = MediaQuery.of(context).size.height *
-        0.8692; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -310,7 +308,8 @@ class _LoginScreenState extends State<_LoginScreen> {
                 ellipsePosition: Offset(
                     MediaQuery.of(context).size.width / 2,
                     MediaQuery.of(context).size.height * 0.391 +
-                        ellipseRadiusY),
+                        EllipseMaskedBackground
+                            .getDefaultEllipseRadiusYForContext(context)),
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         horizontalPadding,
