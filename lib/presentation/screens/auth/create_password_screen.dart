@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -259,7 +259,7 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: CircleMaskedBackground(
+                    child: EllipseMaskedBackground.circle(
                       circleMaskContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,

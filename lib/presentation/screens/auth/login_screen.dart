@@ -7,7 +7,7 @@ import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -295,7 +295,7 @@ class _LoginScreenState extends State<_LoginScreen> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top,
-              child: CircleMaskedBackground(
+              child: EllipseMaskedBackground.circle(
                 backgroundContent: SvgPicture.asset(
                   'assets/splash/splash-screen-bg.svg',
                   fit: BoxFit.cover,
