@@ -7,7 +7,7 @@ import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -282,8 +282,6 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height *
-        0.671; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -295,21 +293,23 @@ class _LoginScreenState extends State<_LoginScreen> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top,
-              child: CircleMaskedBackground(
+              child: EllipseMaskedBackground(
                 backgroundContent: SvgPicture.asset(
                   'assets/splash/splash-screen-bg.svg',
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height,
                   alignment: Alignment.topLeft,
                 ),
-                circleMaskContent: Container(
+                ellipseMaskContent: Container(
                   alignment: Alignment.center,
                   height: double.infinity,
                   child: Container(color: colors.background),
                 ),
-                circlePosition: Offset(MediaQuery.of(context).size.width / 2,
-                    MediaQuery.of(context).size.height * 0.36 + circleRadius),
-                circleRadius: circleRadius,
+                ellipsePosition: Offset(
+                    MediaQuery.of(context).size.width / 2,
+                    MediaQuery.of(context).size.height * 0.391 +
+                        EllipseMaskedBackground
+                            .getDefaultEllipseRadiusYForContext(context)),
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         horizontalPadding,
