@@ -15,7 +15,7 @@ class CamaraGalleryImpl extends CamaraGalleryManager {
   Future<String?> selectPhoto() async {
     final XFile? photo = await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 100,
+      imageQuality: 80,
     );
 
     if (photo == null) return null;
@@ -59,8 +59,8 @@ class CamaraGalleryImpl extends CamaraGalleryManager {
 
     if (croppedFile == null) return null;
     final bytes = await _compressFile(croppedFile.path);
-    if (bytes != null) return null;
-    return _converToBase64(bytes!);
+    if (bytes == null) return null;
+    return _converToBase64(bytes);
   }
 
   Future<Uint8List?> _compressFile(String file) async {

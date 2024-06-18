@@ -19,7 +19,7 @@ class CreatePasswordScreen extends StatelessWidget {
 }
 
 class _CreatePasswordScreen extends StatefulWidget {
-  const _CreatePasswordScreen({super.key});
+  const _CreatePasswordScreen();
 
   @override
   _CreatePasswordScreenState createState() => _CreatePasswordScreenState();
@@ -108,7 +108,7 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                     'Create password',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode ? Colors.white : Color(0xff222222),
+                      color: isDarkMode ? Colors.white : const Color(0xff222222),
                       fontSize: 28,
                     ),
                     textAlign: TextAlign.center,
@@ -118,7 +118,7 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                   Text(
                     'Create a new password and please never share it with anyone for safe use.',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Color(0xff677294),
+                      color: isDarkMode ? Colors.white : const Color(0xff677294),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,

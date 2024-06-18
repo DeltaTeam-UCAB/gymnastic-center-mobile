@@ -54,7 +54,7 @@ class _SideMenuState extends State<SideMenu> {
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FilledButton.icon(
             onPressed: () {
-              LocalStorageService().removeKey('token').then((_data) {
+              LocalStorageService().removeKey('token').then((_) {
                 context.go('/start');
               });
             },
