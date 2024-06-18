@@ -13,15 +13,10 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   CoursesBloc({
     required this.coursesRepository,
   }) : super(const CoursesState()) {
-    on<CoursesFetched>(_onCoursesFetched);
+    on<CoursesLoaded>(_onCoursesLoaded);
     on<CourseLoading>(_onCourseLoading);
     on<CoursesIsEmpty>(_onCourseIsEmpty);
     on<CourseError>(_onCourseError);
-    on<CurrentCourse>(_onCurrentCourse);
-  }
-
-  void _onCurrentCourse(CurrentCourse event, Emitter<CoursesState> emit) {
-    emit(state.copyWith(currentCourse: event.course, isLoading: false));
   }
 
   void _onCourseError(CourseError event, Emitter<CoursesState> emit) {
@@ -36,7 +31,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(state.copyWith(isLoading: true, isError: false));
   }
 
-  void _onCoursesFetched(CoursesFetched event, Emitter<CoursesState> emit) {
+  void _onCoursesLoaded(CoursesLoaded event, Emitter<CoursesState> emit) {
     emit(state.copyWith(
       courses: [...state.courses, ...event.courses],
       isLoading: false,
@@ -65,23 +60,9 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         add(const CoursesIsEmpty());
         return;
       }
-      add(CoursesFetched(courses));
+      add(CoursesLoaded(courses));
       return;
     }
-    add(const CourseError());
-  }
-
-  Future<void> getCourseById(String courseId) async {
-    add(const CourseLoading());
-    final courseResponse = await coursesRepository.getCourseById(courseId);
-
-    if (courseResponse.isSuccessful()) {
-      final course = courseResponse.getValue();
-      add(CurrentCourse(course));
-      return;
-    }
-
-    add(const CurrentCourse(null));
     add(const CourseError());
   }
 }

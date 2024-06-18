@@ -4,9 +4,9 @@ sealed class CoursesEvent {
   const CoursesEvent();
 }
 
-class CoursesFetched extends CoursesEvent {
+class CoursesLoaded extends CoursesEvent {
   final List<Course> courses;
-  const CoursesFetched(this.courses);
+  const CoursesLoaded(this.courses);
 }
 
 class CourseLoading extends CoursesEvent {
@@ -19,9 +19,4 @@ class CoursesIsEmpty extends CoursesEvent {
 
 class CourseError extends CoursesEvent {
   const CourseError();
-}
-
-class CurrentCourse extends CoursesEvent {
-  final Course? course;
-  const CurrentCourse(this.course);
 }

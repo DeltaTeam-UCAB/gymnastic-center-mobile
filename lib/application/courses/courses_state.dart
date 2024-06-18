@@ -2,7 +2,6 @@ part of 'courses_bloc.dart';
 
 class CoursesState extends Equatable {
   final List<Course> courses;
-  final Course? currentCourse;
   final bool isLoading;
   final int page;
   final int perPage;
@@ -10,7 +9,6 @@ class CoursesState extends Equatable {
   final bool isError;
 
   const CoursesState({
-    this.currentCourse,
     this.courses = const [],
     this.isLoading = false,
     this.page = 1,
@@ -21,7 +19,6 @@ class CoursesState extends Equatable {
 
   CoursesState copyWith({
     List<Course>? courses,
-    Course? currentCourse,
     bool? isLoading,
     int? page,
     int? perPage,
@@ -30,7 +27,6 @@ class CoursesState extends Equatable {
   }) {
     return CoursesState(
       courses: courses ?? this.courses,
-      currentCourse: currentCourse ?? this.currentCourse,
       isLoading: isLoading ?? this.isLoading,
       page: page ?? this.page,
       perPage: perPage ?? this.perPage,
