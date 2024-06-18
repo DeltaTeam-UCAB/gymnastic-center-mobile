@@ -2,8 +2,9 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
+import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
+import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
@@ -22,7 +23,7 @@ class BlogScreen extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (_) => BlogsBloc(BlogRepositoryImpl(
+              create: (_) => BlogDetailsBloc(BlogRepositoryImpl(
                   blogsDatasource: APIBlogDatasource(localStorageService)))
                 ..loadBlogById(blogId)),
           BlocProvider(
@@ -53,22 +54,22 @@ class _BlogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BlogsBloc, BlogsState>(
+    return BlocBuilder<BlogDetailsBloc, BlogDetailsState>(
       builder: (context, state) {
-        if (state.currentBlog.id.isEmpty ||
-            state.status == BlogStatus.loading) {
+        if (state.blog.id.isEmpty ||
+            state.status == BlogDetailsStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (state.status == BlogStatus.error) {
+        if (state.status == BlogDetailsStatus.error) {
           return const Center(
             child: Text('Blog Not found'),
           );
         }
         return SingleChildScrollView(
-          child: _BlogDetailsView(),
+          child: _BlogDetailsView(state.blog),
         );
       },
     );
@@ -76,13 +77,13 @@ class _BlogView extends StatelessWidget {
 }
 
 class _BlogDetailsView extends StatelessWidget {
+  final Blog blog;
   final titleFontSize = 32.0;
   final dateFormat = DateFormat('dd-MM-yyyy');
-  _BlogDetailsView();
+  _BlogDetailsView(this.blog);
 
   @override
   Widget build(BuildContext context) {
-    final blog = context.read<BlogsBloc>().state.currentBlog;
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
