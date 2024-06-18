@@ -26,18 +26,21 @@ class WelcomeScreenState extends State<WelcomeScreen> {
     pages = [
       const WelcomeScreenPage(
           svgPictureAssetLocation: 'assets/welcome/yoga1.svg',
+          svgPictureDarkAssetLocation: 'assets/welcome/yoga1-dark.svg',
           gradientText: 'Yoga',
           titleText: 'Daily Yoga',
           descriptionText:
               'Do your practice of physical exercise and relaxation make healthy'),
       const WelcomeScreenPage(
           svgPictureAssetLocation: 'assets/welcome/yoga2.svg',
+          svgPictureDarkAssetLocation: 'assets/welcome/yoga2-dark.svg',
           gradientText: 'Meditation',
           titleText: 'Yoga Classes',
           descriptionText:
               'Meditation is the key to Productivity.\nHappiness & Longevity'),
       const WelcomeScreenPage(
           svgPictureAssetLocation: 'assets/welcome/yoga3.svg',
+          svgPictureDarkAssetLocation: 'assets/welcome/yoga3-dark.svg',
           gradientText: 'Meets',
           titleText: 'Community',
           descriptionText:
