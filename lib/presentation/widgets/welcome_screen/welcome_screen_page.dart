@@ -9,12 +9,14 @@ import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart'
 class WelcomeScreenPage extends StatelessWidget {
   const WelcomeScreenPage(
       {required this.svgPictureAssetLocation,
+      required this.svgPictureDarkAssetLocation,
       required this.gradientText,
       required this.titleText,
       required this.descriptionText,
       super.key});
 
   final String svgPictureAssetLocation;
+  final String svgPictureDarkAssetLocation;
   final String gradientText;
   final String titleText;
   final String descriptionText;
@@ -29,7 +31,9 @@ class WelcomeScreenPage extends StatelessWidget {
       children: [
         Container(
             margin: const EdgeInsets.fromLTRB(0, 0, 0, 54),
-            child: SvgPicture.asset(svgPictureAssetLocation)),
+            child: SvgPicture.asset(isDarkMode
+                ? svgPictureDarkAssetLocation
+                : svgPictureAssetLocation)),
         Container(
             margin: const EdgeInsets.fromLTRB(0, 0, 0, 9),
             child: GradientText(

@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -185,7 +185,6 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     ColorScheme colors = Theme.of(context).colorScheme;
 
@@ -196,8 +195,8 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: CircleMaskedBackground(
-                      circleMaskContent: SizedBox.expand(
+                    child: EllipseMaskedBackground(
+                      ellipseMaskContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,
                         alignment: Alignment.topCenter,
@@ -227,11 +226,6 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                               )
                             ],
                           )),
-                      circlePosition: Offset(
-                          MediaQuery.of(context).size.width / 2,
-                          MediaQuery.of(context).size.height * 0.21 +
-                              circleRadius),
-                      circleRadius: circleRadius,
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,
