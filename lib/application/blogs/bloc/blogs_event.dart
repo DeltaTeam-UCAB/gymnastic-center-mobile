@@ -4,11 +4,6 @@ sealed class BlogsEvent {
   const BlogsEvent();
 }
 
-class CurrentBlogLoaded extends BlogsEvent {
-  final Blog currentBlog;
-  CurrentBlogLoaded({required this.currentBlog});
-}
-
 class BlogsLoaded extends BlogsEvent {
   final List<Blog> blogs;
   BlogsLoaded({required this.blogs});

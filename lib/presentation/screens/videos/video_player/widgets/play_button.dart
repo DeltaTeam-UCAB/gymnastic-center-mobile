@@ -34,7 +34,7 @@ class PlayButton extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(colors.primary),
         iconColor: const MaterialStatePropertyAll(Colors.white),
         iconSize: MaterialStateProperty.all(40.0),
-        minimumSize: MaterialStateProperty.all(Size(50.0, 50.0)),
+        minimumSize: MaterialStateProperty.all(const Size(50.0, 50.0)),
       ),
     );
   }

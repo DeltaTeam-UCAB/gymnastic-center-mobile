@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -19,7 +19,7 @@ class ResetPasswordScreen extends StatelessWidget {
 }
 
 class _ResetPasswordScreen extends StatefulWidget {
-  const _ResetPasswordScreen({super.key});
+  const _ResetPasswordScreen();
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
@@ -93,7 +93,7 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                     'Reset password',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode ? Colors.white : Color(0xff222222),
+                      color: isDarkMode ? Colors.white : const Color(0xff222222),
                       fontSize: 28,
                     ),
                     textAlign: TextAlign.center,
@@ -103,7 +103,7 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                   Text(
                     'Please enter your email address. You will get a link to create new password by email.',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Color(0xff677294),
+                      color: isDarkMode ? Colors.white : const Color(0xff677294),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
