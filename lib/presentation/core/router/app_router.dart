@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
+import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 import 'package:gymnastic_center/presentation/screens/categories/categories_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 
@@ -36,18 +37,23 @@ class RoutesManager {
               builder: (context, state) => const AllCategoriesScreen(),
             ),
             GoRoute(
-              path: 'courses/:categoryId',
-              builder: (context, state) => AllCoursesScreen(
-                selectedCategoryId: state.pathParameters['categoryId'] ?? '',
-              ),
-            ),
-            GoRoute(
-              path: 'courses',
-              builder: (context, state) => const AllCoursesScreen(),
-            ),
+                path: 'courses',
+                builder: (context, state) {
+                  final filterDto = state.extra as FilterDto;
+                  return AllCoursesScreen(
+                    selectedCategoryId: filterDto.categoryId,
+                    selectedTrainerId: filterDto.trainerId,
+                  );
+                }),
             GoRoute(
               path: 'blogs',
-              builder: (context, state) => const AllBlogsScreen(),
+              builder: (context, state) {
+                final filterDto = state.extra as FilterDto;
+                return AllBlogsScreen(
+                  selectedCategoryId: filterDto.categoryId,
+                  selectedTrainerId: filterDto.trainerId,
+                );
+              },
             ),
             GoRoute(
               path: 'videos',

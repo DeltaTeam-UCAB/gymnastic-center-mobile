@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
+import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/see_all_button.dart';
 
 import 'blog_slide.dart';
@@ -7,9 +8,10 @@ import 'blog_slide.dart';
 class BlogHorizontalListView extends StatelessWidget {
   final List<Blog> blogs;
   final String title;
+  final FilterDto? filterDto;
 
   const BlogHorizontalListView(
-      {super.key, required this.blogs, required this.title});
+      {super.key, required this.blogs, required this.title, this.filterDto});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class BlogHorizontalListView extends StatelessWidget {
       height: 310,
       child: Column(
         children: [
-          _Title(title: title),
+          _Title(
+            title: title,
+            filterDto: filterDto,
+          ),
           const SizedBox(
             height: 12,
           ),
@@ -38,7 +43,8 @@ class BlogHorizontalListView extends StatelessWidget {
 
 class _Title extends StatelessWidget {
   final String title;
-  const _Title({required this.title});
+  final FilterDto? filterDto;
+  const _Title({required this.title, this.filterDto});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +60,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          const SeeAllButton(route: '/home/0/blogs'),
+          SeeAllButton(route: '/home/0/blogs', filterDto: filterDto),
         ],
       ),
     );

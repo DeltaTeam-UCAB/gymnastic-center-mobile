@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
+import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 
 class SeeAllButton extends StatelessWidget {
   final String route;
-  const SeeAllButton({super.key, required this.route});
+  final FilterDto? filterDto;
+  const SeeAllButton({super.key, required this.route, this.filterDto});
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemesBloc>().isDarkMode;
     return GestureDetector(
         onTap: () {
-          context.push(route);
+          if (filterDto != null) {
+            context.push(route, extra: filterDto);
+          } else {
+            context.push(route, extra: FilterDto());
+          }
         },
         child: Row(children: [
           Text(

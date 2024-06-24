@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/categories/categories_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
 class AllCoursesScreen extends StatelessWidget {
   final String? selectedCategoryId;
+  final String? selectedTrainerId;
 
-  const AllCoursesScreen({super.key, this.selectedCategoryId});
+  const AllCoursesScreen(
+      {super.key, this.selectedCategoryId, this.selectedTrainerId});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => CoursesBloc(
-              coursesRepository: CoursesRepositoryImpl(
-                  ApiCoursesDatasource(LocalStorageService()))),
-        ),
-        BlocProvider(
-          create: (_) => CategoriesBloc(
-              categoryRepository: CategoriesRespositoryImpl(
-                  categoryDatasource:
-                      CategoriesDatasourceImpl(LocalStorageService()))),
-        ),
-      ],
-      child: _AllCoursesScreen(
-        selectedCategoryId:
-            selectedCategoryId == null ? '' : selectedCategoryId!,
-      ),
-    );
+    return BlocProvider(
+        create: (_) => CoursesBloc(
+            coursesRepository: CoursesRepositoryImpl(
+                ApiCoursesDatasource(LocalStorageService()))),
+        child: _AllCoursesScreen(
+          selectedCategoryId: selectedCategoryId,
+          selectedTrainerId: selectedTrainerId,
+        ));
   }
 }
 
 class _AllCoursesScreen extends StatefulWidget {
-  final String selectedCategoryId;
-  const _AllCoursesScreen({Key? key, required this.selectedCategoryId})
+  final String? selectedCategoryId;
+  final String? selectedTrainerId;
+  const _AllCoursesScreen(
+      {Key? key,
+      required this.selectedCategoryId,
+      required this.selectedTrainerId})
       : super(key: key);
 
   @override
@@ -53,14 +45,9 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.selectedCategoryId.isEmpty) {
-      context.read<CoursesBloc>().loadNextPage();
-    } else {
-      context
-          .read<CoursesBloc>()
-          .loadNextPage(categoryId: widget.selectedCategoryId);
-    }
-    context.read<CategoriesBloc>().loadNextPage();
+    context.read<CoursesBloc>().loadNextPage(
+        categoryId: widget.selectedCategoryId,
+        trainerId: widget.selectedTrainerId);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels + 400 >=

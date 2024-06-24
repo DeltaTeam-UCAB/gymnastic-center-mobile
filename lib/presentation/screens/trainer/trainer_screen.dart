@@ -11,6 +11,7 @@ import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart
 import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
+import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/image_view.dart';
@@ -100,12 +101,16 @@ class _TrainerViewState extends State<TrainerView> {
                   ),
                   if (courseState.courses.isNotEmpty)
                     CourseHorizontalListView(
-                        courses: courseState.courses,
-                        title: 'Look at my Courses'),
+                      courses: courseState.courses,
+                      title: 'Look at my Courses',
+                      filterDto: FilterDto(trainerId: widget.trainerId),
+                    ),
                   if (blogState.loadedBlogs.isNotEmpty)
                     BlogHorizontalListView(
-                        blogs: blogState.loadedBlogs,
-                        title: 'Look at my Blogs'),
+                      blogs: blogState.loadedBlogs,
+                      title: 'Look at my Blogs',
+                      filterDto: FilterDto(trainerId: widget.trainerId),
+                    ),
                 ],
               ),
             );
@@ -149,7 +154,8 @@ class _TrainerDetails extends StatelessWidget {
                   child: const SizedBox(
                     width: 100,
                     child: ImageView(
-                      image: 'https://cdn.icon-icons.com/icons2/3551/PNG/512/trainer_man_people_avatar_person_icon_224850.png',
+                      image:
+                          'https://cdn.icon-icons.com/icons2/3551/PNG/512/trainer_man_people_avatar_person_icon_224850.png',
                     ),
                   ),
                 ),
@@ -194,15 +200,17 @@ class _TrainerDetails extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: toggleFollow,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isFollowing ?  colors.inversePrimary : Colors.white,
+                            backgroundColor: isFollowing
+                                ? colors.inversePrimary
+                                : Colors.white,
                           ),
-                          child: Text(
-                            isFollowing ? 'Following' : 'Follow',
-                            style: TextStyle(
-                              color: isFollowing ? Colors.white : colors.inversePrimary,
-                              fontWeight: FontWeight.bold,
-                            )
-                          ),
+                          child: Text(isFollowing ? 'Following' : 'Follow',
+                              style: TextStyle(
+                                color: isFollowing
+                                    ? Colors.white
+                                    : colors.inversePrimary,
+                                fontWeight: FontWeight.bold,
+                              )),
                         ),
                       )
                     ],
