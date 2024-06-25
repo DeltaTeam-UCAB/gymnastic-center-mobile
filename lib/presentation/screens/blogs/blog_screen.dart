@@ -142,7 +142,11 @@ class _BlogDetailsView extends StatelessWidget {
               Text('Comments', style: textTheme.titleLarge),
               SizedBox(
                 height: 400,
-                child: CommentsSection(blogId: blog.id,),
+                child: CommentsSection(
+                  onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(blog.id, 'BLOG'),
+                  onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(blog.id, 'BLOG'),
+                  onPostComment: (message) => context.read<CommentsBloc>().createComment(blog.id, 'BLOG', message),
+                ),
               )
             ],
           ),

@@ -77,11 +77,7 @@ class _LessonScreenState extends State<_LessonScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<LessonsBloc, LessonsState>(
-        listenWhen: (previous, current) => previous.currentLesson != current.currentLesson,
-        listener: (context, state) {
-          context.read<CommentsBloc>().reset();
-        },
+      body: BlocBuilder<LessonsBloc, LessonsState>(
         buildWhen: (previous, current) =>
             (previous.currentLesson != current.currentLesson) ||
             (previous.status != current.status) ||
@@ -129,9 +125,7 @@ class _LessonScreenState extends State<_LessonScreen>
                     Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(state.currentLesson.content)),
-                    CommentsSection(
-                      lessonId: state.currentLesson.id,
-                    ),
+                    const _CommentsTab(),
                     SingleChildScrollView(
                       child: LessonsListView(
                           lessons: state.lessons,
@@ -152,6 +146,29 @@ class _LessonScreenState extends State<_LessonScreen>
       ),
     );
   }
+}
+
+class _CommentsTab extends StatefulWidget {
+  const _CommentsTab();
+
+  @override
+  State<_CommentsTab> createState() => _CommentsTabState();
+}
+
+class _CommentsTabState extends State<_CommentsTab> with AutomaticKeepAliveClientMixin{
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final currentLesson = context.watch<LessonsBloc>().state.currentLesson;
+    return CommentsSection(
+      onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(currentLesson.id, 'LESSON'),
+      onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(currentLesson.id, 'LESSON'),
+      onPostComment: (message) => context.read<CommentsBloc>().createComment(currentLesson.id, 'LESSON', message), 
+    );
+  }
+  
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _VideoPreview extends StatelessWidget {
