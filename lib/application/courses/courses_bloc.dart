@@ -20,7 +20,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   }
 
   void _onCourseError(CourseError event, Emitter<CoursesState> emit) {
-    emit(state.copyWith(isError: true));
+    emit(state.copyWith(isError: true, isLoading: false));
   }
 
   void _onCourseIsEmpty(CoursesIsEmpty event, Emitter<CoursesState> emit) {
