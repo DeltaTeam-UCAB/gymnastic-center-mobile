@@ -1,16 +1,21 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
+import 'package:timeago/timeago.dart';
 
 class CommentsSection extends StatelessWidget {
-  final String? lessonId;
-  final String? blogId;
 
-  const CommentsSection({super.key, this.lessonId, this.blogId})
-      : assert(lessonId != null || blogId != null,
-            'blogId and lessonId not must be provided at the same time');
+  final void Function() onLoadNextComments;
+  final void Function() onInitialLoadComments;
+  final void Function(String message) onPostComment;
+
+  const CommentsSection({
+    super.key, 
+    required this.onLoadNextComments, 
+    required this.onPostComment, 
+    required this.onInitialLoadComments,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +23,10 @@ class CommentsSection extends StatelessWidget {
     return BlocBuilder<CommentsBloc, CommentsState>(
       buildWhen: (previous, current) => previous.isPosting && !current.isPosting,
       builder: (context, state) {
-        if (lessonId != null && state.comments.isEmpty){
-          context.read<CommentsBloc>().loadNextPageByLessonId(lessonId!);
-        }
-        if (blogId != null && state.comments.isEmpty){
-          context.read<CommentsBloc>().loadNextPageByBlogId(blogId!);
-        }
+        onInitialLoadComments();
         return _CommentsSection(
-          blogId: blogId,
-          lessonId: lessonId,
+          onLoadNextComments: onLoadNextComments,
+          onPostComment: onPostComment,
         );
       },
     );
@@ -34,32 +34,16 @@ class CommentsSection extends StatelessWidget {
 }
 
 class _CommentsSection extends StatelessWidget {
-  final String? lessonId;
-  final String? blogId;
-
-  const _CommentsSection({this.lessonId, this.blogId});
+  final void Function() onLoadNextComments;
+  final void Function(String message) onPostComment;
+  const _CommentsSection({required this.onLoadNextComments, required this.onPostComment});
   @override
   Widget build(BuildContext context) {
-    late void Function() onLoadNextComments;
-    late void Function(String message) onPostComment;
-
     return BlocBuilder<CommentsBloc, CommentsState>(
       buildWhen: (previous, current) => previous.status != current.status || previous.comments != current.comments,
       builder: (context, state) {
 
-        if (lessonId != null) {
-          onLoadNextComments = 
-              () => context.read<CommentsBloc>().loadNextPageByLessonId(lessonId!);
-          onPostComment = (message) => context.read<CommentsBloc>().createCommentByLessonId(lessonId!, message);
-        }
-        
-
-        if (blogId != null) {
-          onLoadNextComments =()  => context.read<CommentsBloc>().loadNextPageByBlogId(blogId!);
-          onPostComment = (message) => context.read<CommentsBloc>().createCommentByBlogId(blogId!, message);
-        }
-
-        if (state.status == CommentsStatus.loading && state.comments.isEmpty) {
+        if (state.status == CommentsStatus.initialLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -83,7 +67,7 @@ class _CommentsSection extends StatelessWidget {
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
-              ),
+            ),
             _CommentInput(onPostSuccess: () {
             }, onValue: onPostComment),
           ]),
@@ -124,6 +108,41 @@ class _CommentsListState extends State<_CommentsList> {
 
   @override
   Widget build(BuildContext context) {
+    final emptyCommentTextStyle = Theme.of(context).textTheme.titleMedium;
+    final showEmptyMessage = 
+      context.read<CommentsBloc>().state.status == CommentsStatus.allCommentsLoaded
+      && context.read<CommentsBloc>().state.comments.isEmpty;  
+    if ( showEmptyMessage ){
+      return Expanded(
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:64),
+                child: Image.asset(
+                  'assets/icon/comments_empty.png',
+                  fit: BoxFit.cover,
+                  height: 160,
+                  width: 160,
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 160),
+                child:  Text(
+                  'Be the first person to comment! ✍️ ',
+                  style: emptyCommentTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+      
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
@@ -145,11 +164,14 @@ class _CommentTile extends StatelessWidget {
     required this.comment,
   });
 
+  String _calculateTimeAgo(DateTime creationDate){
+    return format(creationDate, locale: 'en_short').replaceFirst('about', '');
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final color = Theme.of(context).colorScheme;
-    final dateFormat = DateFormat('dd-MM-yyyy');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
@@ -166,7 +188,7 @@ class _CommentTile extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  dateFormat.format(comment.creationDate),
+                  _calculateTimeAgo(comment.creationDate),
                   style: TextStyle(
                       fontSize: textTheme.titleSmall!.fontSize,
                       color: color.primary),

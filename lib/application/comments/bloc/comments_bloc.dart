@@ -18,6 +18,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     on<AllCommentsLoaded>(_onAllCommentsLoaded);
     on<CommentsReset>(_onCommentsReset);
     on<LoadingStarted>(_onLoadingStarted);
+    on<InitialLoadingStarted>(_onInitialLoadingStarted);
     on<CommentPosted>(_onCommentPosted);
     on<CommentPostingStarted>(_onCommentPostingStarted);
   }
@@ -29,7 +30,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
         page: 0,
         comments: [],
         isPosting: false,
-        status: CommentsStatus.loaded,
+        status: CommentsStatus.initialLoading,
       )
     );
   }
@@ -46,6 +47,17 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     emit(
       state.copyWith(
         status: CommentsStatus.loading
+      )
+    );
+  }
+
+  void _onInitialLoadingStarted(InitialLoadingStarted event, Emitter<CommentsState> emit){
+    emit(
+      state.copyWith(
+        status: CommentsStatus.initialLoading,
+        page: 0,
+        comments: [],
+        isPosting: false
       )
     );
   }
@@ -81,7 +93,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       state.copyWith(
         page: 0,
         comments: [],
-        status: CommentsStatus.loaded,
+        status: CommentsStatus.initialLoading,
         isPosting: false
       )
     );
@@ -179,11 +191,26 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     add(ErrorOccurred());
   }
 
-  Future<void> loadNextPageByBlogId(String blogId) async{
+  Future<void> loadNextPageById(String targetId, String targetType) async{
     if (state.status == CommentsStatus.loading ||
           state.status == CommentsStatus.allCommentsLoaded) return;
     add(LoadingStarted());
-    final commentsResult = await commentsRepository.getCommentsByBlogId(blogId, page: state.page + 1);
+    final commentsResult = await commentsRepository.getCommentsById(targetId, targetType, page: state.page + 1);
+    if (commentsResult.isSuccessful()){
+      final comments = commentsResult.getValue();
+      if ( comments.isEmpty ){
+        add(AllCommentsLoaded());
+        return ;
+      }
+      add(CommentsLoaded(comments: comments));
+      return ;
+    }
+    add(ErrorOccurred());
+  }
+  
+  Future<void> startInitialLoad(String targetId, String targetType) async{
+    add(InitialLoadingStarted());
+    final commentsResult = await commentsRepository.getCommentsById(targetId, targetType, page: 1);
     if (commentsResult.isSuccessful()){
       final comments = commentsResult.getValue();
       if ( comments.isEmpty ){
@@ -196,38 +223,10 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     add(ErrorOccurred());
   }
 
-  Future<void> loadNextPageByLessonId(String lessonId) async{
-    if (state.status == CommentsStatus.loading ||
-          state.status == CommentsStatus.allCommentsLoaded) return;
-    add(LoadingStarted());
-    final commentsResult = await commentsRepository.getCommentsByLessonId(lessonId, page: state.page + 1);
-    if (commentsResult.isSuccessful()){
-      final comments = commentsResult.getValue();
-      if ( comments.isEmpty ){
-        add(AllCommentsLoaded());
-        return ;
-      }
-      add(CommentsLoaded(comments: comments));
-      return ;
-    }
-    add(ErrorOccurred());
-  }
-
-  Future<void> createCommentByLessonId(String lessonId, String message) async{
+  Future<void> createComment(String targetId, String targetType, String message) async{
     if ( message.trim().isEmpty ) return ;
     add(CommentPostingStarted());
-    final createCommentResult = await commentsRepository.createCommentByLessonId(lessonId, message);
-    if (createCommentResult.isSuccessful()){
-      add(CommentPosted());
-      return ;
-    }
-    add(ErrorOccurred());
-  }
-
-  Future<void> createCommentByBlogId(String blogId, String message) async{
-    if ( message.trim().isEmpty ) return ;
-    add(CommentPostingStarted());
-    final createCommentResult = await commentsRepository.createCommentByBlogId(blogId, message);
+    final createCommentResult = await commentsRepository.createComment(targetId, targetType, message);
     if (createCommentResult.isSuccessful()){
       add(CommentPosted());
       return ;
