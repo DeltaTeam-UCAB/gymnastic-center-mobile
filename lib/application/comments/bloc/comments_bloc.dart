@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
 import 'package:gymnastic_center/domain/repositories/comments/comments_repository.dart';
 
 part 'comments_event.dart';
 part 'comments_state.dart';
 
-class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
-
+class CommentsBloc extends SafeBloc<CommentsEvent, CommentsState> {
   final CommentsRepository commentsRepository;
 
   CommentsBloc(this.commentsRepository) : super(const CommentsState()) {

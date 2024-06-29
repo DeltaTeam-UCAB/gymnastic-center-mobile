@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/domain/repositories/trainers/trainers_repository.dart';
 
@@ -13,7 +14,7 @@ final initialTrainer = Trainer(
   followers: 0,
 );
 
-class TrainerBloc extends Bloc<TrainerEvent, TrainerState> {
+class TrainerBloc extends SafeBloc<TrainerEvent, TrainerState> {
   final TrainersRepository trainersRepository;
 
   TrainerBloc(this.trainersRepository)

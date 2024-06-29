@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
 import 'package:gymnastic_center/domain/repositories/categories/categories_repository.dart';
 
 part 'categories_event.dart';
 part 'categories_state.dart';
 
-class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
+class CategoriesBloc extends SafeBloc<CategoriesEvent, CategoriesState> {
   final CategoriesRepository categoryRepository;
   CategoriesBloc({required this.categoryRepository})
       : super(const CategoriesState()) {
@@ -50,7 +51,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
 
     final categoriesResponse = await categoryRepository.getCategoriesPaginated(
         page: state.page, perPage: state.perPage);
-
+    if (isClosed) return ;
     if (categoriesResponse.isSuccessful()) {
       final categories = categoriesResponse.getValue();
       if (categories.isEmpty) {
