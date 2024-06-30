@@ -51,7 +51,6 @@ class CategoriesBloc extends SafeBloc<CategoriesEvent, CategoriesState> {
 
     final categoriesResponse = await categoryRepository.getCategoriesPaginated(
         page: state.page, perPage: state.perPage);
-    if (isClosed) return ;
     if (categoriesResponse.isSuccessful()) {
       final categories = categoriesResponse.getValue();
       if (categories.isEmpty) {
