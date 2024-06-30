@@ -3,11 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/categories/categories_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
 class AllCoursesScreen extends StatelessWidget {
@@ -20,15 +16,10 @@ class AllCoursesScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => CoursesBloc(
-              coursesRepository: CoursesRepositoryImpl(
-                  ApiCoursesDatasource(LocalStorageService()))),
+          create: (_) => getIt<CoursesBloc>(),
         ),
         BlocProvider(
-          create: (_) => CategoriesBloc(
-              categoryRepository: CategoriesRespositoryImpl(
-                  categoryDatasource:
-                      CategoriesDatasourceImpl(LocalStorageService()))),
+          create: (_) => getIt<CategoriesBloc>(),
         ),
       ],
       child: _AllCoursesScreen(
