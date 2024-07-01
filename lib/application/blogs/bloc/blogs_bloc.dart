@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/blogs/blogs_datasource.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/domain/repositories/blogs/blogs_repository.dart';
@@ -9,7 +10,7 @@ import 'package:gymnastic_center/domain/repositories/blogs/blogs_repository.dart
 part 'blogs_event.dart';
 part 'blogs_state.dart';
 
-class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
+class BlogsBloc extends SafeBloc<BlogsEvent, BlogsState> {
   final BlogsRepository blogsRepository;
 
   BlogsBloc(this.blogsRepository) : super(const BlogsState()) {

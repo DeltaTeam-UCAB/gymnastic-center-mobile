@@ -11,7 +11,6 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-
     if (myNotifications.isEmpty) {
       return _emptyNotificationsView(colors, context);
     }

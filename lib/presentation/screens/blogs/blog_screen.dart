@@ -5,11 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
-import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:intl/intl.dart';
 
@@ -23,13 +20,9 @@ class BlogScreen extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (_) => BlogDetailsBloc(BlogRepositoryImpl(
-                  blogsDatasource: APIBlogDatasource(localStorageService)))
-                ..loadBlogById(blogId)),
+              create: (_) => getIt<BlogDetailsBloc>()..loadBlogById(blogId)),
           BlocProvider(
-              create: (_) => CommentsBloc(CommentsRepositoryImpl(
-                  commentsDatasource:
-                      ApiCommentDatasource(localStorageService)))),
+              create: (_) => getIt<CommentsBloc>()),
         ],
         child: Scaffold(
             body: Stack(

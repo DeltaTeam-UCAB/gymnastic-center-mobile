@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/domain/repositories/blogs/blogs_repository.dart';
@@ -17,7 +18,7 @@ final initialBlog = Blog(
     category: '',
     tags: []);
 
-class BlogDetailsBloc extends Bloc<BlogDetailsEvent, BlogDetailsState> {
+class BlogDetailsBloc extends SafeBloc<BlogDetailsEvent, BlogDetailsState> {
   final BlogsRepository blogsRepository;
   BlogDetailsBloc(this.blogsRepository)
       : super(BlogDetailsState(blog: initialBlog)) {
