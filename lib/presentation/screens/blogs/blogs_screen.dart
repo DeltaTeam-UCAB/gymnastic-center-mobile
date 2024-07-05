@@ -5,6 +5,7 @@ import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datas
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blog_slide.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/no_content.dart';
 
 class AllBlogsScreen extends StatelessWidget {
   final String? selectedCategoryId;
@@ -70,14 +71,12 @@ class _AllBlogsScreenState extends State<_AllBlogsScreen> {
         ),
         body: BlocBuilder<BlogsBloc, BlogsState>(
           builder: (context, state) {
+            if (state.status == BlogStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
             if (state.status == BlogStatus.error) {
               return const Center(
                 child: Text('Something bad happend'),
-              );
-            }
-            if (state.loadedBlogs.isEmpty) {
-              return const Center(
-                child: CircularProgressIndicator(),
               );
             }
             return Column(
@@ -85,21 +84,22 @@ class _AllBlogsScreenState extends State<_AllBlogsScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                Expanded(
-                    child: GridView.builder(
-                  padding: const EdgeInsets.all(4),
-                  controller: _scrollController,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemCount: state.loadedBlogs.length,
-                  itemBuilder: (context, index) {
-                    return BlogSlide(blog: state.loadedBlogs[index]);
-                  },
-                )),
-                if (state.status == BlogStatus.loading)
-                  const CircularProgressIndicator()
+                state.loadedBlogs.isNotEmpty
+                    ? Expanded(
+                        child: GridView.builder(
+                        padding: const EdgeInsets.all(4),
+                        controller: _scrollController,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: state.loadedBlogs.length,
+                        itemBuilder: (context, index) {
+                          return BlogSlide(blog: state.loadedBlogs[index]);
+                        },
+                      ))
+                    : const NoContent()
               ],
             );
           },

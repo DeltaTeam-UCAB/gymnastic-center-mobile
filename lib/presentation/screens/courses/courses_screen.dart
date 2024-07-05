@@ -7,6 +7,8 @@ import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
+import '../../widgets/shared/no_content.dart';
+
 class AllCoursesScreen extends StatelessWidget {
   final String? selectedCategoryId;
   final String? selectedTrainerId;
@@ -67,34 +69,33 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   Widget build(BuildContext context) {
     final courses = context.watch<CoursesBloc>().state.courses;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Courses',
-          style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
+        appBar: AppBar(
+          title: const Text(
+            'Courses',
+            style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
+          ),
         ),
-      ),
-      body: BlocBuilder<CoursesBloc, CoursesState>(
-        builder: (context, state) {
-          if (state.isLoading && state.courses.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        body: BlocBuilder<CoursesBloc, CoursesState>(
+          builder: (context, state) {
+            if (state.isLoading && state.courses.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (state.isError) {
-            return const Center(child: Text('Error loading courses'));
-          }
+            if (state.isError) {
+              return const Center(child: Text('Error loading courses'));
+            }
 
-          return Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              _CoursesView(
-                  scrollController: _scrollController, courses: courses),
-            ],
-          );
-        },
-      ),
-    );
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                _CoursesView(
+                    scrollController: _scrollController, courses: courses),
+              ],
+            );
+          },
+        ));
   }
 }
 
@@ -108,19 +109,20 @@ class _CoursesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-        ),
-        itemCount: courses.length,
-        itemBuilder: (context, index) {
-          return CourseSlide(course: courses[index]);
-        },
-      ),
-    );
+    return courses.isNotEmpty
+        ? Expanded(
+            child: GridView.builder(
+            controller: _scrollController,
+            padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+            ),
+            itemCount: courses.length,
+            itemBuilder: (context, index) {
+              return CourseSlide(course: courses[index]);
+            },
+          ))
+        : const NoContent();
   }
 }
