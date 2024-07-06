@@ -5,15 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/lessons_listview.dart';
 
-class LessonScreen extends StatelessWidget {
+class LessonScreen extends StatefulWidget {
   final String courseId;
   final String selectedLessonId;
 
@@ -21,22 +17,31 @@ class LessonScreen extends StatelessWidget {
       {required this.courseId, required this.selectedLessonId, super.key});
 
   @override
+  State<LessonScreen> createState() => _LessonScreenState();
+}
+
+class _LessonScreenState extends State<LessonScreen> {
+
+  @override
+  void dispose() {
+    getIt.resetLazySingleton<LessonsBloc>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => LessonsBloc(
-                coursesRepository: CoursesRepositoryImpl(
-                    ApiCoursesDatasource(LocalStorageService())))
-              ..loadLessonsByCourseId(courseId),
+            create: (_) => getIt<LessonsBloc>()
+              ..loadLessonsByCourseId(widget.courseId),
           ),
           BlocProvider(
-            create: (_) => CommentsBloc(CommentsRepositoryImpl(
-                commentsDatasource: ApiCommentDatasource(LocalStorageService())))
+            create: (_) => getIt<CommentsBloc>()
           ),
         ],
         child: Stack(children: [
-          _LessonScreen(selectedLessonId),
+          _LesssonView(widget.selectedLessonId),
           Positioned(
               top: 0,
               left: 0,
@@ -51,15 +56,15 @@ class LessonScreen extends StatelessWidget {
   }
 }
 
-class _LessonScreen extends StatefulWidget {
+class _LesssonView extends StatefulWidget {
   final String selectedLessonId;
-  const _LessonScreen(this.selectedLessonId);
+  const _LesssonView(this.selectedLessonId);
 
   @override
-  State<_LessonScreen> createState() => _LessonScreenState();
+  State<_LesssonView> createState() => _LesssonViewState();
 }
 
-class _LessonScreenState extends State<_LessonScreen>
+class _LesssonViewState extends State<_LesssonView>
     with TickerProviderStateMixin {
   late TabController _controller;
   @override
@@ -77,11 +82,7 @@ class _LessonScreenState extends State<_LessonScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<LessonsBloc, LessonsState>(
-        listenWhen: (previous, current) => previous.currentLesson != current.currentLesson,
-        listener: (context, state) {
-          context.read<CommentsBloc>().reset();
-        },
+      body: BlocBuilder<LessonsBloc, LessonsState>(
         buildWhen: (previous, current) =>
             (previous.currentLesson != current.currentLesson) ||
             (previous.status != current.status) ||
@@ -129,9 +130,7 @@ class _LessonScreenState extends State<_LessonScreen>
                     Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(state.currentLesson.content)),
-                    CommentsSection(
-                      lessonId: state.currentLesson.id,
-                    ),
+                    const _CommentsTab(),
                     SingleChildScrollView(
                       child: LessonsListView(
                           lessons: state.lessons,
@@ -152,6 +151,29 @@ class _LessonScreenState extends State<_LessonScreen>
       ),
     );
   }
+}
+
+class _CommentsTab extends StatefulWidget {
+  const _CommentsTab();
+
+  @override
+  State<_CommentsTab> createState() => _CommentsTabState();
+}
+
+class _CommentsTabState extends State<_CommentsTab> with AutomaticKeepAliveClientMixin{
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final currentLesson = context.watch<LessonsBloc>().state.currentLesson;
+    return CommentsSection(
+      onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(currentLesson.id, 'LESSON'),
+      onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(currentLesson.id, 'LESSON'),
+      onPostComment: (message) => context.read<CommentsBloc>().createComment(currentLesson.id, 'LESSON', message), 
+    );
+  }
+  
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _VideoPreview extends StatelessWidget {

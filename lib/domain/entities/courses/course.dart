@@ -9,6 +9,8 @@ class Course {
   final String image;
   final List<String> tags;
   final String level;
+  final String durationWeeks;
+  final String durationMinutes;
   final DateTime released;
   final List<Lesson>? lessons;
 
@@ -21,6 +23,8 @@ class Course {
     required this.image,
     required this.tags,
     required this.level,
+    required this.durationMinutes,
+    required this.durationWeeks,
     required this.released,
     required this.lessons,
   });

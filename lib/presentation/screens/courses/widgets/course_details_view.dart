@@ -46,14 +46,14 @@ class CourseDetailsView extends StatelessWidget {
           children: [
             CustomIcon(
                 icon: Icons.menu, title: 'Level', subtitle: course.level),
-            const CustomIcon(
+            CustomIcon(
                 icon: Icons.calendar_month_outlined,
                 title: 'Weeks',
-                subtitle: '3'),
-            const CustomIcon(
+                subtitle: course.durationWeeks),
+            CustomIcon(
                 icon: Icons.watch_later_outlined,
                 title: 'Mins',
-                subtitle: '22'),
+                subtitle: course.durationMinutes),
           ],
         ),
 

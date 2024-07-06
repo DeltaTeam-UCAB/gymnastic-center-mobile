@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/client/client.dart';
 import 'package:gymnastic_center/domain/repositories/clients/clients_repository.dart';
 
 part 'clients_event.dart';
 part 'clients_state.dart';
 
-class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
+class ClientsBloc extends SafeBloc<ClientsEvent, ClientsState> {
   final ClientsRepository clientsRepository;
 
   ClientsBloc(this.clientsRepository)

@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lazy_indexed_stack/flutter_lazy_indexed_stack.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/presentation/screens/notifications/notifications_screen.dart';
 import 'package:gymnastic_center/presentation/screens/courses/courses_screen.dart';
@@ -16,20 +17,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
-    final routes = <Widget>[
-      FadeIn(child: const HomeView()),
-      FadeIn(child: const AllCoursesScreen()),
-      FadeIn(child: const SettingsScreen()),
-      FadeIn(child: NotificationsScreen()),
-    ];
 
     context.read<ClientsBloc>().getClientData();
 
     return Scaffold(
       key: scaffoldKey,
-      body: IndexedStack(
+      body: LazyIndexedStack(
         index: pageIndex,
-        children: routes,
+        children: <Widget>[
+          FadeIn(child: const HomeView()),
+          FadeIn(child: const AllCoursesScreen()),
+          FadeIn(child: const SettingsScreen()),
+          FadeIn(child: NotificationsScreen()),
+        ],
       ),
       drawer: pageIndex != 2 ? SideMenu(scaffoldKey: scaffoldKey) : null,
       bottomNavigationBar: CustomBottomNavigation(currentIndex: pageIndex),
