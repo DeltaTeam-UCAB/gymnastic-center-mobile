@@ -21,6 +21,8 @@ void main() {
         image: 'Image 1',
         tags: ['Tag 1'],
         level: 'Level 1',
+        durationMinutes: '400',
+        durationWeeks: '4',
         released: DateTime(2024, 6, 21),
         lessons: []);
     mockCoursesRepository = MockCoursesRepository([mockCourse]);
