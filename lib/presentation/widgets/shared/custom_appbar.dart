@@ -52,7 +52,9 @@ class _AppBarTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          client.name,
+          client.name.length <= 18
+              ? client.name
+              : '${client.name.substring(0, 18)}...',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 28,
@@ -66,7 +68,7 @@ class _AppBarTitle extends StatelessWidget {
             if (isExpanded)
               FadeIn(
                   child: IconButton(
-                onPressed: () {},
+                onPressed: () => context.push('/home/0/search'),
                 icon: const Icon(Icons.search, color: Colors.white),
                 iconSize: 30,
               )),
@@ -104,7 +106,7 @@ class _SearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () {},
+      onPressed: () => context.push('/home/0/search'),
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
@@ -112,11 +114,14 @@ class _SearchButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Search'),
-          Icon(Icons.search),
+          const Text('Search'),
+          IconButton(
+            onPressed: () => context.push('/home/0/search'),
+            icon: const Icon(Icons.search),
+          )
         ],
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 
 class BlogsSlideShow extends StatelessWidget {
@@ -10,18 +12,17 @@ class BlogsSlideShow extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return SizedBox(
-        height: 300,
+        height: 270,
         width: double.infinity,
         child: Swiper(
           viewportFraction: 0.75,
           scale: 0.8,
-          // autoplay: true,
           itemCount: blogs.length,
           pagination: SwiperPagination(
-            margin: const EdgeInsets.only(top: 0),
+            margin: const EdgeInsets.only(top: 15),
             builder: DotSwiperPaginationBuilder(
               color: colors.secondary,
-              activeColor: colors.primary,
+              activeColor: colors.inversePrimary,
             ),
           ),
           itemBuilder: (context, index) => _SlideItem(blog: blogs[index]),
@@ -36,12 +37,13 @@ class _SlideItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final isDark = context.read<ThemesBloc>().isDarkMode;
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
       child: Container(
         decoration: BoxDecoration(
-            color: colors.onPrimary,
-            borderRadius: BorderRadius.circular(20),
+            color: isDark ? Colors.grey.shade800 : Colors.white,
+            borderRadius: BorderRadius.circular(12),
             boxShadow: const [
               BoxShadow(
                 blurRadius: 1,
@@ -51,39 +53,39 @@ class _SlideItem extends StatelessWidget {
             ]),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Image
             Container(
-              height: 180,
+              height: 160,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                        'https://www.webconsultas.com/sites/default/files/styles/wch_image_schema/public/temas/yoga.jpg'),
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    image: NetworkImage(blog.images[0]),
                     fit: BoxFit.cover,
                   )),
             ),
 
             //Title
-            const Padding(
-              padding: EdgeInsets.only(left: 5),
-              child: Text('15 Minuts yoga prac tice the beginner in 30 days',
-                  style: TextStyle(fontSize: 13)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(blog.title,
+                  style: const TextStyle(fontSize: 13), maxLines: 2),
             ),
 
             //Subtitle
             Padding(
-              padding: const EdgeInsets.only(bottom: 5, left: 8, right: 8),
+              padding: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Training',
+                  Text(blog.category,
                       style: TextStyle(
                           color: colors.primary,
                           fontSize: 11,
                           fontWeight: FontWeight.bold)),
                   Text(
-                    'Feb 17, 2020',
+                    blog.released.toString().split(' ')[0],
                     style: TextStyle(color: colors.secondary, fontSize: 11),
                   ),
                 ],
