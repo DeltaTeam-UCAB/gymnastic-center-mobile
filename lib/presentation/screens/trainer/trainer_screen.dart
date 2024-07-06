@@ -4,13 +4,7 @@ import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer_bloc.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
-import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/image_view.dart';
@@ -24,22 +18,13 @@ class TrainerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
       BlocProvider(
-        create: (_) => TrainerBloc(
-          TrainersRepositoryImpl(
-            ApiTrainersDatasource(LocalStorageService()),
-          ),
-        ),
+        create: (_) => getIt<TrainerBloc>()
       ),
       BlocProvider(
-          create: (_) => CoursesBloc(
-              coursesRepository: CoursesRepositoryImpl(
-                  ApiCoursesDatasource(LocalStorageService())))),
+          create: (_) => getIt<CoursesBloc>()
+      ),
       BlocProvider(
-        create: (_) => BlogsBloc(
-          BlogRepositoryImpl(
-            blogsDatasource: APIBlogDatasource(LocalStorageService()),
-          ),
-        ),
+        create: (_) => getIt<BlogsBloc>()
       ),
     ], child: TrainerView(trainerId: trainerId));
   }
@@ -100,12 +85,16 @@ class _TrainerViewState extends State<TrainerView> {
                   ),
                   if (courseState.courses.isNotEmpty)
                     CourseHorizontalListView(
-                        courses: courseState.courses,
-                        title: 'Look at my Courses'),
+                      courses: courseState.courses,
+                      title: 'Look at my Courses',
+                      routeToGo: '/home/0/courses?trainer=${widget.trainerId}',
+                    ),
                   if (blogState.loadedBlogs.isNotEmpty)
                     BlogHorizontalListView(
-                        blogs: blogState.loadedBlogs,
-                        title: 'Look at my Blogs'),
+                      blogs: blogState.loadedBlogs,
+                      title: 'Look at my Blogs',
+                      routeToGo: '/home/0/blogs?trainer=${widget.trainerId}',
+                    ),
                 ],
               ),
             );
@@ -149,7 +138,8 @@ class _TrainerDetails extends StatelessWidget {
                   child: const SizedBox(
                     width: 100,
                     child: ImageView(
-                      image: 'https://cdn.icon-icons.com/icons2/3551/PNG/512/trainer_man_people_avatar_person_icon_224850.png',
+                      image:
+                          'https://cdn.icon-icons.com/icons2/3551/PNG/512/trainer_man_people_avatar_person_icon_224850.png',
                     ),
                   ),
                 ),
@@ -194,15 +184,17 @@ class _TrainerDetails extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: toggleFollow,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isFollowing ?  colors.inversePrimary : Colors.white,
+                            backgroundColor: isFollowing
+                                ? colors.inversePrimary
+                                : Colors.white,
                           ),
-                          child: Text(
-                            isFollowing ? 'Following' : 'Follow',
-                            style: TextStyle(
-                              color: isFollowing ? Colors.white : colors.inversePrimary,
-                              fontWeight: FontWeight.bold,
-                            )
-                          ),
+                          child: Text(isFollowing ? 'Following' : 'Follow',
+                              style: TextStyle(
+                                color: isFollowing
+                                    ? Colors.white
+                                    : colors.inversePrimary,
+                                fontWeight: FontWeight.bold,
+                              )),
                         ),
                       )
                     ],

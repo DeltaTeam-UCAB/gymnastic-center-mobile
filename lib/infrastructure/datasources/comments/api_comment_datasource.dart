@@ -13,44 +13,35 @@ class ApiCommentDatasource extends CommentsDatasource {
   ApiCommentDatasource(this.keyValueStorage){
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }
 
   @override
-  Future<List<Comment>> getCommentsByLessonId(String lessonId, {int perPage = 5 , int page = 0}) async {
+  Future<List<Comment>> getCommentsById(String targetId, String targetType,  {int perPage = 5 , int page = 0}) async {
     
     final Map<String, dynamic> queryParameters = {
         'page': page,
         'perPage': perPage,
-        'lesson' : lessonId      
     };
+    
+    if (targetType == 'LESSON'){
+      queryParameters.addAll({'lesson' : targetId});
+    }
+
+    if (targetType == 'BLOG'){
+      queryParameters.addAll({'blog' : targetId});
+    }
 
     final response = await dio.get('/many',
       queryParameters: queryParameters
     );
     
-
     return _responseToComments(response.data);
   }
-
-  @override
-  Future<List<Comment>> getCommentsByBlogId(String blogId, {int perPage = 5 , int page= 0}) async {
-
-    final Map<String, dynamic> queryParameters = {
-        'page': page,
-        'perPage': perPage,
-        'blog' : blogId      
-    };
-
-    final response = await dio.get('/many',
-      queryParameters: queryParameters
-    );
-
-    return _responseToComments(response.data);
-  }
-
+  
   List<Comment> _responseToComments(dynamic data){
     final List<CommentApiResponse> apiCommentsResponse = (data as List)
       .map((data) => CommentApiResponse.fromJson(data))
@@ -74,11 +65,11 @@ class ApiCommentDatasource extends CommentsDatasource {
   }
   
   @override
-  Future<String> createCommentsByLessonId(String lessonId, String message) async {
+  Future<String> createComment(String targetId, String targetType, String message) async {
 
     final Map<String, String> body = {
-      'target' : lessonId,
-      'targetType' : 'LESSON',
+      'target' : targetId,
+      'targetType' : targetType,
       'body' : message
     };
 
@@ -87,23 +78,5 @@ class ApiCommentDatasource extends CommentsDatasource {
     );
 
     return response.data['commentId'];
-
   }
-
-  @override
-  Future<String> createCommentsByBlogId(String blogId, String message) async {
-    final Map<String, String> body = {
-      'target' : blogId,
-      'targetType' : 'BLOG',
-      'body' : message
-    };
-
-    final response = await dio.post('/release',
-      data: body
-    );
-   
-    return response.data['commentId'];
-  }
-  
-  
 }

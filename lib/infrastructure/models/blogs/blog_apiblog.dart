@@ -37,6 +37,6 @@ class BlogAPIBlog {
         date: DateTime.parse(json["date"]),
         images: json["images"] == null
             ? [json["image"]]
-            : List<String>.from(json["images"].map((x) => x.toString())),
+            : List<String>.from(json["images"].map((x) => x.toString()))
       );
 }

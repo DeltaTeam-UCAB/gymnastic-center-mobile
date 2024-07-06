@@ -4,9 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
@@ -17,13 +15,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocalStorageService localStorageService = LocalStorageService();
     return BlocProvider(
-        create: (context) => LoginBloc(
-                userRespository: UserRepositoryImpl(
-              userDatasource: APIUserDatasource(),
-              keyValueStorage: localStorageService,
-            )),
+        create: (context) => getIt<LoginBloc>(),
         child: const _LoginScreen());
   }
 }

@@ -6,13 +6,7 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/categories/categories_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/categories/categories_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
@@ -27,18 +21,11 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (_) => CoursesBloc(
-                coursesRepository: CoursesRepositoryImpl(
-                    ApiCoursesDatasource(LocalStorageService())))),
+            create: (_) => getIt<CoursesBloc>()),
         BlocProvider(
-            create: (_) => BlogsBloc(BlogRepositoryImpl(
-                  blogsDatasource: APIBlogDatasource(LocalStorageService()),
-                ))),
+            create: (_) => getIt<BlogsBloc>()),
         BlocProvider(
-            create: (_) => CategoriesBloc(
-                categoryRepository: CategoriesRespositoryImpl(
-                    categoryDatasource:
-                        CategoriesDatasourceImpl(LocalStorageService()))))
+            create: (_) => getIt<CategoriesBloc>())
       ],
       child: const _Home(),
     );
@@ -76,16 +63,23 @@ class __HomeState extends State<_Home> {
           expandedHeight: 160,
           flexibleSpace: CustomAppbar(),
         ),
-      SliverList(
+        SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [
               CategoriesHorizontalListView(
                   categories: categories, title: 'Category of Yoga'),
               CourseHorizontalListView(
-                  courses: courses, title: 'Popular Courses'),
+                courses: courses,
+                title: 'Popular Courses',
+                routeToGo: '/home/0/courses',
+              ),
               VideoHorizontalListView(courses: courses, title: 'Resume Videos'),
-              BlogHorizontalListView(blogs: blogs, title: 'Our latest blogs'),
+              BlogHorizontalListView(
+                blogs: blogs,
+                title: 'Our latest blogs',
+                routeToGo: '/home/0/courses',
+              ),
             ],
           );
         }, childCount: 1))

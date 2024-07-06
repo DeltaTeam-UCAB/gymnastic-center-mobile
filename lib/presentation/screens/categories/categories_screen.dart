@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
-import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/categories/categories_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/categories/widgets/all_categories_slide.dart';
 
 class AllCategoriesScreen extends StatelessWidget {
@@ -13,10 +11,7 @@ class AllCategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CategoriesBloc(
-          categoryRepository: CategoriesRespositoryImpl(
-              categoryDatasource:
-                  CategoriesDatasourceImpl(LocalStorageService()))),
+      create: (_) => getIt<CategoriesBloc>(),
       child: const _AllCategoriesScreen(),
     );
   }

@@ -12,7 +12,8 @@ class ClientsDatasourceImpl extends ClientsDatasource {
   ClientsDatasourceImpl(this.keyValueStorage) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }

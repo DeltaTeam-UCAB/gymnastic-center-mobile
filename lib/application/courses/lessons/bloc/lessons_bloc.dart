@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
 
 part 'lessons_event.dart';
 part 'lessons_state.dart';
 
-class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
+class LessonsBloc extends SafeBloc<LessonsEvent, LessonsState> {
 
   final CoursesRepository coursesRepository;
 
