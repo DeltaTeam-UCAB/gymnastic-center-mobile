@@ -114,14 +114,11 @@ class _SearchButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Search'),
-          IconButton(
-            onPressed: () => context.push('/home/0/search'),
-            icon: const Icon(Icons.search),
-          )
+          Text('Search'),
+          Icon(Icons.search)
         ],
       ),
     );
