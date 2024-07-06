@@ -13,6 +13,8 @@ class CourseMapper {
         lessons: LessonMapper.lessonToEntity(json.lessons),
         tags: json.tags,
         level: json.level,
+        durationMinutes: json.durationMinutes,
+        durationWeeks: json.durationWeeks,
         released: json.date,
         trainer: TrainerMapper.trainerToEntity(json.trainer),
       );
@@ -28,7 +30,7 @@ class LessonMapper {
               content: e.content,
               video: e.video,
               image: e.image,
-              order: int.parse(e.order),
+              order: e.order,
             ))
         .toList();
   }

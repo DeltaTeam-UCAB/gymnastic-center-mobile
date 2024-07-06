@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/application/video_player/video_player_manager.dart';
 import 'package:gymnastic_center/domain/entities/videos/video.dart';
 
@@ -10,7 +11,7 @@ part 'video_player_state.dart';
 
 
 //TODO : Agregar state de total duration, cambiar progressInSeconds, Agregar mas errores
-class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
+class VideoPlayerBloc extends SafeBloc<VideoPlayerEvent, VideoPlayerState> {
   late VideoPlayerManager videoPlayerManager;
 
   VideoPlayerBloc() : super(const VideoPlayerState()) {

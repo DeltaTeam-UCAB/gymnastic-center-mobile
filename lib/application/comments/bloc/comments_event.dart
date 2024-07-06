@@ -31,4 +31,6 @@ class AllCommentsLoaded extends CommentsEvent{}
 
 class LoadingStarted extends CommentsEvent{}
 
+class InitialLoadingStarted extends CommentsEvent{}
+
 class ErrorOccurred extends CommentsEvent{}

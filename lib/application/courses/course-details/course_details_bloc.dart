@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
@@ -14,12 +15,14 @@ final initialCourse = Course(
     trainer: Trainer(id: '', name: '', location: ''),
     category: '',
     image: '',
+    durationWeeks: '',
+    durationMinutes: '',
     tags: [],
     level: '',
     released: DateTime.now(),
     lessons: []);
 
-class CourseDetailsBloc extends Bloc<CourseDetailsEvent, CourseDetailsState> {
+class CourseDetailsBloc extends SafeBloc<CourseDetailsEvent, CourseDetailsState> {
   final CoursesRepository coursesRepository;
 
   CourseDetailsBloc(this.coursesRepository)

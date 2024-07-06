@@ -7,6 +7,7 @@ import 'package:gymnastic_center/infrastructure/camara_gallery/camara_gallery_im
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/account/widgets/account_form_field_decoration.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/image_view.dart';
@@ -21,9 +22,7 @@ class AccountDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UpdateBloc(ClientsRepositoryImpl(
-          keyValueStorage: LocalStorageService(),
-          clientsDatasource: ClientsDatasourceImpl(LocalStorageService()))),
+      create: (context) => getIt<UpdateBloc>(),
       child: const _AccountDetailsScreen(),
     );
   }

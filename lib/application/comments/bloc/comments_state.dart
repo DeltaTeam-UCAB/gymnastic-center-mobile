@@ -2,6 +2,7 @@ part of 'comments_bloc.dart';
 
 enum CommentsStatus{
   error, 
+  initialLoading,
   loading,
   loaded,
   allCommentsLoaded
@@ -14,7 +15,7 @@ class CommentsState extends Equatable {
   final int page;
 
   const CommentsState({
-    this.status = CommentsStatus.loaded,
+    this.status = CommentsStatus.initialLoading,
     this.comments = const [],
     this.page = 0,
     this.isPosting = false

@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/repositories/clients/clients_repository.dart';
 
 part 'update_event.dart';
 part 'update_state.dart';
 
-class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
+class UpdateBloc extends SafeBloc<UpdateEvent, UpdateState> {
   final ClientsRepository clientRepository;
 
   UpdateBloc(this.clientRepository) : super(const UpdateState()) {

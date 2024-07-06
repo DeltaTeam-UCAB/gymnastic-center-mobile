@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
@@ -7,7 +8,7 @@ import 'package:gymnastic_center/domain/repositories/courses/courses_repository.
 part 'courses_event.dart';
 part 'courses_state.dart';
 
-class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
+class CoursesBloc extends SafeBloc<CoursesEvent, CoursesState> {
   final CoursesRepository coursesRepository;
 
   CoursesBloc({
@@ -20,7 +21,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   }
 
   void _onCourseError(CourseError event, Emitter<CoursesState> emit) {
-    emit(state.copyWith(isError: true));
+    emit(state.copyWith(isError: true, isLoading: false));
   }
 
   void _onCourseIsEmpty(CoursesIsEmpty event, Emitter<CoursesState> emit) {

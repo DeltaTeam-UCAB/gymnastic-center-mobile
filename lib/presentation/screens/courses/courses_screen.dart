@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';
 
 import '../../widgets/shared/no_content.dart';
@@ -19,9 +17,7 @@ class AllCoursesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => CoursesBloc(
-            coursesRepository: CoursesRepositoryImpl(
-                ApiCoursesDatasource(LocalStorageService()))),
+        create: (_) => getIt<CoursesBloc>(),
         child: _AllCoursesScreen(
           selectedCategoryId: selectedCategoryId,
           selectedTrainerId: selectedTrainerId,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blog_slide.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/no_content.dart';
 
@@ -16,8 +14,7 @@ class AllBlogsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BlogsBloc(BlogRepositoryImpl(
-          blogsDatasource: APIBlogDatasource(LocalStorageService()))),
+      create: (_) => getIt<BlogsBloc>(),
       child: _AllBlogsScreen(
         selectedCategoryId: selectedCategoryId,
         selectedTrainerId: selectedTrainerId,
