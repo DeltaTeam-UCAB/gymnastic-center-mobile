@@ -11,7 +11,6 @@ import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart
 import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
-import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/image_view.dart';
@@ -103,13 +102,13 @@ class _TrainerViewState extends State<TrainerView> {
                     CourseHorizontalListView(
                       courses: courseState.courses,
                       title: 'Look at my Courses',
-                      filterDto: FilterDto(trainerId: widget.trainerId),
+                      routeToGo: '/home/0/courses?trainer=${widget.trainerId}',
                     ),
                   if (blogState.loadedBlogs.isNotEmpty)
                     BlogHorizontalListView(
                       blogs: blogState.loadedBlogs,
                       title: 'Look at my Blogs',
-                      filterDto: FilterDto(trainerId: widget.trainerId),
+                      routeToGo: '/home/0/blogs?trainer=${widget.trainerId}',
                     ),
                 ],
               ),

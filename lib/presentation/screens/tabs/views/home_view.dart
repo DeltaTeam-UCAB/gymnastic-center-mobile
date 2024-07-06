@@ -76,16 +76,23 @@ class __HomeState extends State<_Home> {
           expandedHeight: 160,
           flexibleSpace: CustomAppbar(),
         ),
-      SliverList(
+        SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [
               CategoriesHorizontalListView(
                   categories: categories, title: 'Category of Yoga'),
               CourseHorizontalListView(
-                  courses: courses, title: 'Popular Courses'),
+                courses: courses,
+                title: 'Popular Courses',
+                routeToGo: '/home/0/courses',
+              ),
               VideoHorizontalListView(courses: courses, title: 'Resume Videos'),
-              BlogHorizontalListView(blogs: blogs, title: 'Our latest blogs'),
+              BlogHorizontalListView(
+                blogs: blogs,
+                title: 'Our latest blogs',
+                routeToGo: '/home/0/courses',
+              ),
             ],
           );
         }, childCount: 1))

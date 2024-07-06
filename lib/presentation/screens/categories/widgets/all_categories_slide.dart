@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
-import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 
 class AllCategoriesSlide extends StatelessWidget {
   final Category category;
@@ -13,8 +12,7 @@ class AllCategoriesSlide extends StatelessWidget {
     const titleStyle = TextStyle(
         color: Colors.white, fontSize: 20, overflow: TextOverflow.ellipsis);
     return GestureDetector(
-      onTap: () => context.push('/home/0/courses',
-          extra: FilterDto(categoryId: category.id)),
+      onTap: () => context.push('/home/0/courses?category=${category.id}'),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
-import 'package:gymnastic_center/presentation/dtos/filter_dto.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/see_all_button.dart';
 
 import 'blog_slide.dart';
@@ -8,10 +7,13 @@ import 'blog_slide.dart';
 class BlogHorizontalListView extends StatelessWidget {
   final List<Blog> blogs;
   final String title;
-  final FilterDto? filterDto;
+  final String routeToGo;
 
   const BlogHorizontalListView(
-      {super.key, required this.blogs, required this.title, this.filterDto});
+      {super.key,
+      required this.blogs,
+      required this.title,
+      required this.routeToGo});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class BlogHorizontalListView extends StatelessWidget {
         children: [
           _Title(
             title: title,
-            filterDto: filterDto ?? FilterDto(),
+            routeToGo: routeToGo,
           ),
           const SizedBox(
             height: 12,
@@ -43,19 +45,13 @@ class BlogHorizontalListView extends StatelessWidget {
 
 class _Title extends StatelessWidget {
   final String title;
-  final FilterDto filterDto;
-  const _Title({required this.title, required this.filterDto});
+  final String routeToGo;
+  const _Title({required this.title, required this.routeToGo});
 
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.headlineSmall;
-    var route = '/home/0/blogs';
-    if (filterDto.categoryId != null) {
-      route = '$route?category=${filterDto.categoryId}';
-    }
-    if (filterDto.trainerId != null) {
-      route = '$route?trainer=${filterDto.trainerId}';
-    }
+
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -66,7 +62,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          SeeAllButton(route: route),
+          SeeAllButton(route: routeToGo),
         ],
       ),
     );
