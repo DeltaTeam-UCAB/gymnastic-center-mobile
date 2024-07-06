@@ -15,6 +15,8 @@ final initialCourse = Course(
     trainer: Trainer(id: '', name: '', location: ''),
     category: '',
     image: '',
+    durationWeeks: '',
+    durationMinutes: '',
     tags: [],
     level: '',
     released: DateTime.now(),

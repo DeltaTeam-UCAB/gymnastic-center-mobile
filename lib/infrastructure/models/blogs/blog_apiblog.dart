@@ -33,6 +33,8 @@ class BlogAPIBlog {
             : TrainerResponse.fromJson(json["trainer"]),
         category: json["category"],
         date: DateTime.parse(json["date"]),
-        images: List<String>.from(json["images"].map((x) => x.toString())),
+        images: json["images"] == null
+            ? [json["image"]]
+            : List<String>.from(json["images"].map((x) => x.toString()))
       );
 }
