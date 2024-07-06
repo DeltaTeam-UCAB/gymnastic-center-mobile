@@ -26,8 +26,10 @@ class BlogAPIBlog {
   factory BlogAPIBlog.fromJson(Map<String, dynamic> json) => BlogAPIBlog(
         id: json["id"],
         title: json["title"],
-        body: json["description"],
-        tags: List<String>.from(json["tags"].map((x) => x.toString())),
+        body: json["description"] ?? '',
+        tags: json["tags"] != null
+            ? List<String>.from(json["tags"].map((x) => x.toString()))
+            : [],
         trainer: json["trainer"] is String
             ? TrainerResponse(id: '', name: json["trainer"])
             : TrainerResponse.fromJson(json["trainer"]),

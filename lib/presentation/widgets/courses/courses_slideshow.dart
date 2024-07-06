@@ -2,11 +2,11 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
+import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
-class BlogsSlideShow extends StatelessWidget {
-  final List<Blog> blogs;
-  const BlogsSlideShow({super.key, required this.blogs});
+class CoursesSlideShow extends StatelessWidget {
+  final List<Course> courses;
+  const CoursesSlideShow({super.key, required this.courses});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class BlogsSlideShow extends StatelessWidget {
         child: Swiper(
           viewportFraction: 0.75,
           scale: 0.8,
-          itemCount: blogs.length,
+          itemCount: courses.length,
           pagination: SwiperPagination(
             margin: const EdgeInsets.only(top: 15),
             builder: DotSwiperPaginationBuilder(
@@ -25,14 +25,14 @@ class BlogsSlideShow extends StatelessWidget {
               activeColor: colors.inversePrimary,
             ),
           ),
-          itemBuilder: (context, index) => _SlideItem(blog: blogs[index]),
+          itemBuilder: (context, index) => _SlideItem(course: courses[index]),
         ));
   }
 }
 
 class _SlideItem extends StatelessWidget {
-  final Blog blog;
-  const _SlideItem({required this.blog});
+  final Course course;
+  const _SlideItem({required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _SlideItem extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: NetworkImage(blog.images[0]),
+                    image: NetworkImage(course.image),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -69,8 +69,11 @@ class _SlideItem extends StatelessWidget {
             //Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(blog.title,
-                  style: const TextStyle(fontSize: 13), maxLines: 2),
+              child: Text(
+                course.title,
+                style: const TextStyle(fontSize: 13),
+                maxLines: 2,
+              ),
             ),
 
             //Subtitle
@@ -79,14 +82,14 @@ class _SlideItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(blog.category,
+                  Text(course.category,
                       style: TextStyle(
-                          color: colors.primary,
-                          fontSize: 11,
+                          color: colors.secondary,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold)),
                   Text(
-                    blog.released.toString().split(' ')[0],
-                    style: TextStyle(color: colors.secondary, fontSize: 11),
+                    course.released.toString().split(' ')[0],
+                    style: TextStyle(color: colors.secondary, fontSize: 12),
                   ),
                 ],
               ),
