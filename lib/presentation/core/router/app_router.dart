@@ -36,18 +36,21 @@ class RoutesManager {
               builder: (context, state) => const AllCategoriesScreen(),
             ),
             GoRoute(
-              path: 'courses/:categoryId',
-              builder: (context, state) => AllCoursesScreen(
-                selectedCategoryId: state.pathParameters['categoryId'] ?? '',
-              ),
-            ),
-            GoRoute(
-              path: 'courses',
-              builder: (context, state) => const AllCoursesScreen(),
-            ),
+                path: 'courses',
+                builder: (context, state) {
+                  return AllCoursesScreen(
+                    selectedCategoryId: state.uri.queryParameters['category'],
+                    selectedTrainerId: state.uri.queryParameters['trainer'],
+                  );
+                }),
             GoRoute(
               path: 'blogs',
-              builder: (context, state) => const AllBlogsScreen(),
+              builder: (context, state) {
+                return AllBlogsScreen(
+                  selectedCategoryId: state.uri.queryParameters['category'],
+                  selectedTrainerId: state.uri.queryParameters['trainer'],
+                );
+              },
             ),
             GoRoute(
               path: 'videos',

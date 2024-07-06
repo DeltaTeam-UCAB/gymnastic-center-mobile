@@ -3,49 +3,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blog_slide.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/no_content.dart';
 
 class AllBlogsScreen extends StatelessWidget {
-  const AllBlogsScreen({super.key});
+  final String? selectedCategoryId;
+  final String? selectedTrainerId;
+  const AllBlogsScreen(
+      {super.key, this.selectedCategoryId, this.selectedTrainerId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<BlogsBloc>(),
-      child: const _AllBlogsScreen(),
-    );
-  }
-}
-
-class _AllBlogsScreen extends StatelessWidget {
-  const _AllBlogsScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Blogs',
-          style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
-        ),
+      child: _AllBlogsScreen(
+        selectedCategoryId: selectedCategoryId,
+        selectedTrainerId: selectedTrainerId,
       ),
-      body: const _AllBlogsView(),
     );
   }
 }
 
-class _AllBlogsView extends StatefulWidget {
-  const _AllBlogsView();
+class _AllBlogsScreen extends StatefulWidget {
+  final String? selectedCategoryId;
+  final String? selectedTrainerId;
+  const _AllBlogsScreen(
+      {required this.selectedCategoryId, required this.selectedTrainerId});
 
   @override
-  State<_AllBlogsView> createState() => _AllBlogsViewState();
+  State<_AllBlogsScreen> createState() => _AllBlogsScreenState();
 }
 
-class _AllBlogsViewState extends State<_AllBlogsView> {
+class _AllBlogsScreenState extends State<_AllBlogsScreen> {
   final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
-    context.read<BlogsBloc>().loadNextPage();
+    super.initState();
+    context.read<BlogsBloc>().loadNextPage(
+        categoryId: widget.selectedCategoryId,
+        trainerId: widget.selectedTrainerId);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels + 500 >=
@@ -64,49 +59,47 @@ class _AllBlogsViewState extends State<_AllBlogsView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BlogsBloc, BlogsState>(
-      builder: (context, state) {
-        if (state.status == BlogStatus.error) {
-          return const Center(
-            child: Text('Something bad happend'),
-          );
-        }
-        if (state.loadedBlogs.isEmpty) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Column(
-          children: [
-            Row(
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Blogs',
+            style: TextStyle(color: Colors.white, fontFamily: 'PT Sans'),
+          ),
+        ),
+        body: BlocBuilder<BlogsBloc, BlogsState>(
+          builder: (context, state) {
+            if (state.status == BlogStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.status == BlogStatus.error) {
+              return const Center(
+                child: Text('Something bad happend'),
+              );
+            }
+            return Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 27),
-                  child: Text('Sort by: '),
+                const SizedBox(
+                  height: 16,
                 ),
-                TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_drop_down_outlined),
-                    label: const Text('newest'))
+                state.loadedBlogs.isNotEmpty
+                    ? Expanded(
+                        child: GridView.builder(
+                        padding: const EdgeInsets.all(4),
+                        controller: _scrollController,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: state.loadedBlogs.length,
+                        itemBuilder: (context, index) {
+                          return BlogSlide(blog: state.loadedBlogs[index]);
+                        },
+                      ))
+                    : const NoContent(image: 'assets/stretch.svg')
               ],
-            ),
-            Expanded(
-                child: GridView.builder(
-              controller: _scrollController,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-              ),
-              itemCount: state.loadedBlogs.length,
-              itemBuilder: (context, index) {
-                return BlogSlide(blog: state.loadedBlogs[index]);
-              },
-            )),
-            if (state.status == BlogStatus.loading)
-              const CircularProgressIndicator()
-          ],
-        );
-      },
-    );
+            );
+          },
+        ));
   }
 }

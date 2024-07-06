@@ -7,9 +7,13 @@ import 'course_slide.dart';
 class CourseHorizontalListView extends StatelessWidget {
   final List<Course> courses;
   final String title;
+  final String routeToGo;
 
   const CourseHorizontalListView(
-      {super.key, required this.courses, required this.title});
+      {super.key,
+      required this.courses,
+      required this.title,
+      required this.routeToGo});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,10 @@ class CourseHorizontalListView extends StatelessWidget {
       height: 220,
       child: Column(
         children: [
-          _Title(title: title),
+          _Title(
+            title: title,
+            routeToGo: routeToGo,
+          ),
           const SizedBox(
             height: 12,
           ),
@@ -38,12 +45,12 @@ class CourseHorizontalListView extends StatelessWidget {
 
 class _Title extends StatelessWidget {
   final String title;
-  const _Title({required this.title});
+  final String routeToGo;
+  const _Title({required this.title, required this.routeToGo});
 
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.headlineSmall;
-
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -54,7 +61,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          const SeeAllButton(route: '/home/0/courses'),
+          SeeAllButton(route: routeToGo)
         ],
       ),
     );
