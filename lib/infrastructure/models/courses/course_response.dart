@@ -26,14 +26,14 @@ class CourseResponse {
   });
 
   factory CourseResponse.fromJson(Map<String, dynamic> json) => CourseResponse(
-        id: json["id"], // Viene
-        title: json["title"], // Viene
-        description: json["description"], // Viene
-        trainer: json["trainer"] is String // Viene pero diferente segun el caso
+        id: json["id"], 
+        title: json["title"], 
+        description: json["description"] ?? '', 
+        trainer: json["trainer"] is String
             ? TrainerResponse(id: '', name: json["trainer"])
             : TrainerResponse.fromJson(json["trainer"]),
-        category: json["category"], // Viene
-        image: json["image"], // Viene
+        category: json["category"], 
+        image: json["image"], 
 
         tags: json["tags"] != null
             ? List<String>.from(json["tags"].map((x) => x))
