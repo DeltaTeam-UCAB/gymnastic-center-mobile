@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NoContent extends StatelessWidget {
+  final String image;
+
   const NoContent({
     super.key,
+    required this.image,
   });
 
   @override
@@ -20,7 +23,7 @@ class NoContent extends StatelessWidget {
                   backgroundColor: Colors.deepPurpleAccent,
                 ),
                 SvgPicture.asset(
-                  'assets/stretch.svg',
+                  image,
                   height: 250,
                 )
               ],

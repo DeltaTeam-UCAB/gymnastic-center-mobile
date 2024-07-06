@@ -21,7 +21,7 @@ class CourseHorizontalListView extends StatelessWidget {
         children: [
           _Title(
             title: title,
-            filterDto: filterDto,
+            filterDto: filterDto ?? FilterDto(),
           ),
           const SizedBox(
             height: 12,
@@ -43,13 +43,19 @@ class CourseHorizontalListView extends StatelessWidget {
 
 class _Title extends StatelessWidget {
   final String title;
-  final FilterDto? filterDto;
-  const _Title({required this.title, this.filterDto});
+  final FilterDto filterDto;
+  const _Title({required this.title, required this.filterDto});
 
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.headlineSmall;
-
+    var route = '/home/0/courses';
+    if (filterDto.categoryId != null) {
+      route = '$route?category=${filterDto.categoryId}';
+    }
+    if (filterDto.trainerId != null) {
+      route = '$route?trainer=${filterDto.trainerId}';
+    }
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -60,10 +66,7 @@ class _Title extends StatelessWidget {
             style: titleStyle,
           ),
           const Spacer(),
-          SeeAllButton(
-            route: '/home/0/courses',
-            filterDto: filterDto,
-          ),
+          SeeAllButton(route: route)
         ],
       ),
     );
