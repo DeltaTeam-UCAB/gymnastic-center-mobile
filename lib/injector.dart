@@ -1,4 +1,3 @@
-
 import 'package:get_it/get_it.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
@@ -13,6 +12,7 @@ import 'package:gymnastic_center/application/courses/course-details/course_detai
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
@@ -21,6 +21,7 @@ import 'package:gymnastic_center/infrastructure/datasources/categories/categorie
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/notifications/notifications_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications_manager.dart';
@@ -31,16 +32,14 @@ import 'package:gymnastic_center/infrastructure/repositories/categories/categori
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/notifications/notifications_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 
-
 final getIt = GetIt.instance;
 
-class Injector{
-
-  void setUp(){
-    
+class Injector {
+  void setUp() {
     final LocalStorageService localStorageService = LocalStorageService();
 
     final apiBlogDatasource = APIBlogDatasource(localStorageService);
@@ -48,58 +47,50 @@ class Injector{
     final apiUserDatasource = APIUserDatasource();
     final clientsDatasourceImpl = ClientsDatasourceImpl(localStorageService);
 
-    final blogRepositoryImpl = BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
+    final blogRepositoryImpl =
+        BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
     final coursesRepositoryImpl = CoursesRepositoryImpl(apiCoursesDatasource);
-    final userRepositoryImpl = UserRepositoryImpl(userDatasource: apiUserDatasource,keyValueStorage: localStorageService);
-    final clientsRepositoryImpl = ClientsRepositoryImpl(clientsDatasource: clientsDatasourceImpl, keyValueStorage: localStorageService);
+    final userRepositoryImpl = UserRepositoryImpl(
+        userDatasource: apiUserDatasource,
+        keyValueStorage: localStorageService);
+    final clientsRepositoryImpl = ClientsRepositoryImpl(
+        clientsDatasource: clientsDatasourceImpl,
+        keyValueStorage: localStorageService);
+    final notificationsRepositoryImpl = NotificationRespositoryImpl(
+        notificationsDatasource:
+            NotificationsDatasourceImpl(localStorageService));
 
     getIt.registerFactory(
       () => CommentsBloc(CommentsRepositoryImpl(
-              commentsDatasource: ApiCommentDatasource(localStorageService))),
+          commentsDatasource: ApiCommentDatasource(localStorageService))),
     );
-    getIt.registerFactory(
-      () => BlogsBloc(blogRepositoryImpl)
-    );
+    getIt.registerFactory(() => BlogsBloc(blogRepositoryImpl));
     getIt.registerFactory(
       () => BlogDetailsBloc(blogRepositoryImpl),
     );
     getIt.registerFactory(
-      () => CoursesBloc(coursesRepository: coursesRepositoryImpl)
-    );
+        () => CoursesBloc(coursesRepository: coursesRepositoryImpl));
     getIt.registerFactory(
       () => CourseDetailsBloc(coursesRepositoryImpl),
     );
     getIt.registerFactory(
       () => CategoriesBloc(
-            categoryRepository: CategoriesRespositoryImpl(
+          categoryRepository: CategoriesRespositoryImpl(
               categoryDatasource:
                   CategoriesDatasourceImpl(localStorageService))),
     );
-    getIt.registerFactory(
-      () => RegisterBloc(userRepositoryImpl.register)
-    );
-    getIt.registerFactory(
-      () => LoginBloc(userRespository: userRepositoryImpl)
-    );
-    getIt.registerFactory(
-      () => VideoPlayerBloc()
-    );
-    getIt.registerFactory(
-      () => UpdateBloc(clientsRepositoryImpl)
-    );
+    getIt.registerFactory(() => RegisterBloc(userRepositoryImpl.register));
+    getIt.registerFactory(() => LoginBloc(userRespository: userRepositoryImpl));
+    getIt.registerFactory(() => VideoPlayerBloc());
+    getIt.registerFactory(() => UpdateBloc(clientsRepositoryImpl));
+    getIt.registerFactory(() => NotificationListBloc(
+        notificationsRepository: notificationsRepositoryImpl));
+    getIt.registerSingleton(ThemesBloc());
     getIt.registerSingleton(
-      ThemesBloc()
-    );
+        NotificationsBloc(FirebaseNotificationsManager(LocalNotifications())));
+    getIt.registerSingleton(ClientsBloc(clientsRepositoryImpl));
     getIt.registerSingleton(
-      NotificationsBloc(
-            FirebaseNotificationsManager(LocalNotifications()))
-    );
-    getIt.registerSingleton(
-      ClientsBloc(clientsRepositoryImpl)
-    );
-    getIt.registerSingleton(
-      RecoverPasswordBloc(userRespository: userRepositoryImpl)
-    );
+        RecoverPasswordBloc(userRespository: userRepositoryImpl));
     getIt.registerSingleton(
       TrainerBloc(
         TrainersRepositoryImpl(
@@ -108,9 +99,6 @@ class Injector{
       ),
     );
     getIt.registerLazySingleton(
-      () => LessonsBloc(coursesRepository: coursesRepositoryImpl)
-    );
+        () => LessonsBloc(coursesRepository: coursesRepositoryImpl));
   }
-
-
 }
