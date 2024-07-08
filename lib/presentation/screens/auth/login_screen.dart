@@ -300,7 +300,7 @@ class _LoginScreenState extends State<_LoginScreen> {
                 ),
                 ellipsePosition: Offset(
                     MediaQuery.of(context).size.width / 2,
-                    MediaQuery.of(context).size.height * 0.391 +
+                    MediaQuery.of(context).size.height * 0.369 +
                         EllipseMaskedBackground
                             .getDefaultEllipseRadiusYForContext(context)),
                 child: Padding(

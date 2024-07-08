@@ -18,7 +18,7 @@ class BlogHorizontalListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 310,
+      height: 280,
       child: Column(
         children: [
           _Title(

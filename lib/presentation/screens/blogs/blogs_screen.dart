@@ -96,7 +96,7 @@ class _AllBlogsScreenState extends State<_AllBlogsScreen> {
                           return BlogSlide(blog: state.loadedBlogs[index]);
                         },
                       ))
-                    : const NoContent(image: 'assets/stretch.svg')
+                    : const NoContent(image: 'assets/stretch.svg', text: 'Ups!! No content yet...',)
               ],
             );
           },

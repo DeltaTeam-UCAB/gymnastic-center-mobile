@@ -6,8 +6,9 @@ class TrainerMapper {
     return Trainer(
       id: json.id,
       name: json.name,
-      location: json.locations,
+      location: json.location,
       followers: json.followers,
+      image: json.image,
     );
   }
 }

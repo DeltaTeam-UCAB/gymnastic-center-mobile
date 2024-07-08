@@ -12,7 +12,7 @@ final initialCourse = Course(
     id: '',
     title: '',
     description: '',
-    trainer: Trainer(id: '', name: '', location: ''),
+    trainer: Trainer(id: '', name: '', location: '', image: ''),
     category: '',
     image: '',
     durationWeeks: '',
