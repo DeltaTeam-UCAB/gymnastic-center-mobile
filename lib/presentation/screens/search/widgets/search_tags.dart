@@ -5,18 +5,22 @@ import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 class SearchTags extends StatefulWidget {
   final List<String> tags;
   final void Function(List<String> selectedTags) onChangeTags;
-  const SearchTags(this.tags, {super.key, required this.onChangeTags});
+  const SearchTags(
+    this.tags, {
+    super.key,
+    required this.onChangeTags,
+  });
 
   @override
-  _SearchTagsState createState() => _SearchTagsState();
+  SearchTagsState createState() => SearchTagsState();
 }
 
-class _SearchTagsState extends State<SearchTags> {
+class SearchTagsState extends State<SearchTags> {
   final Set<String> _activeTags = {};
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.read<ThemesBloc>().isDarkMode; 
+    final bool isDark = context.read<ThemesBloc>().isDarkMode;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Wrap(

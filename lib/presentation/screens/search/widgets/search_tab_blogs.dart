@@ -4,6 +4,7 @@ import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/presentation/screens/search/widgets/search_slide.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_slideshow.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/no_content.dart';
 
 class SearchTabBlogs extends StatefulWidget {
   final List<Blog> popularBlogs;
@@ -31,7 +32,7 @@ class _SearchTabBlogsState extends State<SearchTabBlogs> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        widget.loadNextPage();
+        if (widget.restBlogs.isNotEmpty) widget.loadNextPage();
       }
     });
     super.initState();
@@ -53,29 +54,42 @@ class _SearchTabBlogsState extends State<SearchTabBlogs> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16),
-                child: Text(
-                  'Popular Blogs',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black),
+              widget.popularBlogs.isEmpty
+                  ? const NoContent(
+                      image: 'assets/search/not-found.svg',
+                      text: 'Oops! Runner stumbled, \nno blogs found.',
+                      heighFactor: 1.2,
+                      width: 300,
+                      height: 300,
+                    )
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16, left: 16),
+                          child: Text(
+                            'Popular Blogs',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        BlogsSlideShow(blogs: widget.popularBlogs),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+              if (widget.restBlogs.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    'All Blogs',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              BlogsSlideShow(blogs: widget.popularBlogs),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'All Blogs',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-              ),
               const SizedBox(height: 10),
             ],
           ),
@@ -97,6 +111,7 @@ class _SearchTabBlogsState extends State<SearchTabBlogs> {
               return Padding(
                   padding: const EdgeInsets.all(12),
                   child: SearchSlide(
+                    routeToGo: '/blog/${widget.restBlogs[index].id}',
                     category: widget.restBlogs[index].category,
                     image: widget.restBlogs[index].images[0],
                     title: widget.restBlogs[index].title,

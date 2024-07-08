@@ -5,6 +5,7 @@ import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/screens/search/widgets/search_slide.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_slideshow.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/no_content.dart';
 
 class SearchTabCourses extends StatefulWidget {
   final List<Course> popularCourse;
@@ -32,7 +33,7 @@ class _SearchTabCoursesState extends State<SearchTabCourses> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        widget.loadNextPage();
+        if (widget.restCourse.isNotEmpty) widget.loadNextPage();
       }
     });
     super.initState();
@@ -54,29 +55,42 @@ class _SearchTabCoursesState extends State<SearchTabCourses> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16),
-                child: Text(
-                  'Popular Courses',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black),
+              widget.popularCourse.isEmpty
+                  ? const NoContent(
+                      image: 'assets/search/not-found-2.svg',
+                      text: 'Oops! Yoga journey took a tumble,\nno courses found.',
+                      heighFactor: 1.2,
+                      width: 300,
+                      height: 300,
+                    )
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16, left: 16),
+                          child: Text(
+                            'Popular Courses',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        CoursesSlideShow(courses: widget.popularCourse),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+              if (widget.restCourse.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    'All Courses',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              CoursesSlideShow(courses: widget.popularCourse),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'All Courses',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-              ),
               const SizedBox(height: 10),
             ],
           ),
@@ -99,6 +113,8 @@ class _SearchTabCoursesState extends State<SearchTabCourses> {
                   padding: const EdgeInsets.all(12),
                   child: FadeInUp(
                     child: SearchSlide(
+                      routeToGo:
+                          '/home/0/course/${widget.restCourse[index].id}',
                       category: widget.restCourse[index].category,
                       image: widget.restCourse[index].image,
                       title: widget.restCourse[index].title,
