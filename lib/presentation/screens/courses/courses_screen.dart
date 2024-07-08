@@ -119,6 +119,6 @@ class _CoursesView extends StatelessWidget {
               return CourseSlide(course: courses[index]);
             },
           ))
-        : const NoContent(image: 'assets/stretch.svg');
+        : const NoContent(image: 'assets/stretch.svg', text: 'Ups!! No content yet...');
   }
 }
