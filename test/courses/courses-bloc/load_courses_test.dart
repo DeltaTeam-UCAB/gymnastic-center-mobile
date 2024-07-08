@@ -16,7 +16,7 @@ void main() {
         id: '1',
         title: 'Course 1',
         description: 'Description 1',
-        trainer: Trainer(id: '1', name: 'name', location: 'location'),
+        trainer: Trainer(id: '1', name: 'name', location: 'location', image: 'image'),
         category: 'Category 1',
         image: 'Image 1',
         tags: ['Tag 1'],
