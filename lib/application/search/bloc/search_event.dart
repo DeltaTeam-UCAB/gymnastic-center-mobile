@@ -27,3 +27,5 @@ class ChangeSelectedTags extends SearchEvent {
   final List<String> newTags;
   ChangeSelectedTags(this.newTags);
 }
+
+class ResetSearch extends SearchEvent {}
