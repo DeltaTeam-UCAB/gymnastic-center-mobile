@@ -42,7 +42,6 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    super.initState();
     context.read<CoursesBloc>().loadNextPage(
         categoryId: widget.selectedCategoryId,
         trainerId: widget.selectedTrainerId);
@@ -53,6 +52,8 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
         context.read<CoursesBloc>().loadNextPage();
       }
     });
+
+    super.initState();
   }
 
   @override

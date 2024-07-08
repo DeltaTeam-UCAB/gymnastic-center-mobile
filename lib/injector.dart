@@ -12,6 +12,7 @@ import 'package:gymnastic_center/application/courses/course-details/course_detai
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:gymnastic_center/infrastructure/datasources/categories/categorie
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/notifications/notifications_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/search/api_search_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
@@ -35,6 +37,7 @@ import 'package:gymnastic_center/infrastructure/repositories/categories/categori
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/notifications/notifications_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/search/search_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
@@ -64,6 +67,9 @@ class Injector {
     final clientsRepositoryImpl = ClientsRepositoryImpl(
         clientsDatasource: clientsDatasourceImpl,
         keyValueStorage: localStorageService);
+    final notificationsRepositoryImpl = NotificationRespositoryImpl(
+        notificationsDatasource:
+            NotificationsDatasourceImpl(localStorageService));
     final trainersRepositoryImpl =
         TrainersRepositoryImpl(apiTrainersDatasource);
     final searchRepositoryImpl = SearchRepositoryImpl(apiSearchDatasource);
@@ -89,6 +95,8 @@ class Injector {
     getIt.registerFactory(() => LoginBloc(userRespository: userRepositoryImpl));
     getIt.registerFactory(() => VideoPlayerBloc());
     getIt.registerFactory(() => UpdateBloc(clientsRepositoryImpl));
+    getIt.registerFactory(() => NotificationListBloc(
+        notificationsRepository: notificationsRepositoryImpl));
     getIt.registerSingleton(ThemesBloc());
     getIt.registerSingleton(
         NotificationsBloc(FirebaseNotificationsManager(LocalNotifications())));
@@ -100,7 +108,6 @@ class Injector {
     );
     getIt.registerLazySingleton(
         () => LessonsBloc(coursesRepository: coursesRepositoryImpl));
-
     getIt.registerFactory(() => SearchBloc(searchRepositoryImpl));
 
     getIt.registerFactory(() => TagsBloc(searchRepositoryImpl));
