@@ -16,7 +16,6 @@ class _NotificationsListViewState extends State<NotificationsListView> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    super.initState();
     context.read<NotificationListBloc>().loadNextPage();
 
     _scrollController.addListener(() {
@@ -25,6 +24,8 @@ class _NotificationsListViewState extends State<NotificationsListView> {
         context.read<NotificationListBloc>().loadNextPage();
       }
     });
+
+    super.initState();
   }
 
   @override
@@ -122,10 +123,6 @@ class NotificationListItem extends StatefulWidget {
 
 class _NotificationListItemState extends State<NotificationListItem> {
   bool expanded = false;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
