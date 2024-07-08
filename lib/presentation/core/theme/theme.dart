@@ -11,6 +11,7 @@ class AppTheme {
         colorSchemeSeed: Colors.deepPurple,
         fontFamily: 'PT Sans',
         appBarTheme: const AppBarTheme(
+          centerTitle: false,
           iconTheme: IconThemeData(
             color: Colors.white,
           ),

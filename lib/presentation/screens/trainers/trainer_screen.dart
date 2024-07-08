@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
-import 'package:gymnastic_center/application/trainers/trainer_bloc.dart';
+import 'package:gymnastic_center/application/trainers/follow-trainer/follow_trainer_bloc.dart';
+import 'package:gymnastic_center/application/trainers/trainer-details/trainer_details_bloc.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
@@ -17,15 +18,10 @@ class TrainerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (_) => getIt<TrainerBloc>()
-      ),
-      BlocProvider(
-          create: (_) => getIt<CoursesBloc>()
-      ),
-      BlocProvider(
-        create: (_) => getIt<BlogsBloc>()
-      ),
+      BlocProvider(create: (_) => getIt<TrainerDetailsBloc>()),
+      BlocProvider(create: (_) => getIt<FollowTrainerBloc>()),
+      BlocProvider(create: (_) => getIt<CoursesBloc>()),
+      BlocProvider(create: (_) => getIt<BlogsBloc>()),
     ], child: TrainerView(trainerId: trainerId));
   }
 }
@@ -41,16 +37,17 @@ class TrainerView extends StatefulWidget {
 class _TrainerViewState extends State<TrainerView> {
   @override
   void initState() {
-    super.initState();
-    context.read<TrainerBloc>().loadTrainer(widget.trainerId);
+    context.read<TrainerDetailsBloc>().loadTrainer(widget.trainerId);
     context.read<CoursesBloc>().loadNextPage(trainerId: widget.trainerId);
     context.read<BlogsBloc>().loadNextPage(trainerId: widget.trainerId);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final courseState = context.watch<CoursesBloc>().state;
     final blogState = context.watch<BlogsBloc>().state;
+    final updateFollowers = context.watch<TrainerDetailsBloc>().updateFollowers;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -63,7 +60,7 @@ class _TrainerViewState extends State<TrainerView> {
             ),
           ),
         ),
-        body: BlocBuilder<TrainerBloc, TrainerState>(
+        body: BlocBuilder<TrainerDetailsBloc, TrainerDetailsState>(
           builder: (context, state) {
             if (state.isLoading ||
                 courseState.isLoading ||
@@ -79,9 +76,17 @@ class _TrainerViewState extends State<TrainerView> {
                   _TrainerDetails(
                     trainer: state.trainer,
                     isFollowing: state.isFollowing,
-                    toggleFollow: context.read<TrainerBloc>().toggleFollow,
-                    coursesCount: courseState.courses.length,
-                    blogsCount: blogState.loadedBlogs.length,
+                    toggleFollow: () async {
+                      final result = await context
+                          .read<FollowTrainerBloc>()
+                          .toggleFollow(widget.trainerId);
+
+                      if (result) {
+                        updateFollowers(!state.isFollowing);
+                      }
+                    },
+                    coursesCount: state.courseCount,
+                    blogsCount: state.blogCount,
                   ),
                   if (courseState.courses.isNotEmpty)
                     CourseHorizontalListView(
@@ -135,13 +140,13 @@ class _TrainerDetails extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: const SizedBox(
-                    width: 100,
-                    child: ImageView(
-                      image:
-                          'https://cdn.icon-icons.com/icons2/3551/PNG/512/trainer_man_people_avatar_person_icon_224850.png',
-                    ),
-                  ),
+                  child: trainer.image == ''
+                      ? Container()
+                      : SizedBox(
+                          width: 110,
+                          height: 110,
+                          child: ImageView(image: trainer.image),
+                        ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(

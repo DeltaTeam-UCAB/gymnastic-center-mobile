@@ -79,7 +79,7 @@ class _AppBarTitle extends StatelessWidget {
               onTap: () => context.push('/account/details'),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 17,
+                radius: 25,
                 child: client.avatarImage == null
                     ? const Icon(
                         Icons.person,
@@ -87,8 +87,8 @@ class _AppBarTitle extends StatelessWidget {
                         color: Colors.deepPurple,
                       )
                     : SizedBox(
-                        height: 50,
-                        width: 50,
+                        height: 200,
+                        width: 200,
                         child: ClipOval(
                             child: ImageView(image: client.avatarImage!))),
               ),

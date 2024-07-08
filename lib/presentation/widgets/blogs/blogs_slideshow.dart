@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 
@@ -25,7 +26,9 @@ class BlogsSlideShow extends StatelessWidget {
               activeColor: colors.inversePrimary,
             ),
           ),
-          itemBuilder: (context, index) => _SlideItem(blog: blogs[index]),
+          itemBuilder: (context, index) => GestureDetector(
+              onTap: () => context.push('/blog/${blogs[index].id}'),
+              child: _SlideItem(blog: blogs[index])),
         ));
   }
 }

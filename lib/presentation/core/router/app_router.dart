@@ -61,6 +61,9 @@ class RoutesManager {
               builder: (context, state) => const SearchScreen(),
             ),
             GoRoute(
+                path: 'trainers',
+                builder: (context, state) => const TrainersScreen()),
+            GoRoute(
               path: 'trainer/:trainerId',
               builder: (context, state) => TrainerScreen(
                   trainerId: state.pathParameters['trainerId'] ?? ''),

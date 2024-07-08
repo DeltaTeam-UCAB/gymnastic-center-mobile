@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/repositories/search/search_repository.dart';
@@ -7,7 +8,7 @@ import 'package:gymnastic_center/domain/repositories/search/search_repository.da
 part 'search_event.dart';
 part 'search_state.dart';
 
-class SearchBloc extends Bloc<SearchEvent, SearchState> {
+class SearchBloc extends SafeBloc<SearchEvent, SearchState> {
   final SearchRepository _searchRepository;
 
   SearchBloc(this._searchRepository) : super(const SearchState()) {
@@ -16,6 +17,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchStarded>(_onSearchStarted);
     on<SearchStatusChange>(_onSearchStatusChange);
     on<SearchCompleted>(_onSearchCompleted);
+    on<ResetSearch>(_onResetSearch);
+  }
+
+  void _onResetSearch(ResetSearch event, Emitter<SearchState> emit) {
+    emit(const SearchState());
   }
 
   void _onChangeSelectedTags(
@@ -52,10 +58,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   void onChangeTags(List<String> newTags) {
     add(ChangeSelectedTags(newTags));
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      await search(state.term);
+    });
   }
 
   void resetSearch() {
-    add(SearchStatusChange(SearchStatus.initial));
+    add(ResetSearch());
   }
 
   Future<void> search(String term) async {

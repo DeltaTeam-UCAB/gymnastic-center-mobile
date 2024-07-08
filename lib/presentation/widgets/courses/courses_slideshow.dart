@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 
@@ -25,7 +26,9 @@ class CoursesSlideShow extends StatelessWidget {
               activeColor: colors.inversePrimary,
             ),
           ),
-          itemBuilder: (context, index) => _SlideItem(course: courses[index]),
+          itemBuilder: (context, index) => GestureDetector(
+              onTap: () => context.push('/home/0/course/${courses[index].id}'),
+              child: _SlideItem(course: courses[index])),
         ));
   }
 }

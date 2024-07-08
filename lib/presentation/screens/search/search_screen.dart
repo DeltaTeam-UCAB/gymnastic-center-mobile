@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/application/search/search_bloc.dart';
+import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/search/api_search_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/search/search_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/search/widgets/search_bar.dart';
 import 'package:gymnastic_center/presentation/screens/search/widgets/search_tab_blogs.dart';
 import 'package:gymnastic_center/presentation/screens/search/widgets/search_tab_courses.dart';
@@ -18,14 +17,9 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => getIt<SearchBloc>()),
         BlocProvider(
-          create: (_) => SearchBloc(
-              SearchRepositoryImpl(ApiSearchDatasource(LocalStorageService()))),
-        ),
-        BlocProvider(
-          create: (_) => TagsBloc(
-              SearchRepositoryImpl(ApiSearchDatasource(LocalStorageService())))
-            ..loadPopularTags(),
+          create: (_) => getIt<TagsBloc>()..loadPopularTags(),
         )
       ],
       child: const _SearchView(),
@@ -124,8 +118,10 @@ class _SearchBodyState extends State<_SearchBody>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SearchTags(widget.tags,
-            onChangeTags: context.read<SearchBloc>().onChangeTags),
+        SearchTags(
+          widget.tags,
+          onChangeTags: context.read<SearchBloc>().onChangeTags,
+        ),
         TabBar(controller: _tabController, tabs: const [
           Tab(
             text: 'Courses',
@@ -141,8 +137,14 @@ class _SearchBodyState extends State<_SearchBody>
                 return TabBarView(
                   controller: _tabController,
                   children: const [
-                    Center(child: Text('Busca Información')),
-                    Center(child: Text('Busca Informacion')),
+                    _IntroSearch(
+                      'What are you looking for... ? 🤔',
+                      false,
+                    ),
+                    _IntroSearch(
+                      'Hey there! 👀\nSearch for blogs and courses here!',
+                      true,
+                    ),
                   ],
                 );
               }
@@ -179,5 +181,38 @@ class _SearchBodyState extends State<_SearchBody>
         ),
       ],
     );
+  }
+}
+
+class _IntroSearch extends StatelessWidget {
+  final String text;
+  final bool rotate;
+  const _IntroSearch(this.text, this.rotate);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Transform(
+            transform: Matrix4.rotationY(rotate ? 3.14 : 0),
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/search/search-person.svg',
+              width: 300,
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    ));
   }
 }

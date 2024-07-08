@@ -14,7 +14,7 @@ final initialBlog = Blog(
     body: '',
     released: DateTime.now(),
     images: [],
-    trainer: Trainer(id: '', name: '', location: ''),
+    trainer: Trainer(id: '', name: '', location: '', image: ''),
     category: '',
     tags: []);
 
