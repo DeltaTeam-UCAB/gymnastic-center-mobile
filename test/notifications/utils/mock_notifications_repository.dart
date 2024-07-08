@@ -48,4 +48,9 @@ class MockNotificationsRepository implements NotificationsRepository {
   Future<Result<bool>> markRead(String id) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Result<bool>> saveToken(String token) {
+    throw UnimplementedError();
+  }
 }

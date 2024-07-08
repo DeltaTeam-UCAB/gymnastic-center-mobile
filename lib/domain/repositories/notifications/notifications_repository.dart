@@ -12,4 +12,6 @@ abstract class NotificationsRepository {
   Future<Result<int>> getNotRead();
 
   Future<Result<bool>> deleteAll();
+
+  Future<Result<bool>> saveToken(String token);
 }

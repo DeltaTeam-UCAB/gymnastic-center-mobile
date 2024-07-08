@@ -24,3 +24,8 @@ class NotificationListError extends NotificationListEvent {
 class NotificationListDeleted extends NotificationListEvent {
   const NotificationListDeleted();
 }
+
+class NotificationRead extends NotificationListEvent {
+  final Notification notification;
+  const NotificationRead(this.notification);
+}

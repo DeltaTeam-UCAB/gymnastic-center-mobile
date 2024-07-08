@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
 import 'package:gymnastic_center/domain/entities/notifications/notification.dart'
     as entity;
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsListView extends StatefulWidget {
   const NotificationsListView({super.key});
@@ -34,8 +35,6 @@ class _NotificationsListViewState extends State<NotificationsListView> {
 
   @override
   Widget build(BuildContext context) {
-    final notifications =
-        context.watch<NotificationListBloc>().state.notifications;
     final colors = Theme.of(context).colorScheme;
     return BlocBuilder<NotificationListBloc, NotificationListState>(
       builder: (context, state) {
@@ -45,13 +44,13 @@ class _NotificationsListViewState extends State<NotificationsListView> {
         if (state.isError) {
           return const Center(child: Text('Error loading notifications'));
         }
-        return notifications.isEmpty
+        return state.notifications.isEmpty
             ? _emptyNotificationsView(colors, context)
             : Expanded(
                 child: ListView.separated(
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) =>
-                      _CustomNotification(notification: notifications[index]),
+                  itemCount: state.notifications.length,
+                  itemBuilder: (context, index) => _CustomNotification(
+                      notification: state.notifications[index]),
                   separatorBuilder: (context, index) =>
                       const Divider(height: 2),
                 ),
@@ -67,14 +66,12 @@ class _CustomNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ListTile(
-        title: Text(notification.title),
-        subtitle: Text(notification.body),
-        leading: const Icon(Icons.notifications_none_outlined),
-        onTap: () {},
-      ),
+    return NotificationListItem(
+      id: notification.id,
+      title: notification.title,
+      body: notification.body,
+      date: notification.date,
+      read: notification.read,
     );
   }
 }
@@ -102,4 +99,107 @@ Center _emptyNotificationsView(ColorScheme colors, BuildContext context) {
       ],
     ),
   );
+}
+
+class NotificationListItem extends StatefulWidget {
+  const NotificationListItem(
+      {super.key,
+      required this.id,
+      required this.title,
+      required this.body,
+      required this.date,
+      required this.read});
+
+  final String id;
+  final String title;
+  final String body;
+  final DateTime date;
+  final bool read;
+
+  @override
+  State<NotificationListItem> createState() => _NotificationListItemState();
+}
+
+class _NotificationListItemState extends State<NotificationListItem> {
+  bool expanded = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: () {
+        if (!widget.read) {
+          context.read<NotificationListBloc>().markNotificationRead(widget.id);
+        }
+        setState(() {
+          expanded = !expanded;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(13, 19, 0, 0),
+                child: Icon(
+                  Icons.notifications,
+                  color: widget.read ? colors.secondary : colors.primary,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              flex: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    timeago.format(widget.date),
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            widget.read ? colors.onBackground : colors.primary),
+                  ),
+                  Text(
+                    widget.body,
+                    overflow:
+                        expanded ? TextOverflow.clip : TextOverflow.ellipsis,
+                    style: TextStyle(color: colors.secondary),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Text(
+                widget.read ? 'Seen' : 'New',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 10,
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

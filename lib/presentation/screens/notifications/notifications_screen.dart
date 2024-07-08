@@ -23,14 +23,16 @@ class _CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const _CustomAppBar();
   @override
   Widget build(BuildContext context) {
+    var inbox =
+        context.watch<NotificationListBloc>().state.notifications.length;
     return AppBar(
       title: Row(
         children: [
           const Text('Notifications'),
           const Spacer(),
-          const Text(
-            '0 Inbox',
-            style: TextStyle(fontSize: 15),
+          Text(
+            '$inbox Inbox',
+            style: const TextStyle(fontSize: 15),
           ),
           IconButton(
               onPressed:

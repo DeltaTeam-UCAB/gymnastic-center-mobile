@@ -59,4 +59,10 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
     await dio.put('/notifications/mark/$id');
     return true;
   }
+
+  @override
+  Future<bool> saveToken(String token) async {
+    await dio.post('/notifications.savetoken', data: {'token': token});
+    return true;
+  }
 }

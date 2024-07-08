@@ -60,4 +60,14 @@ class NotificationRespositoryImpl implements NotificationsRepository {
       return Result<bool>.fail(error as Exception);
     }
   }
+
+  @override
+  Future<Result<bool>> saveToken(String token) async {
+    try {
+      await notificationsDatasource.saveToken(token);
+      return Result.success(true);
+    } catch (error, _) {
+      return Result.fail(error as Exception);
+    }
+  }
 }

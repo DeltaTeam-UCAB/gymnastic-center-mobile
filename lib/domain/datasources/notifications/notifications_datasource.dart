@@ -10,4 +10,6 @@ abstract class NotificationsDatasource {
   Future<int> getNotRead();
 
   Future<bool> deleteAll();
+
+  Future<bool> saveToken(String token);
 }

@@ -18,6 +18,7 @@ class NotificationListBloc
     on<NotificationListIsEmpty>(_onNotificationListIsEmpty);
     on<NotificationListError>(_onNotificationListError);
     on<NotificationListDeleted>(_onNotificationListDeleted);
+    on<NotificationRead>(_onNotificationRead);
   }
 
   void _onNotificationListError(
@@ -71,5 +72,29 @@ class NotificationListBloc
     if (state.isLoading || state.isError) return;
     await notificationsRepository.deleteAll();
     add(const NotificationListDeleted());
+  }
+
+  Future<void> markNotificationRead(String id) async {
+    if (state.isLoading || state.isError) return;
+    await notificationsRepository.markRead(id);
+    final notification = state.notifications.firstWhere((n) => n.id == id);
+    final readNotification = Notification(
+        id: notification.id,
+        title: notification.title,
+        body: notification.body,
+        date: notification.date,
+        read: true);
+    add(NotificationRead(readNotification));
+  }
+
+  void _onNotificationRead(
+      NotificationRead event, Emitter<NotificationListState> emit) {
+    final notifications = [...state.notifications];
+
+    final index =
+        notifications.indexWhere((n) => n.id == event.notification.id);
+    notifications.replaceRange(index, index + 1, [event.notification]);
+
+    emit(state.copyWith(notifications: notifications));
   }
 }
