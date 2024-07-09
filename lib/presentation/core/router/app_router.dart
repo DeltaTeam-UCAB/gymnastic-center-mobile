@@ -119,6 +119,7 @@ class RoutesManager {
       GoRoute(
           path: '/password/changed',
           builder: (context, state) => const PasswordChangedScreen()),
+      GoRoute(path: '/faq', builder: (context, state) => const FaqScreen()),
       GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
