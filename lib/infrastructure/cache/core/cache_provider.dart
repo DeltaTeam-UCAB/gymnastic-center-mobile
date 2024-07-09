@@ -1,0 +1,6 @@
+import 'package:gymnastic_center/common/optional.dart';
+
+abstract class CacheProvider {
+  Future<void> write<T>(T data, String collection, String identifier);
+  Future<Optional<T>> read<T>(String collection, String identifier);
+}
