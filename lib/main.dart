@@ -13,6 +13,8 @@ import 'package:gymnastic_center/infrastructure/firebase/firebase_options.dart';
 import 'package:gymnastic_center/infrastructure/local_notifications/local_notifications.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/core/app_widget.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:gymnastic_center/infrastructure/extensions/hive_cache.dart';
 
 void main() async {
   // Ensure that the WidgetsBinding is initializedz
@@ -29,20 +31,17 @@ void main() async {
   await LocalNotifications().initializeLocalNotifications();
   await Environment.initEnvironment();
 
+  await Hive.initForCache();
+
   // Register Blocs in service locator
   Injector().setUp();
 
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (_) => getIt<ThemesBloc>()),
-    BlocProvider(
-        create: (_) => getIt<NotificationsBloc>()),
-    BlocProvider(
-        create: (_) => getIt<ClientsBloc>()),
-    BlocProvider(
-        create: (_) => getIt<RecoverPasswordBloc>()),
-    BlocProvider(
-        create: (_) => getIt<CoursesBloc>()),
-    BlocProvider(
-        create: (_) => getIt<BlogsBloc>()),
+    BlocProvider(create: (_) => getIt<NotificationsBloc>()),
+    BlocProvider(create: (_) => getIt<ClientsBloc>()),
+    BlocProvider(create: (_) => getIt<RecoverPasswordBloc>()),
+    BlocProvider(create: (_) => getIt<CoursesBloc>()),
+    BlocProvider(create: (_) => getIt<BlogsBloc>()),
   ], child: const GymnasticCenterApp()));
 }
