@@ -25,7 +25,7 @@ class MockClientsRepository extends ClientsRepository {
       return Future.value(Result.fail(Exception('Failed to link device')));
     }
     return Future.value(Result.success(true));
-    
+  }
   @override
   Future<Result<Client>> getClientData() {
     if (shouldFail) {
