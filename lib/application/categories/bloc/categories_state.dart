@@ -2,7 +2,6 @@ part of 'categories_bloc.dart';
 
 class CategoriesState extends Equatable {
   final List<Category> categories;
-  final Category? currentCategory;
   final bool isLoading;
   final int page;
   final int perPage;
@@ -11,7 +10,6 @@ class CategoriesState extends Equatable {
 
   const CategoriesState(
       {this.categories = const [],
-      this.currentCategory,
       this.isLoading = false,
       this.page = 1,
       this.perPage = 10,
@@ -20,7 +18,6 @@ class CategoriesState extends Equatable {
 
   CategoriesState copyWith({
     List<Category>? categories,
-    Category? currentCategory,
     bool? isLoading,
     int? page,
     int? perPage,
@@ -29,7 +26,6 @@ class CategoriesState extends Equatable {
   }) {
     return CategoriesState(
         categories: categories ?? this.categories,
-        currentCategory: currentCategory ?? this.currentCategory,
         isLoading: isLoading ?? this.isLoading,
         page: page ?? this.page,
         perPage: perPage ?? this.perPage,

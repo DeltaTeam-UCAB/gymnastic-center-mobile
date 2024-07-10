@@ -46,7 +46,7 @@ class MockNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<Result<bool>> markRead(String id) {
-    throw UnimplementedError();
+    return Future.value(Result.success(true));
   }
 
   @override

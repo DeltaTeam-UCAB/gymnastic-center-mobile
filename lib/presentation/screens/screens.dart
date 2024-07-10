@@ -25,3 +25,5 @@ export 'package:gymnastic_center/presentation/screens/trainers/trainer_screen.da
 export 'package:gymnastic_center/presentation/screens/trainers/trainers_screen.dart';
 export 'package:gymnastic_center/presentation/screens/videos/video_player/video_player_screen.dart';
 export 'package:gymnastic_center/presentation/screens/videos/videos_screen.dart';
+export 'package:gymnastic_center/presentation/screens/faq/faq_screen.dart';
+

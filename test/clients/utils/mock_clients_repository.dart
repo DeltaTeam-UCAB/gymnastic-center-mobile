@@ -20,17 +20,18 @@ class MockClientsRepository extends ClientsRepository {
   }
 
   @override
-  Future<Result<Client>> getClientData() {
-    // TODO: implement getClientData
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Result<bool>> linkDevice(String deviceToken) {
     if (shouldFail) {
       return Future.value(Result.fail(Exception('Failed to link device')));
     }
     return Future.value(Result.success(true));
+    
+  @override
+  Future<Result<Client>> getClientData() {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('An error occurred')));
+    }
+    return Future.value(Result.success(client));
   }
 
   @override
