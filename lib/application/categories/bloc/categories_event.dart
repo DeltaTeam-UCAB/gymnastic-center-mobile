@@ -20,8 +20,3 @@ class CategoriesIsEmpty extends CategoriesEvent {
 class CategoriesError extends CategoriesEvent {
   const CategoriesError();
 }
-
-class CurrentCategory extends CategoriesEvent {
-  final Category? category;
-  const CurrentCategory(this.category);
-}
