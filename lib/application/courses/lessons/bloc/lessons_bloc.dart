@@ -65,7 +65,6 @@ class LessonsBloc extends SafeBloc<LessonsEvent, LessonsState> {
   }
 
   void changeCurrentLesson(String lessonId){
-    //TODO : cambiar en un futuro
     final lesson = state.lessons.where((l) => l.id == lessonId);
     if ( lesson.isNotEmpty ){
       final newLesson = lesson.toList()[0];
