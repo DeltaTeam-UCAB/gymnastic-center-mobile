@@ -12,7 +12,7 @@ import 'package:gymnastic_center/application/courses/course-details/course_detai
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
-import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';

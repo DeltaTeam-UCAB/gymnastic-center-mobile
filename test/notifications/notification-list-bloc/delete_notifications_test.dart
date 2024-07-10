@@ -22,14 +22,15 @@ void main() {
   });
 
   blocTest(
-    'Should emit NotificationListState with isLoading true and notifications [notification] when loadNextPage is called',
+    'Should emit NotificationListState with state.notifications empty when deleteAllNotifications is called',
     build: () => NotificationListBloc(
         notificationsRepository: mockNotificationsRepository),
-    act: (bloc) => bloc.loadNextPage(),
+    seed: () => NotificationListState(notifications: [notificationMock]),
+    act: (bloc) async {
+      await bloc.deleteAllNotifications();
+    },
     expect: () => [
-      const NotificationListState(notifications: [], isLoading: true),
-      NotificationListState(
-          notifications: [notificationMock], isLoading: false, page: 2),
+      const NotificationListState(notifications: [], page: 1, isLastPage: true),
     ],
   );
 }

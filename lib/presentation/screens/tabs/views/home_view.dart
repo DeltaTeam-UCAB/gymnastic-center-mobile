@@ -56,7 +56,8 @@ class __HomeState extends State<_Home> {
     final List<Category> categories =
         context.watch<CategoriesBloc>().state.categories;
     final List<Blog> blogs = context.watch<BlogsBloc>().state.loadedBlogs;
-    final List<TrainerDetails> trainers = context.watch<TrainersBloc>().state.trainers;
+    final List<TrainerDetails> trainers =
+        context.watch<TrainersBloc>().state.trainers;
 
     return CustomScrollView(
       slivers: [
@@ -81,7 +82,7 @@ class __HomeState extends State<_Home> {
               BlogHorizontalListView(
                 blogs: blogs,
                 title: 'Our latest blogs',
-                routeToGo: '/home/0/courses',
+                routeToGo: '/home/0/blogs',
               ),
               TrainerHorizontalListView(
                 trainers: trainers,
