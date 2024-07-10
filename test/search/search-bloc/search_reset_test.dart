@@ -54,33 +54,23 @@ void main() {
 
   blocTest(
     'Should emit SearchState with SearchStatus [SearchStatus.initial] and courses & blogs empty when resetSearch is called',
-    build: () => SearchBloc(mockSearchRepository),
-    act: (bloc) async {
-      await bloc.search('query');
-      bloc.resetSearch();
-    },
-    expect: () => [
-      const SearchState(
-        courses: [],
-        blogs: [],
-        status: SearchStatus.loading,
-        term: 'query',
-        page: 1
-      ),
-      SearchState(
+    seed: () => SearchState(
         courses: [courseMock],
         blogs: [blogMock],
         status: SearchStatus.success,
-        term: 'query',
-        page: 2
-      ),
+        page: 2,
+        term: 'term',
+        selectedTags: const ['tag']),
+    build: () => SearchBloc(mockSearchRepository),
+    act: (bloc) => bloc.resetSearch(),
+    expect: () => [
       const SearchState(
-        courses: [],
-        blogs: [],
-        status: SearchStatus.initial,
-        term: '',
-        page: 1
-      ),
+          courses: [],
+          blogs: [],
+          status: SearchStatus.initial,
+          term: '',
+          selectedTags: [],
+          page: 1),
     ],
   );
 }

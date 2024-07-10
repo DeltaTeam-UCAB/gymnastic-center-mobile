@@ -10,6 +10,9 @@ class MockCoursesRepository extends CoursesRepository {
 
   @override
   Future<Result<Course>> getCourseById(String id) {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('An error occurred')));
+    }
     if (courses.isEmpty) {
       return Future.value(Result.fail(Exception('No courses found')));
     }

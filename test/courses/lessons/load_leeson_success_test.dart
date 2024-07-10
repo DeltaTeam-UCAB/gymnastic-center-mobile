@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/domain/repositories/courses/courses_repository.dart';
@@ -13,7 +13,7 @@ void main() {
 
   setUp(() {
     mockCourses = Course(
-      id: 'id',
+      id: '1',
       title: 'title',
       description: 'description',
       image: 'image',
@@ -23,21 +23,32 @@ void main() {
       tags: ['tags'],
       durationMinutes: '60',
       durationWeeks: '70',
-      lessons: [],
+      lessons: [
+        const Lesson(
+            id: 'id',
+            title: 'title',
+            content: 'content',
+            video: 'video',
+            image: 'image',
+            order: 1)
+      ],
       level: 'EASY',
       released: DateTime(2024),
     );
-    mockCoursesRepository = MockCoursesRepository([]);
+    mockCoursesRepository = MockCoursesRepository([mockCourses]);
   });
 
   blocTest(
-    'Should emit CoursesState with isLoading false and isLastPage true when loadNextPage is called and no courses are found',
-    seed: () => CoursesState(courses: [mockCourses], isLoading: false),
-    build: () => CoursesBloc(coursesRepository: mockCoursesRepository),
-    act: (bloc) => bloc.loadNextPage(),
+    'Should emit LessonsState with LessonsStatus [changingLesson], lessons, imgSelectedCourse, selectedCourseId when loadLessonsByCourseId is called and succeeds',
+    build: () => LessonsBloc(coursesRepository: mockCoursesRepository),
+    act: (bloc) => bloc.loadLessonsByCourseId('1'),
     expect: () => [
-      CoursesState(courses: [mockCourses], isLoading: true),
-      CoursesState(courses: [mockCourses], isLoading: false, isLastPage: true)
+      LessonsState(
+        status: LessonsStatus.changingLesson,
+        lessons: mockCourses.lessons!,
+        imgSelectedCourse: mockCourses.image,
+        selectedCourseId: mockCourses.id,
+      ),
     ],
   );
 }
