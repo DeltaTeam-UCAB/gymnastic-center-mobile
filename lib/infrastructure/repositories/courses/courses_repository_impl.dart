@@ -37,4 +37,14 @@ class CoursesRepositoryImpl extends CoursesRepository {
       return Result<List<Course>>.fail(error as Exception);
     }
   }
+  
+  @override
+  Future<Result<String>> deleteCourse(String courseId) async {
+    try {
+      final deletedCourseId = await coursesDataSource.deleteCourse(courseId);
+      return Result.success(deletedCourseId);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
 }

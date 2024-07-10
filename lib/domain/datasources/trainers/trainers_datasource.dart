@@ -24,4 +24,6 @@ abstract class TrainersDataSource {
     int perPage = 10,
     bool filterByFollowed = false,
   });
+  Future<String> deleteTrainer(String trainerId);
+
 }

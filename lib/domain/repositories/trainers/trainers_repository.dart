@@ -9,4 +9,5 @@ abstract class TrainersRepository {
     int perPage = 10,
     bool filterByFollowed = false,
   });
+  Future<Result<String>> deleteTrainer(String trainerId);
 }

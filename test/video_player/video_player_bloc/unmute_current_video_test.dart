@@ -24,8 +24,8 @@ void main() {
       build: () => VideoPlayerBloc()..setVideoPlayerManager(mockVideoPlayerManager),
       seed: () => VideoPlayerState(currentVideo: mockCurrentVideo, status: VideoPlayerStatus.playing, mute: true),
       act: (bloc) => bloc.unmute(),
-      verify: (bloc) {
-        if (!(mockVideoPlayerManagerState.volume == 1.0)) throw Exception('Video not unmuted');
+      verify: (_) {
+        expect(mockVideoPlayerManagerState.volume, 1.0);
       },
       expect: () => [
         isA<VideoPlayerState>()

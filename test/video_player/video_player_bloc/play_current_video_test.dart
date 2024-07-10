@@ -25,7 +25,7 @@ void main() {
       seed: () => VideoPlayerState( currentVideo: mockCurrentVideo, status: VideoPlayerStatus.paused),
       act: (bloc) => bloc.playVideo(),
       verify: (_) {
-        if (!mockVideoPlayerManagerState.isPlaying) throw Exception('Video not playing');
+        expect(mockVideoPlayerManagerState.isPlaying, true);
       },
       expect: () => [
         isA<VideoPlayerState>()
