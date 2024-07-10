@@ -13,7 +13,7 @@ void main() {
   setUp(() {
     clientMock = Client(
         id: '1', name: 'John', phone: '7777777', email: 'john@gmail.com');
-    mockClientRepository = MockClientsRepository(clientMock);
+    mockClientRepository = MockClientsRepository(client: clientMock);
   });
 
   blocTest(
