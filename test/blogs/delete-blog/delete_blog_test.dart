@@ -28,7 +28,7 @@ void main() {
   });
 
   blocTest(
-      'Should emit DeleteBlogState with staatus deleting and refresh when deleteBlog is called',
+      'Should emit DeleteBlogState with status deleted and refresh when deleteBlog is called',
       build: () => DeleteBlogBloc(mockBlogsRepository),
       act: (bloc) => bloc.deleteBlog('1'),
       verify: (_) {
@@ -38,7 +38,7 @@ void main() {
         isA<DeleteBlogState>()
           .having((state) => state.status, 'status', DeleteBlogStatus.deleting),
         isA<DeleteBlogState>()
-          .having((state) => state.status, 'status', DeleteBlogStatus.initial),
+          .having((state) => state.status, 'status', DeleteBlogStatus.deleted),
       ]);
 }
  
