@@ -34,4 +34,13 @@ class MockBlogsRepository extends BlogsRepository {
     return Future.value(
         Result.success(blogs.firstWhere((blog) => blog.id == blogId)));
   }
+  
+  @override
+  Future<Result<String>> deleteBlog(String blogId) {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('Failed to delete blog')));
+    }
+    blogs.removeWhere((blog) => blog.id == blogId);
+    return Future.value(Result.success('Blog deleted'));
+  }
 }

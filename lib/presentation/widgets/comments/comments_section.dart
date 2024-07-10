@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/domain/entities/comments/comment.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/delete_popup_menu.dart';
 import 'package:timeago/timeago.dart';
 
 class CommentsSection extends StatelessWidget {
@@ -108,6 +110,7 @@ class _CommentsListState extends State<_CommentsList> {
 
   @override
   Widget build(BuildContext context) {
+    final client = context.read<ClientsBloc>().state.client;
     final emptyCommentTextStyle = Theme.of(context).textTheme.titleMedium;
     final showEmptyMessage = 
       context.read<CommentsBloc>().state.status == CommentsStatus.allCommentsLoaded
@@ -142,7 +145,7 @@ class _CommentsListState extends State<_CommentsList> {
         ),
       );
     }
-      
+    
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
@@ -151,7 +154,10 @@ class _CommentsListState extends State<_CommentsList> {
         itemCount: widget.comments.length,
         itemBuilder: (context, index) {
           final comment = widget.comments[index];
-          return _CommentTile(comment: comment);
+          return _CommentTile(
+            comment: comment,
+            owned: client.id == comment.userId,
+          );
         },
       ),
     );
@@ -160,8 +166,10 @@ class _CommentsListState extends State<_CommentsList> {
 
 class _CommentTile extends StatelessWidget {
   final Comment comment;
+  final bool owned;
   const _CommentTile({
     required this.comment,
+    required this.owned,
   });
 
   String _calculateTimeAgo(DateTime creationDate){
@@ -193,6 +201,17 @@ class _CommentTile extends StatelessWidget {
                       fontSize: textTheme.titleSmall!.fontSize,
                       color: color.primary),
                 ),
+                if (owned)
+                DeletePopupMenu(onPressed: 
+                () => context.read<CommentsBloc>().deleteComment(comment.id),
+                color: Colors.white,
+                dialogTitle: 'Do you want to delete your comment?',
+                dialogBody: 'It will be erased forever',
+                dialogAccept: 'Yes, please',
+                dialogDeny: 'No',
+                popuplabel: 'Remove comment')
+                else
+                const SizedBox(width: 44,)
               ],
             ),
             Text(
@@ -201,6 +220,7 @@ class _CommentTile extends StatelessWidget {
                   fontSize: textTheme.bodyLarge!.fontSize,
                   fontWeight: FontWeight.bold),
             ),
+            if (comment.userId != '')
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,

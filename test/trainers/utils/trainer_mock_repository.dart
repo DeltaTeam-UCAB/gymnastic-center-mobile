@@ -45,4 +45,13 @@ class MockTrainerRepository extends TrainersRepository {
     return Future.value(Result.success(
         [TrainerDetails(trainer: trainers.first.trainer, isFollowing: false)]));
   }
+  
+  @override
+  Future<Result<String>> deleteTrainer(String trainerId) {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('Failed to delete course')));
+    }
+    trainers.removeWhere((trainer) => trainer.trainer.id == trainerId);
+    return Future.value(Result.success('course deleted'));
+  }
 }

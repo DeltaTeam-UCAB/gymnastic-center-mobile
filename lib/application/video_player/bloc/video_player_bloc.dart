@@ -10,7 +10,6 @@ part 'video_player_event.dart';
 part 'video_player_state.dart';
 
 
-//TODO : Agregar state de total duration, cambiar progressInSeconds, Agregar mas errores
 class VideoPlayerBloc extends SafeBloc<VideoPlayerEvent, VideoPlayerState> {
   late VideoPlayerManager videoPlayerManager;
 
@@ -92,10 +91,11 @@ class VideoPlayerBloc extends SafeBloc<VideoPlayerEvent, VideoPlayerState> {
     add(const CurrentVideoPaused());
   }
 
-  Future<void> initialize() async {
+  Future<void> initialize(int percent, Duration viewSeconds) async {
     final initResult = await videoPlayerManager.initialize();
     if (initResult.isSuccessful()){
       add(const CurrentVideoPlayed());
+      await setNewPositition(viewSeconds);
       return ;
     } 
     add(const CurrentVideoNotFound());
@@ -131,13 +131,8 @@ class VideoPlayerBloc extends SafeBloc<VideoPlayerEvent, VideoPlayerState> {
     add(const CurrentVideoUnmuted());
   }
 
-  void videoCompleted() {
-    add(const CurrentVideoCompleted());
-  }
-
   Future<void> setNewPositition(Duration newPosition) async {
     final result = await videoPlayerManager.setNewPosition(newPosition);
-
     if (result.isSuccessful()){
       final totalDuration = videoPlayerManager.getTotalDuration().inMilliseconds;
       final progress = (newPosition.inMilliseconds / totalDuration);
@@ -150,4 +145,5 @@ class VideoPlayerBloc extends SafeBloc<VideoPlayerEvent, VideoPlayerState> {
     add(const CurrentVideoNotFound());
   }
 
+  
 }

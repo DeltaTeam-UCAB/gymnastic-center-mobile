@@ -48,4 +48,14 @@ class CommentsRepositoryImpl extends CommentsRepository {
       return Result.fail(e as Exception);
     }
   }
+  
+  @override
+  Future<Result<bool>> deleteComment(String commentId) async {
+    try {
+      await commentsDatasource.deleteComment(commentId);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
 }

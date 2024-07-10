@@ -5,19 +5,26 @@ import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
+import 'package:gymnastic_center/application/blogs/delete-blog/delete_blog_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/application/clients/link-device/link_device_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscription/suscription_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
+import 'package:gymnastic_center/application/trainers/delete-trainer/delete_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/follow-trainer/follow_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer-details/trainer_details_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
@@ -30,6 +37,7 @@ import 'package:gymnastic_center/infrastructure/datasources/client/clients_datas
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/hive_cache_proxy_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/suscriptions/api_suscription_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/notifications/notifications_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/search/api_search_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
@@ -43,6 +51,7 @@ import 'package:gymnastic_center/infrastructure/repositories/categories/categori
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/suscriptions/suscription_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/notifications/notifications_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/search/search_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
@@ -60,6 +69,8 @@ class Injector {
         ApiCoursesDatasource(localStorageService), HiveCacheProvider());
     final apiUserDatasource = APIUserDatasource();
     final clientsDatasourceImpl = ClientsDatasourceImpl(localStorageService);
+    final apiSuscriptionDatasource =
+        APISuscriptionDatasource(localStorageService);
     final apiTrainersDatasource = HiveCacheProxyTrainersDatasource(
         ApiTrainersDatasource(localStorageService), HiveCacheProvider());
     final apiSearchDatasource = ApiSearchDatasource(localStorageService);
@@ -70,6 +81,8 @@ class Injector {
     final blogRepositoryImpl =
         BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
     final coursesRepositoryImpl = CoursesRepositoryImpl(apiCoursesDatasource);
+    final suscriptionRepositoryImpl =
+        SuscriptionRepositoryImpl(apiSuscriptionDatasource);
     final userRepositoryImpl = UserRepositoryImpl(
         userDatasource: apiUserDatasource,
         keyValueStorage: localStorageService);
@@ -97,6 +110,11 @@ class Injector {
     getIt.registerFactory(
       () => CourseDetailsBloc(coursesRepositoryImpl),
     );
+    getIt.registerFactory(() => SuscriptionBloc(suscriptionRepositoryImpl));
+    getIt
+        .registerFactory(() => SuscribedCoursesBloc(suscriptionRepositoryImpl));
+    getIt
+        .registerFactory(() => TrendingProgressBloc(suscriptionRepositoryImpl));
     getIt.registerFactory(
       () => CategoriesBloc(categoryRepository: categoriesRepositoryImpl),
     );
@@ -119,6 +137,8 @@ class Injector {
     getIt.registerLazySingleton(
         () => LessonsBloc(coursesRepository: coursesRepositoryImpl));
     getIt.registerFactory(() => SearchBloc(searchRepositoryImpl));
+    getIt.registerLazySingleton(
+        () => CourseProgressBloc(suscriptionRepositoryImpl));
 
     getIt.registerFactory(() => TagsBloc(searchRepositoryImpl));
 
@@ -127,5 +147,11 @@ class Injector {
     getIt.registerFactory(() => FollowTrainerBloc(trainersRepositoryImpl));
 
     getIt.registerFactory(() => LinkDeviceBloc(clientsRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteBlogBloc(blogRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteCourseBloc(coursesRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteTrainerBloc(trainersRepositoryImpl));
   }
 }

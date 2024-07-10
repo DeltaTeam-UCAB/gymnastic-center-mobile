@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/trainers/trainers_datasource.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/injector.dart';
+import 'package:gymnastic_center/presentation/screens/suscriptions/treding_course_progress_summary.dart';
 import 'package:gymnastic_center/presentation/widgets/blogs/blogs_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/categories/categories_horizontal_listview.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/courses_horizontal_listview.dart';
@@ -23,6 +26,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+            create: (_) => getIt<TrendingProgressBloc>()),
         BlocProvider(create: (_) => getIt<CoursesBloc>()),
         BlocProvider(create: (_) => getIt<BlogsBloc>()),
         BlocProvider(create: (_) => getIt<CategoriesBloc>()),
@@ -47,6 +52,7 @@ class __HomeState extends State<_Home> {
     context.read<CoursesBloc>().loadNextPage();
     context.read<CategoriesBloc>().loadNextPage();
     context.read<BlogsBloc>().loadNextPage();
+    context.read<TrendingProgressBloc>().loadTrendingCourseProgress();
     context.read<TrainersBloc>().loadNextPage();
   }
 
@@ -56,6 +62,7 @@ class __HomeState extends State<_Home> {
     final List<Category> categories =
         context.watch<CategoriesBloc>().state.categories;
     final List<Blog> blogs = context.watch<BlogsBloc>().state.loadedBlogs;
+    final CourseProgress trendingCourseProgress = context.watch<TrendingProgressBloc>().state.trendingCourseProgress;
     final List<TrainerDetails> trainers =
         context.watch<TrainersBloc>().state.trainers;
 
@@ -71,6 +78,7 @@ class __HomeState extends State<_Home> {
             delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
             children: [
+              TredingCourseProgressSummary(trendingCourseProgress),
               CategoriesHorizontalListView(
                   categories: categories, title: 'Category of Yoga'),
               CourseHorizontalListView(

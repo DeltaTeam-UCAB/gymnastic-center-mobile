@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
-import 'package:gymnastic_center/presentation/widgets/courses/lessons_listview.dart';
+import 'package:gymnastic_center/presentation/widgets/suscriptions/course_circular_progress.dart';
+import 'package:gymnastic_center/presentation/widgets/suscriptions/lessons_progress_listview.dart';
 
 class LessonScreen extends StatefulWidget {
   final String courseId;
@@ -24,6 +26,7 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   void dispose() {
     getIt.resetLazySingleton<LessonsBloc>();
+    getIt.resetLazySingleton<CourseProgressBloc>();
     super.dispose();
   }
 
@@ -36,6 +39,9 @@ class _LessonScreenState extends State<LessonScreen> {
                 getIt<LessonsBloc>()..loadLessonsByCourseId(widget.courseId),
           ),
           BlocProvider(create: (_) => getIt<CommentsBloc>()),
+          BlocProvider(
+              create: (_) => getIt<CourseProgressBloc>()
+                ..loadCurrentCourseProgressById(widget.courseId))
         ],
         child: Stack(children: [
           _LesssonView(widget.selectedLessonId),
@@ -45,8 +51,7 @@ class _LessonScreenState extends State<LessonScreen> {
               right: 0,
               child: AppBar(
                 titleSpacing: -10,
-                title: const Text('Lessons',
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                title: const Text('Lessons'),
                 elevation: 0,
               )),
         ]));
@@ -78,6 +83,12 @@ class _LesssonViewState extends State<_LesssonView>
 
   @override
   Widget build(BuildContext context) {
+    final courseProgressStatus =
+        context.watch<CourseProgressBloc>().state.status;
+    final lessonsProgress =
+        context.watch<CourseProgressBloc>().state.lessonsProgress;
+    final coursePercent =
+        context.watch<CourseProgressBloc>().state.coursePercent;
     return Scaffold(
       body: BlocBuilder<LessonsBloc, LessonsState>(
         buildWhen: (previous, current) =>
@@ -86,59 +97,73 @@ class _LesssonViewState extends State<_LesssonView>
             (previous.isFirstLesson != current.isFirstLesson) ||
             (previous.isLastLesson != current.isLastLesson),
         builder: (context, state) {
-          if (state.status == LessonsStatus.loading) {
+          if (state.status == LessonsStatus.loading ||
+              courseProgressStatus == CourseProgressStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state.status == LessonsStatus.error) {
+          if (state.status == LessonsStatus.error ||
+              courseProgressStatus == CourseProgressStatus.error) {
             return const Center(
               child: Text('Error has occured'),
             );
           }
           if (state.status == LessonsStatus.changingLesson) {
-            context
-                .read<LessonsBloc>()
-                .changeCurrentLesson(widget.selectedLessonId);
+            context.read<LessonsBloc>().changeCurrentLesson(
+                (widget.selectedLessonId.isNotEmpty)
+                    ? widget.selectedLessonId
+                    : state.lessons.first.id);
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          return Column(
+          return Stack(
             children: [
-              _VideoPreview(state.currentLesson),
-              TabBar(controller: _controller, tabs: const [
-                Tab(
-                  text: 'Description',
-                ),
-                Tab(
-                  text: 'Comments',
-                ),
-                Tab(
-                  text: 'Lesssons',
-                )
-              ]),
-              Expanded(
-                child: TabBarView(
-                  controller: _controller,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(state.currentLesson.content)),
-                    const _CommentsTab(),
-                    SingleChildScrollView(
-                      child: LessonsListView(
-                          lessons: state.lessons,
-                          currentLessondId: state.currentLesson.id,
-                          onPressedLesson: (lesson) {
-                            context
-                                .read<LessonsBloc>()
-                                .changeCurrentLesson(lesson.id);
-                          }),
+              Column(
+                children: [
+                  _VideoPreview(state.currentLesson),
+                  TabBar(controller: _controller, tabs: const [
+                    Tab(
+                      text: 'Description',
+                    ),
+                    Tab(
+                      text: 'Comments',
+                    ),
+                    Tab(
+                      text: 'Lesssons',
                     )
-                  ],
-                ),
-              )
+                  ]),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _controller,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(state.currentLesson.content)),
+                        const _CommentsTab(),
+                        SingleChildScrollView(
+                          child: LessonsProgressListView(
+                              lessons: state.lessons,
+                              currentLessondId: state.currentLesson.id,
+                              lessonsProgress: lessonsProgress,
+                              onPressedLesson: (lesson) {
+                                context
+                                    .read<LessonsBloc>()
+                                    .changeCurrentLesson(lesson.id);
+                              }),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Positioned(
+                  right: 16,
+                  bottom: 64,
+                  child: CourseCirularProgress(
+                    percent: coursePercent,
+                  )),
             ],
           );
         },
@@ -200,7 +225,6 @@ class _VideoPreview extends StatelessWidget {
           },
         ),
         Container(
-          // height: 400,
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                   stops: [0.4, 1],
@@ -245,8 +269,9 @@ class _VideoPreview extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Center(
               child: IconButton(
-                onPressed: () =>
-                    context.push('/video-player', extra: lesson.video),
+                onPressed: () {
+                  context.push('/video-player', extra: lesson.video);
+                },
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll(colors.inversePrimary),

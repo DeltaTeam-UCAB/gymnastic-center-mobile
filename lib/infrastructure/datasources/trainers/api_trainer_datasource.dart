@@ -69,4 +69,10 @@ class ApiTrainersDatasource extends TrainersDataSource {
 
     return trainers;
   }
+  
+  @override
+  Future<String> deleteTrainer(String trainerId) async {
+    final response = await dio.delete('/trainer/one/$trainerId');
+    return response.data['id'] ?? '';
+  } 
 }
