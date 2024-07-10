@@ -32,6 +32,7 @@ void main() async {
   await Environment.initEnvironment();
 
   await Hive.initForCache();
+  Hive.registerTypeAdapters();
 
   // Register Blocs in service locator
   Injector().setUp();

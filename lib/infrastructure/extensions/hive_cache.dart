@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_entity_proxies/hive_blog_proxy.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_entity_proxies/hive_category_proxy.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_entity_proxies/hive_course_proxy.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_entity_proxies/hive_trainer_details_proxy.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_entity_proxies/hive_trainer_proxy.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,5 +21,13 @@ extension HiveCache on HiveInterface {
 
     var appDir = await getApplicationCacheDirectory();
     init(path_helper.join(appDir.path, subDir));
+  }
+
+  void registerTypeAdapters() {
+    Hive.registerAdapter(HiveBlogAdapter());
+    Hive.registerAdapter(HiveCategoryAdapter());
+    Hive.registerAdapter(HiveCourseAdapter());
+    Hive.registerAdapter(HiveTrainerAdapter());
+    Hive.registerAdapter(HiveTrainerDetailsAdapter());
   }
 }
