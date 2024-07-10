@@ -6,12 +6,14 @@ sealed class NotificationsEvent {
 
 class NotificationStatusChanged extends NotificationsEvent {
   final bool status;
+  final String? token;
 
-  const NotificationStatusChanged(this.status);
+  const NotificationStatusChanged(this.status, this.token);
 }
 
-
-class GetToken extends NotificationsEvent {
-  final String token;
-  const GetToken(this.token);
+class RecoveryNotification extends NotificationsEvent {
+  final String recoveryCode;
+  const RecoveryNotification(this.recoveryCode);
 }
+
+class ResetRecoveredNotification extends NotificationsEvent {}

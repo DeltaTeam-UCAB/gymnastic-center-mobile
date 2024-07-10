@@ -58,12 +58,14 @@ class _SearchTabCoursesState extends State<SearchTabCourses> {
               widget.popularCourse.isEmpty
                   ? const NoContent(
                       image: 'assets/search/not-found-2.svg',
-                      text: 'Oops! Yoga journey took a tumble,\nno courses found.',
+                      text:
+                          'Oops! Yoga journey took a tumble,\nno courses found.',
                       heighFactor: 1.2,
                       width: 300,
                       height: 300,
                     )
                   : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 16, left: 16),

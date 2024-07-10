@@ -25,7 +25,7 @@ const appMenuItems = <MenuItem>[
   ),
   MenuItem(
     title: 'Privacy',
-    route: '/privacy',
+    route: '/configuration/privacy',
     icon: Icons.lock_rounded,
   ),
   MenuItem(

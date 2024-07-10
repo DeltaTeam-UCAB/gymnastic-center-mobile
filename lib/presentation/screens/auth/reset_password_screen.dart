@@ -84,7 +84,7 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
 
           if (state.formStatus == RecoverPasswordFormStatus.sent) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            context.go('/password/verify');
+            context.push('/password/verify');
           }
         },
         builder: (context, state) => _layout([
@@ -93,7 +93,8 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                     'Reset password',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode ? Colors.white : const Color(0xff222222),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff222222),
                       fontSize: 28,
                     ),
                     textAlign: TextAlign.center,
@@ -103,7 +104,8 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                   Text(
                     'Please enter your email address. You will get a link to create new password by email.',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : const Color(0xff677294),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff677294),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
@@ -222,6 +224,15 @@ class _ResetPasswordScreenState extends State<_ResetPasswordScreen> {
                                   'assets/icon/logoApp_white.png',
                                   height: MediaQuery.of(context).size.height *
                                       0.127,
+                                ),
+                              ),
+                              Positioned(
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: context.pop,
                                 ),
                               )
                             ],

@@ -51,6 +51,10 @@ class RegisterBloc extends SafeBloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> obSubmitRegister() async {
+    if (state.fullname == '' || state.email == '' || state.password == '' || state.phone == '') {
+      add(FailRegister(errorMessage: 'Invalid fields. You must enter your credentials'));
+      return;
+    }
     add(OnRegisterFormStatusChanged(
         registerFormStatus: RegisterFormStatus.posting));
     final result = await registerCallBack(

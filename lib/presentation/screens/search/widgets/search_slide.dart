@@ -47,7 +47,7 @@ class SearchSlide extends StatelessWidget {
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  Text(truncateText(trainerName, 17),
+                  Text(truncateText(trainerName, 20),
                       style: const TextStyle(fontSize: 13)),
                   Text(truncateText(category, 17),
                       style: const TextStyle(fontSize: 13)),

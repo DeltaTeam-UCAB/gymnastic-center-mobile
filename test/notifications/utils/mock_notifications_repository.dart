@@ -51,6 +51,6 @@ class MockNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<Result<bool>> saveToken(String token) {
-    throw UnimplementedError();
+    return Future.value(Result.success(true));
   }
 }

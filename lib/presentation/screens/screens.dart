@@ -16,9 +16,9 @@ export 'package:gymnastic_center/presentation/screens/home_screen.dart';
 export 'package:gymnastic_center/presentation/screens/lessons/lesson_screen.dart';
 export 'package:gymnastic_center/presentation/screens/notifications/notification_status_screen.dart';
 export 'package:gymnastic_center/presentation/screens/notifications/notifications_screen.dart';
-export 'package:gymnastic_center/presentation/screens/notifications/token_screen.dart';
 export 'package:gymnastic_center/presentation/screens/search/search_screen.dart';
 export 'package:gymnastic_center/presentation/screens/splash/splash_screen.dart';
+export 'package:gymnastic_center/presentation/screens/tabs/privacy_screen.dart';
 export 'package:gymnastic_center/presentation/screens/tabs/settings_screen.dart';
 export 'package:gymnastic_center/presentation/screens/tabs/theme_screen.dart';
 export 'package:gymnastic_center/presentation/screens/trainers/trainer_screen.dart';
@@ -26,3 +26,4 @@ export 'package:gymnastic_center/presentation/screens/trainers/trainers_screen.d
 export 'package:gymnastic_center/presentation/screens/videos/video_player/video_player_screen.dart';
 export 'package:gymnastic_center/presentation/screens/videos/videos_screen.dart';
 export 'package:gymnastic_center/presentation/screens/faq/faq_screen.dart';
+

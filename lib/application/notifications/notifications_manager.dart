@@ -3,7 +3,7 @@ abstract class NotificationsManager {
 
   Future<bool> checkAuthorizationStatus();
 
-  void onForegroundMessage();
+  void onForegroundMessage(Function(String event) handlerEvent);
 
   Future<String?> getToken();
 }
