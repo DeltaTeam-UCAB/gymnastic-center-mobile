@@ -1,6 +1,6 @@
 part of 'delete_course_bloc.dart';
 
-enum DeleteCourseStatus { initial, deleting, error }
+enum DeleteCourseStatus { initial, deleting, deleted ,error }
 class DeleteCourseState extends Equatable {
   final DeleteCourseStatus status;
   const DeleteCourseState({

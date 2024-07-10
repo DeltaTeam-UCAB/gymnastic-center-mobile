@@ -15,12 +15,19 @@ class TrainersBloc extends SafeBloc<TrainersEvent, TrainersState> {
     on<TrainerLoading>(_onTrainerLoading);
     on<TrainersIsEmpty>(_onTrainersIsEmpty);
     on<TrainerError>(_onTrainerError);
+    on<RefreshTrainers>(_onRefreshTrainers);
+  }
+
+  void _onRefreshTrainers(RefreshTrainers event, Emitter<TrainersState> emit) {
+    emit(const TrainersState());
+    loadNextPage();
   }
 
   void _onTrainersLoaded(TrainersLoaded event, Emitter<TrainersState> emit) {
     emit(state.copyWith(
       trainers: [...state.trainers, ...event.trainers],
       status: TrainersStatus.loaded,
+      page: state.page + 1,
     ));
   }
 
@@ -47,7 +54,10 @@ class TrainersBloc extends SafeBloc<TrainersEvent, TrainersState> {
 
     if (result.isSuccessful()) {
       final trainers = result.getValue();
-      if (trainers.isEmpty) add(TrainersIsEmpty());
+      if (trainers.isEmpty) {
+        add(TrainersIsEmpty());
+        return;
+      }
 
       add(TrainersLoaded(trainers));
       return;
@@ -55,4 +65,6 @@ class TrainersBloc extends SafeBloc<TrainersEvent, TrainersState> {
 
     add(TrainerError());
   }
+
+  void refreshTrainers() => add(RefreshTrainers());
 }

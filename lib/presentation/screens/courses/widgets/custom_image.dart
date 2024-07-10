@@ -30,7 +30,11 @@ class CustomImage extends StatelessWidget {
             height: 400,
             fit: BoxFit.fill,
             loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) return const SizedBox();
+              if (loadingProgress != null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return FadeIn(child: child);
             },
           ),
@@ -66,10 +70,9 @@ class CustomImage extends StatelessWidget {
                 child: Text(
                   trainer.name,
                   style: TextStyle(
-                    color: Colors.deepPurple.shade200,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold
-                  ),
+                      color: Colors.deepPurple.shade200,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],

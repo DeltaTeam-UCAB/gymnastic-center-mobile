@@ -20,3 +20,5 @@ class CoursesIsEmpty extends CoursesEvent {
 class CourseError extends CoursesEvent {
   const CourseError();
 }
+
+class RefreshCourses extends CoursesEvent {}

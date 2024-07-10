@@ -28,6 +28,7 @@ void main() {
       expect: () => [
             const TrainersState(trainers: [], status: TrainersStatus.loading),
             isA<TrainersState>()
+                .having((state) => state.page, 'page', 2)
                 .having((state) => state.trainers.first.trainer, 'trainers',
                     trainerMock)
                 .having(
