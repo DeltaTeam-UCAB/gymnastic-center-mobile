@@ -1,10 +1,10 @@
 import 'package:gymnastic_center/common/results.dart';
+import 'package:gymnastic_center/domain/datasources/categories/categorie_datasource.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
 import 'package:gymnastic_center/domain/repositories/categories/categories_repository.dart';
-import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
 
 class CategoriesRespositoryImpl extends CategoriesRepository {
-  final CategoriesDatasourceImpl categoryDatasource;
+  final CategoryDatasource categoryDatasource;
 
   CategoriesRespositoryImpl({required this.categoryDatasource});
 
