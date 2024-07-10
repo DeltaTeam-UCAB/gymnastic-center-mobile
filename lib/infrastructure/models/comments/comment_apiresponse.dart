@@ -1,6 +1,7 @@
 class CommentApiResponse {
     final String id;
     final String user;
+    final String userId;
     final int countLikes;
     final int countDislikes;
     final String body;
@@ -12,6 +13,7 @@ class CommentApiResponse {
     CommentApiResponse({
         required this.id,
         required this.user,
+        required this.userId,
         required this.countLikes,
         required this.countDislikes,
         required this.body,
@@ -23,6 +25,7 @@ class CommentApiResponse {
     factory CommentApiResponse.fromJson(Map<String, dynamic> json) => CommentApiResponse(
         id: json["id"],
         user: json["user"],
+        userId: json["userId"] ?? '',
         countLikes: json["countLikes"],
         countDislikes: json["countDislikes"],
         body: json["body"],

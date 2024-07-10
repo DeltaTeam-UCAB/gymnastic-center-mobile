@@ -7,6 +7,7 @@ class CommentMapper{
     return commentsApiResponse.map((commentApiResponse) {
       return Comment(
         id: commentApiResponse.id,
+        userId: commentApiResponse.userId,
         username: commentApiResponse.user,
         body: commentApiResponse.body,
         creationDate: commentApiResponse.date,

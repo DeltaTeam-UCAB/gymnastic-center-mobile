@@ -79,4 +79,11 @@ class ApiCommentDatasource extends CommentsDatasource {
 
     return response.data['commentId'];
   }
+  
+  @override
+  Future<void> deleteComment(String commentId) async {
+    await dio.delete('/one/$commentId');
+  }
+
+  
 }
