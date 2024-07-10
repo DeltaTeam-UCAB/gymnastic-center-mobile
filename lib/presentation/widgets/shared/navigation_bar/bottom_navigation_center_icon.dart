@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomNavigationCenterIcon extends StatelessWidget {
   const BottomNavigationCenterIcon({super.key});
@@ -11,7 +12,9 @@ class BottomNavigationCenterIcon extends StatelessWidget {
         size: const Size(65, 65),
         child: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
-          onPressed: () {},
+          onPressed: () {
+            context.push('/suscribed-courses');
+          },
           shape: const CircleBorder(),
           child: Image.asset('assets/icon/ray.png', width: 40, height: 40),
         ),

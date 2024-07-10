@@ -21,11 +21,11 @@ class CommentDiskesChanged extends CommentsEvent{
   CommentDiskesChanged({required this.newCommentDislikeState, required this.commentId});
 }
 
-class CommentPosted extends CommentsEvent{}
+class CommentRefreshed extends CommentsEvent{}
 
 class CommentPostingStarted extends CommentsEvent{}
 
-class CommentsReset extends CommentsEvent{}
+class CommentDeletingStarted extends CommentsEvent{}
 
 class AllCommentsLoaded extends CommentsEvent{}
 

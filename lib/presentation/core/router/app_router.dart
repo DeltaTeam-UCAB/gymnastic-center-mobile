@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
 import 'package:gymnastic_center/presentation/screens/categories/categories_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
+import 'package:gymnastic_center/presentation/screens/suscriptions/courses_suscriptions_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(
@@ -21,10 +22,13 @@ class RoutesManager {
             ),
             GoRoute(
               path: 'course/:courseId/:selectedLessonId',
-              builder: (context, state) => LessonScreen(
+              builder: (context, state) {
+                final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+                return LessonScreen(
                   courseId: state.pathParameters['courseId'] ?? '',
                   selectedLessonId:
-                      state.pathParameters['selectedLessonId'] ?? ''),
+                      selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+              },
             ),
             GoRoute(
               path: 'video-player',
@@ -68,12 +72,26 @@ class RoutesManager {
               builder: (context, state) => TrainerScreen(
                   trainerId: state.pathParameters['trainerId'] ?? ''),
             ),
+            GoRoute(
+              path: 'suscribed-courses',
+              builder: (context, state) => const SuscribedCoursesScreen(),
+            )
           ]),
       GoRoute(
           path: '/video-player',
           builder: (context, state) {
             return VideoPlayerScreen(videoURL: (state.extra as String));
           }),
+      GoRoute(
+      path: '/course/:courseId/:selectedLessonId',
+        builder: (context, state) {
+          final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+          return LessonScreen(
+            courseId: state.pathParameters['courseId'] ?? '',
+            selectedLessonId:
+                selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+        },
+      ),
       GoRoute(
         path: '/blog/:blogId',
         builder: (context, state) =>
@@ -128,6 +146,10 @@ class RoutesManager {
       GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',
+      ),
+      GoRoute(
+        path: '/suscribed-courses',
+        builder: (context, state) => const SuscribedCoursesScreen(),
       )
     ],
     redirect: (context, state) async {

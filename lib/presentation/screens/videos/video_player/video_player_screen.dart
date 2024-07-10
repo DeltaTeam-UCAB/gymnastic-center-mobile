@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
 import 'package:gymnastic_center/domain/entities/videos/video.dart';
 import 'package:gymnastic_center/injector.dart';
@@ -25,8 +26,11 @@ class VideoPlayerScreen extends StatelessWidget {
             create: (_) => getIt<VideoPlayerBloc>()
               ..changeCurrentVideo(Video(id: '', src: videoURL)),
           ),
-          BlocProvider(
-            create: (_) => getIt<LessonsBloc>()
+          BlocProvider.value(
+            value: getIt<LessonsBloc>()
+          ),
+          BlocProvider.value(
+            value: getIt<CourseProgressBloc>()
           ),
         ],
         child: const _VideoPlayerView(),
