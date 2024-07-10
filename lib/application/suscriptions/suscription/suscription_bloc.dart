@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
-part 'suscribe_course_event.dart';
-part 'suscribe_course_state.dart';
+part 'suscription_event.dart';
+part 'suscription_state.dart';
 
-class SuscribeCourseBloc extends SafeBloc<SuscribeCourseEvent, SuscribeCourseState> {
+class SuscriptionBloc extends SafeBloc<SuscriptionEvent, SuscriptionState> {
   final SuscriptionRepository suscriptionRepository;
-  SuscribeCourseBloc(this.suscriptionRepository) : super(const SuscribeCourseState()) {
+  SuscriptionBloc(this.suscriptionRepository) : super(const SuscriptionState()) {
     on<SuscribedStatusChecked>(_onSuscribedStatusChecked);
   }
 
-  void _onSuscribedStatusChecked(SuscribedStatusChecked event, Emitter<SuscribeCourseState> emit){
+  void _onSuscribedStatusChecked(SuscribedStatusChecked event, Emitter<SuscriptionState> emit){
     emit(
       state.copyWith(
         status: event.status

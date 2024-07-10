@@ -4,33 +4,33 @@ import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
-part 'courses_suscriptions_event.dart';
-part 'courses_suscriptions_state.dart';
+part 'suscribed_courses_event.dart';
+part 'suscribed_courses_state.dart';
 
-class CoursesSuscriptionsBloc extends SafeBloc<CoursesSuscriptionsEvent, CoursesSuscriptionsState> {
+class SuscribedCoursesBloc extends SafeBloc<SuscribedCoursesEvent, SuscribedCoursesState> {
   final SuscriptionRepository suscriptionRepository; 
-  CoursesSuscriptionsBloc(this.suscriptionRepository) : super(const CoursesSuscriptionsState()) {
+  SuscribedCoursesBloc(this.suscriptionRepository) : super(const SuscribedCoursesState()) {
     on<SuscribedCouresesLoaded>(_onSuscribedCoursesLoaded);
     on<CoursesUnsuscribed>(_onCoursesUnsuscribed);
     on<StartLoadingNextPage>(_onStartLoadingNextPage);
     on<ErrorOccurred>(_onErrorOccurred);
   }
 
-  void _onSuscribedCoursesLoaded(SuscribedCouresesLoaded event, Emitter<CoursesSuscriptionsState> emit){
+  void _onSuscribedCoursesLoaded(SuscribedCouresesLoaded event, Emitter<SuscribedCoursesState> emit){
     emit(
       state.copyWith(
         coursesSuscribed: [...state.coursesSuscribed, ...event.coursesSuscribed],
         isLastPage: event.isLastPage,
-        status: CoursesSuscriptionsStatus.loaded,
+        status: SuscribedCoursesStatus.loaded,
         page: event.page
       )
     );
   }
 
-  void _onCoursesUnsuscribed(CoursesUnsuscribed event, Emitter<CoursesSuscriptionsState> emit){
+  void _onCoursesUnsuscribed(CoursesUnsuscribed event, Emitter<SuscribedCoursesState> emit){
     emit(
       state.copyWith(
-        status: CoursesSuscriptionsStatus.initial,
+        status: SuscribedCoursesStatus.initial,
         isLastPage: false,
         coursesSuscribed: [],
         page: 0
@@ -38,26 +38,26 @@ class CoursesSuscriptionsBloc extends SafeBloc<CoursesSuscriptionsEvent, Courses
     );
   }
 
-  void _onStartLoadingNextPage(StartLoadingNextPage event, Emitter<CoursesSuscriptionsState> emit){
+  void _onStartLoadingNextPage(StartLoadingNextPage event, Emitter<SuscribedCoursesState> emit){
     emit(
       state.copyWith(
-        status: CoursesSuscriptionsStatus.loading,
+        status: SuscribedCoursesStatus.loading,
       )
     );
   }
 
   
 
-  void _onErrorOccurred(ErrorOccurred event, Emitter<CoursesSuscriptionsState> emit){
+  void _onErrorOccurred(ErrorOccurred event, Emitter<SuscribedCoursesState> emit){
     emit(
       state.copyWith(
-        status: CoursesSuscriptionsStatus.error,
+        status: SuscribedCoursesStatus.error,
       )
     );
   }
 
   Future<void> loadNextPage({int perPage = 5}) async{
-    if ( state.status == CoursesSuscriptionsStatus.loading || state.isLastPage)  return ;
+    if ( state.status == SuscribedCoursesStatus.loading || state.isLastPage)  return ;
     add(StartLoadingNextPage());
     final newCoursesSusccribedResult = await suscriptionRepository.getSuscribedCourses(state.page + 1, perPage: perPage);
     if (newCoursesSusccribedResult.isSuccessful()){

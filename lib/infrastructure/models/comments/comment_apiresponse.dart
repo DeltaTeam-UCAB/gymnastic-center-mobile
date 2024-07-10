@@ -26,11 +26,11 @@ class CommentApiResponse {
         id: json["id"],
         user: json["user"],
         userId: json["userId"] ?? '',
-        countLikes: json["countLikes"],
-        countDislikes: json["countDislikes"],
+        countLikes: json["countLikes"] ?? 0,
+        countDislikes: json["countDislikes"] ?? 0,
         body: json["body"],
-        userLiked: json["userLiked"],
-        userDisliked: json["userDisliked"],
+        userLiked: json["userLiked"] ?? false,
+        userDisliked: json["userDisliked"] ?? false,
         date: DateTime.parse(json["date"]),
     );
 }

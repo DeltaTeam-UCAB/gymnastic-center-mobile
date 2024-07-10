@@ -1,27 +1,27 @@
-part of 'courses_suscriptions_bloc.dart';
+part of 'suscribed_courses_bloc.dart';
 
-enum CoursesSuscriptionsStatus { initial, loading, loaded, error}
+enum SuscribedCoursesStatus { initial, loading, loaded, error}
 
-class CoursesSuscriptionsState extends Equatable {
+class SuscribedCoursesState extends Equatable {
 
-  final CoursesSuscriptionsStatus status;
+  final SuscribedCoursesStatus status;
   final List<CourseProgress> coursesSuscribed;
   final bool isLastPage;
   final int page;
 
-  const CoursesSuscriptionsState({
+  const SuscribedCoursesState({
     this.page = 0,
     this.isLastPage = false,
-    this.status = CoursesSuscriptionsStatus.initial, 
+    this.status = SuscribedCoursesStatus.initial, 
     this.coursesSuscribed = const []
   });
 
-  CoursesSuscriptionsState copyWith({
+  SuscribedCoursesState copyWith({
     List<CourseProgress>? coursesSuscribed,
-    CoursesSuscriptionsStatus? status,
+    SuscribedCoursesStatus? status,
     int? page,
     bool? isLastPage
-  })=>CoursesSuscriptionsState(
+  })=>SuscribedCoursesState(
     coursesSuscribed: coursesSuscribed ?? this.coursesSuscribed,
     status: status ?? this.status,
     page: page ?? this.page,

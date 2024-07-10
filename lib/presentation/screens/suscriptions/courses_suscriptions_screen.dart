@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/delete_popup_menu.dart';
 import 'package:gymnastic_center/presentation/widgets/suscriptions/progress_lesson_bar.dart';
 
-class CoursesSuscriptionScreen extends StatelessWidget {
-  const CoursesSuscriptionScreen({super.key});
+class SuscribedCoursesScreen extends StatelessWidget {
+  const SuscribedCoursesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<CoursesSuscriptionsBloc>(),
-      child: const _CoursesSuscriptionView(),
+      create: (context) => getIt<SuscribedCoursesBloc>(),
+      child: const _SuscribedCoursesView(),
     );
   }
 }
 
-class _CoursesSuscriptionView extends StatefulWidget {
-  const _CoursesSuscriptionView();
+class _SuscribedCoursesView extends StatefulWidget {
+  const _SuscribedCoursesView();
 
   @override
-  State<_CoursesSuscriptionView> createState() => _CoursesSuscriptionViewState();
+  State<_SuscribedCoursesView> createState() => _SuscribedCoursesViewState();
 }
 
-class _CoursesSuscriptionViewState extends State<_CoursesSuscriptionView> {
+class _SuscribedCoursesViewState extends State<_SuscribedCoursesView> {
   final ScrollController _scrollController = ScrollController();
     @override
     void initState() {
@@ -34,7 +34,7 @@ class _CoursesSuscriptionViewState extends State<_CoursesSuscriptionView> {
       _scrollController.addListener(() {
         if (_scrollController.position.pixels + 60 >=
             _scrollController.position.maxScrollExtent) {
-          context.read<CoursesSuscriptionsBloc>().loadNextPage();
+          context.read<SuscribedCoursesBloc>().loadNextPage();
         }
       });
     }
@@ -54,15 +54,15 @@ class _CoursesSuscriptionViewState extends State<_CoursesSuscriptionView> {
               title: const Text('Suscribed Courses'),
               elevation: 0,
             ),
-      body: BlocBuilder<CoursesSuscriptionsBloc, CoursesSuscriptionsState>(
+      body: BlocBuilder<SuscribedCoursesBloc, SuscribedCoursesState>(
         builder: (context, state) {
-          if (state.status == CoursesSuscriptionsStatus.initial){
-            context.read<CoursesSuscriptionsBloc>().initialLoading();
+          if (state.status == SuscribedCoursesStatus.initial){
+            context.read<SuscribedCoursesBloc>().initialLoading();
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state.status == CoursesSuscriptionsStatus.error){
+          if (state.status == SuscribedCoursesStatus.error){
             return const Center(
               child: Text('A error has occured'),
             );
@@ -97,7 +97,7 @@ class _CoursesSuscriptionViewState extends State<_CoursesSuscriptionView> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
             itemBuilder: (context, index) {
               if ( index == state.coursesSuscribed.length) {
-                if (state.status == CoursesSuscriptionsStatus.loading) {
+                if (state.status == SuscribedCoursesStatus.loading) {
                   return const SizedBox(
                     height: 64,
                     child: Center(
@@ -110,7 +110,7 @@ class _CoursesSuscriptionViewState extends State<_CoursesSuscriptionView> {
               }
               final courseSuscribed = state.coursesSuscribed[index];
               return _CourseSuscribedSlide(
-                onPressed: () => context.read<CoursesSuscriptionsBloc>().unsuscribeCourse(courseSuscribed.courseId),
+                onPressed: () => context.read<SuscribedCoursesBloc>().unsuscribeCourse(courseSuscribed.courseId),
                 course: courseSuscribed,
                 height: 240,
                 width: double.infinity,

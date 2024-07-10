@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymnastic_center/application/suscriptions/suscribe-course/suscribe_course_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscription/suscription_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
@@ -24,15 +24,15 @@ void main() {
       image: 'image',
       trainer: 'Trainer',
     );
-    mockSuscriptionRepository = MockSuscriptionRepository([mockCourseProgress]);
+    mockSuscriptionRepository = MockSuscriptionRepository([mockCourseProgress], true);
   });
 
   blocTest(
-      'Should emit SuscribeCourseState with status suscribed when checkSuscriptionCourse is called',
-      build: () => SuscribeCourseBloc(mockSuscriptionRepository),
-      act: (bloc) => bloc.checkSuscriptionCourse('1'),
+      'Should emit SuscriptionState with status unsuscribed when checkSuscriptionCourse is called',
+      build: () => SuscriptionBloc(mockSuscriptionRepository),
+      act: (bloc) => bloc.checkSuscriptionCourse('2'),
       expect: () => [
-        isA<SuscribeCourseState>()
-            .having((state) => state.status, 'status', SuscribedStatus.suscribed)
+        isA<SuscriptionState>()
+            .having((state) => state.status, 'status', SuscribedStatus.unsuscribed),
       ]);
 }

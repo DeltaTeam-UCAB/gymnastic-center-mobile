@@ -210,6 +210,8 @@ class _CommentTile extends StatelessWidget {
                 dialogAccept: 'Yes, please',
                 dialogDeny: 'No',
                 popuplabel: 'Remove comment')
+                else
+                const SizedBox(width: 44,)
               ],
             ),
             Text(
@@ -218,6 +220,7 @@ class _CommentTile extends StatelessWidget {
                   fontSize: textTheme.bodyLarge!.fontSize,
                   fontWeight: FontWeight.bold),
             ),
+            if (comment.userId != '')
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
@@ -61,19 +61,19 @@ void main() {
   });
 
   blocTest(
-      'Should emit CoursesSuscriptionsState with status loading and loaded when loadNextPage is called',
-      build: () => CoursesSuscriptionsBloc(mockSuscriptionRepository),
+      'Should emit SuscribedCoursesState with status loading and loaded when loadNextPage is called',
+      build: () => SuscribedCoursesBloc(mockSuscriptionRepository),
       act: (bloc) => bloc.loadNextPage(perPage: 2),
-      seed: () => CoursesSuscriptionsState(
-          status: CoursesSuscriptionsStatus.loaded,
+      seed: () => SuscribedCoursesState(
+          status: SuscribedCoursesStatus.loaded,
           isLastPage: false,
           coursesSuscribed: mockCoursesProgress.sublist(0, 2),
           page: 1),
       expect: () => [
-        isA<CoursesSuscriptionsState>()
-            .having((state) => state.status, 'status', CoursesSuscriptionsStatus.loading),
-        isA<CoursesSuscriptionsState>()
-            .having((state) => state.status, 'status', CoursesSuscriptionsStatus.loaded)
+        isA<SuscribedCoursesState>()
+            .having((state) => state.status, 'status', SuscribedCoursesStatus.loading),
+        isA<SuscribedCoursesState>()
+            .having((state) => state.status, 'status', SuscribedCoursesStatus.loaded)
             .having((state) => state.isLastPage, 'isLastPage', false)
             .having((state) => state.coursesSuscribed, 'coursesSuscribed', mockCoursesProgress.sublist(0,4))
             .having((state) => state.page, 'page', 2),

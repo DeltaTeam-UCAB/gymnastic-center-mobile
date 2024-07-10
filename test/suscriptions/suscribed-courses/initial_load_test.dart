@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
@@ -46,18 +46,18 @@ void main() {
         trainer: 'Trainer',
       ),
     ];
-    mockSuscriptionRepository = MockSuscriptionRepository(mockCoursesProgress, true);
+    mockSuscriptionRepository = MockSuscriptionRepository(mockCoursesProgress);
   });
 
   blocTest(
-      'Should emit CoursesSuscriptionsState with status loaded when initialLoading is called',
-      build: () => CoursesSuscriptionsBloc(mockSuscriptionRepository, ),
+      'Should emit SuscribedCoursesState with status loaded when initialLoading is called',
+      build: () => SuscribedCoursesBloc(mockSuscriptionRepository),
       act: (bloc) => bloc.initialLoading(perPage: 2),
       expect: () => [
-        isA<CoursesSuscriptionsState>()
-            .having((state) => state.status, 'status', CoursesSuscriptionsStatus.error)
+        isA<SuscribedCoursesState>()
+            .having((state) => state.status, 'status', SuscribedCoursesStatus.loaded)
             .having((state) => state.isLastPage, 'isLastPage', false)
-            .having((state) => state.coursesSuscribed, 'coursesSuscribed', [])
-            .having((state) => state.page, 'page', 0),
+            .having((state) => state.coursesSuscribed, 'coursesSuscribed', mockCoursesProgress.sublist(0,2))
+            .having((state) => state.page, 'page', 1),
       ]);
 }

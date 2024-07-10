@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
@@ -49,12 +49,12 @@ void main() {
     mockSuscriptionRepository = MockSuscriptionRepository(mockCoursesProgress);
   });
   blocTest(
-      'Should emit CoursesSuscriptionsState with status initial when unsuscribeCourse is called',
-      build: () => CoursesSuscriptionsBloc(mockSuscriptionRepository),
+      'Should emit SuscribedCoursesState with status initial when unsuscribeCourse is called',
+      build: () => SuscribedCoursesBloc(mockSuscriptionRepository),
       act: (bloc) => bloc.unsuscribeCourse('1'),
       expect: () => [
-        isA<CoursesSuscriptionsState>()
-            .having((state) => state.status, 'status', CoursesSuscriptionsStatus.initial)
+        isA<SuscribedCoursesState>()
+            .having((state) => state.status, 'status', SuscribedCoursesStatus.initial)
             .having((state) => state.isLastPage, 'isLastPage', false)
             .having((state) => state.coursesSuscribed, 'coursesSuscribed', [])
             .having((state) => state.page, 'page', 0),

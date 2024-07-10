@@ -67,7 +67,7 @@ class RoutesManager {
             ),
             GoRoute(
               path: 'suscribed-courses',
-              builder: (context, state) => const CoursesSuscriptionScreen(),
+              builder: (context, state) => const SuscribedCoursesScreen(),
             )
           ]),
       GoRoute(
@@ -139,7 +139,7 @@ class RoutesManager {
       ),
       GoRoute(
         path: '/suscribed-courses',
-        builder: (context, state) => const CoursesSuscriptionScreen(),
+        builder: (context, state) => const SuscribedCoursesScreen(),
       )
     ],
     redirect: (context, state) async {

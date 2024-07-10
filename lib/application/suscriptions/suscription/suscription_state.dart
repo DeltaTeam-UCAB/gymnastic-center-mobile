@@ -1,17 +1,17 @@
-part of 'suscribe_course_bloc.dart';
+part of 'suscription_bloc.dart';
 
 
 enum SuscribedStatus {checking, suscribed, unsuscribed, suscribing}
 
-class SuscribeCourseState extends Equatable {
+class SuscriptionState extends Equatable {
   final SuscribedStatus status;
-  const SuscribeCourseState({
+  const SuscriptionState({
     this.status = SuscribedStatus.checking
   });
 
-  SuscribeCourseState copyWith({
+  SuscriptionState copyWith({
     SuscribedStatus? status,
-  })=>SuscribeCourseState(
+  })=>SuscriptionState(
     status: status ?? this.status,
   );
   

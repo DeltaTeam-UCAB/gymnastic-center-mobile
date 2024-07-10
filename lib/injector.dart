@@ -14,8 +14,8 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
-import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
-import 'package:gymnastic_center/application/suscriptions/suscribe-course/suscribe_course_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscription/suscription_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer_bloc.dart';
@@ -96,10 +96,10 @@ class Injector{
       () => UpdateBloc(clientsRepositoryImpl)
     );
     getIt.registerFactory(
-      () => SuscribeCourseBloc(suscriptionRepositoryImpl)
+      () => SuscriptionBloc(suscriptionRepositoryImpl)
     );
     getIt.registerFactory(
-      () => CoursesSuscriptionsBloc(suscriptionRepositoryImpl)
+      () => SuscribedCoursesBloc(suscriptionRepositoryImpl)
     );
     getIt.registerFactory(
       () => TrendingProgressBloc(suscriptionRepositoryImpl)
