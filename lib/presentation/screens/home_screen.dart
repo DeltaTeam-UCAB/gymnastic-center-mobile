@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           FadeIn(child: const HomeView()),
           FadeIn(child: const AllCoursesScreen()),
           FadeIn(child: const SettingsScreen()),
-          FadeIn(child: NotificationsScreen()),
+          FadeIn(child: const NotificationsScreen()),
         ],
       ),
       drawer: widget.pageIndex != 2 ? SideMenu(scaffoldKey: scaffoldKey) : null,
