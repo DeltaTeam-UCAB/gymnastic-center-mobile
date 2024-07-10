@@ -9,6 +9,13 @@ class RoutesManager {
     initialLocation: '/splash',
     routes: [
       GoRoute(
+          path: '/admin/:page',
+          builder: (context, state) {
+            final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+            return HomeAdminScreen(pageIndex: pageIndex);
+          },
+      ),
+      GoRoute(
           path: '/home/:page',
           builder: (context, state) {
             final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
@@ -154,6 +161,7 @@ class RoutesManager {
     ],
     redirect: (context, state) async {
       final isGoingTo = state.matchedLocation;
+      final isAdmin = await LocalStorageService().getValue<bool>('isAdmin') != null;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;
       final hasSeenWelcome =
@@ -173,6 +181,7 @@ class RoutesManager {
       }
 
       if (isGoingTo == '/welcome') {
+        if (isAdmin) return '/admin/0';
         if (isAutorized) return '/';
         if (hasSeenWelcome) return '/start';
         return null;
