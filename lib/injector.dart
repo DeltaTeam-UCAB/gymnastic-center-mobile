@@ -13,6 +13,10 @@ import 'package:gymnastic_center/application/courses/course-details/course_detai
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/courses-suscriptions/courses_suscriptions_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribe-course/suscribe_course_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
@@ -21,6 +25,7 @@ import 'package:gymnastic_center/infrastructure/datasources/categories/categorie
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/suscriptions/api_suscription_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications_manager.dart';
@@ -31,6 +36,7 @@ import 'package:gymnastic_center/infrastructure/repositories/categories/categori
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/suscriptions/suscription_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 
@@ -47,11 +53,13 @@ class Injector{
     final apiCoursesDatasource = ApiCoursesDatasource(localStorageService);
     final apiUserDatasource = APIUserDatasource();
     final clientsDatasourceImpl = ClientsDatasourceImpl(localStorageService);
+    final apiSuscriptionDatasource = APISuscriptionDatasource(localStorageService);
 
     final blogRepositoryImpl = BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
     final coursesRepositoryImpl = CoursesRepositoryImpl(apiCoursesDatasource);
     final userRepositoryImpl = UserRepositoryImpl(userDatasource: apiUserDatasource,keyValueStorage: localStorageService);
     final clientsRepositoryImpl = ClientsRepositoryImpl(clientsDatasource: clientsDatasourceImpl, keyValueStorage: localStorageService);
+    final suscriptionRepositoryImpl = SuscriptionRepositoryImpl(apiSuscriptionDatasource);
 
     getIt.registerFactory(
       () => CommentsBloc(CommentsRepositoryImpl(
@@ -87,6 +95,15 @@ class Injector{
     getIt.registerFactory(
       () => UpdateBloc(clientsRepositoryImpl)
     );
+    getIt.registerFactory(
+      () => SuscribeCourseBloc(suscriptionRepositoryImpl)
+    );
+    getIt.registerFactory(
+      () => CoursesSuscriptionsBloc(suscriptionRepositoryImpl)
+    );
+    getIt.registerFactory(
+      () => TrendingProgressBloc(suscriptionRepositoryImpl)
+    );
     getIt.registerSingleton(
       ThemesBloc()
     );
@@ -109,6 +126,9 @@ class Injector{
     );
     getIt.registerLazySingleton(
       () => LessonsBloc(coursesRepository: coursesRepositoryImpl)
+    );
+    getIt.registerLazySingleton(
+      () => CourseProgressBloc(suscriptionRepositoryImpl)
     );
   }
 
