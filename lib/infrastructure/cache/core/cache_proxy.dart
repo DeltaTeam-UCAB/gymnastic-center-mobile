@@ -2,12 +2,12 @@ import 'package:gymnastic_center/common/optional.dart';
 import 'package:gymnastic_center/infrastructure/cache/core/cache_provider.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-class CacheRetriever {
+class CacheProxy {
   CacheProvider cacheProvider;
 
-  CacheRetriever(this.cacheProvider);
+  CacheProxy(this.cacheProvider);
 
-  Future<T> retrieve<T>(
+  Future<T> tryRetrieve<T>(
       {required Future<T> Function() truthSource,
       required String collection,
       required String identifier}) async {

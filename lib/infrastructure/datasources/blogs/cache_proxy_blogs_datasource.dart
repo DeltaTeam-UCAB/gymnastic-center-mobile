@@ -1,15 +1,15 @@
 import 'package:gymnastic_center/domain/datasources/blogs/blogs_datasource.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/infrastructure/cache/core/cache_provider.dart';
-import 'package:gymnastic_center/infrastructure/cache/core/cache_retriever.dart';
+import 'package:gymnastic_center/infrastructure/cache/core/cache_proxy.dart';
 
 class CacheProxyBlogDatasource extends BlogsDatasource {
   BlogsDatasource datasource;
   CacheProvider cacheProvider;
-  late CacheRetriever cacheRetriever;
+  late CacheProxy cacheProxy;
 
   CacheProxyBlogDatasource(this.datasource, this.cacheProvider) {
-    cacheRetriever = CacheRetriever(cacheProvider);
+    cacheProxy = CacheProxy(cacheProvider);
   }
 
   String _allBlogsIdentifier(
@@ -39,7 +39,7 @@ class CacheProxyBlogDatasource extends BlogsDatasource {
         filter: filter,
         trainer: trainer,
         category: category);
-    return await cacheRetriever.retrieve<List<Blog>>(
+    return await cacheProxy.tryRetrieve<List<Blog>>(
         truthSource: () => datasource.getAllBlogs(
             page: page,
             perPage: perPage,
@@ -52,7 +52,7 @@ class CacheProxyBlogDatasource extends BlogsDatasource {
 
   @override
   Future<Blog> getBlogById(String blogId) async {
-    return await cacheRetriever.retrieve<Blog>(
+    return await cacheProxy.tryRetrieve<Blog>(
         truthSource: () => datasource.getBlogById(blogId),
         collection: 'blogs',
         identifier: blogId);

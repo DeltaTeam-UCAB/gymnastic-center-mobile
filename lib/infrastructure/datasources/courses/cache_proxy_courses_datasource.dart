@@ -1,15 +1,15 @@
 import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/infrastructure/cache/core/cache_provider.dart';
-import 'package:gymnastic_center/infrastructure/cache/core/cache_retriever.dart';
+import 'package:gymnastic_center/infrastructure/cache/core/cache_proxy.dart';
 
 class CacheProxyCoursesDatasource extends CoursesDatasource {
   CoursesDatasource datasource;
   CacheProvider cacheProvider;
-  late CacheRetriever cacheRetriever;
+  late CacheProxy cacheProxy;
 
   CacheProxyCoursesDatasource(this.datasource, this.cacheProvider) {
-    cacheRetriever = CacheRetriever(cacheProvider);
+    cacheProxy = CacheProxy(cacheProvider);
   }
 
   String _coursesPaginatedIdentifier(
@@ -23,7 +23,7 @@ class CacheProxyCoursesDatasource extends CoursesDatasource {
 
   @override
   Future<Course> getCourseById(String id) async {
-    return await cacheRetriever.retrieve<Course>(
+    return await cacheProxy.tryRetrieve<Course>(
         truthSource: () => datasource.getCourseById(id),
         collection: 'courses',
         identifier: id);
@@ -42,7 +42,7 @@ class CacheProxyCoursesDatasource extends CoursesDatasource {
         filter: filter,
         trainer: trainer,
         category: category);
-    return await cacheRetriever.retrieve<List<Course>>(
+    return await cacheProxy.tryRetrieve<List<Course>>(
         truthSource: () => datasource.getCoursesPaginated(
             page: page,
             perPage: perPage,
