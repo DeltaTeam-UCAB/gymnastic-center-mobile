@@ -50,7 +50,7 @@ class ApiSearchDatasource extends SearchDataSource {
   }
 
   @override
-  Future<List<String>> loadPopularTags([page = 1, perPage = 10]) async {
+  Future<List<String>> loadPopularTags({int page = 1, int perPage = 8}) async {
     final response = await dio.get('/popular/tags', queryParameters: {
       'page': page,
       'perPage': perPage,

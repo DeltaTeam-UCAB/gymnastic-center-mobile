@@ -22,9 +22,9 @@ class SearchRepositoryImpl extends SearchRepository {
   }
 
   @override
-  Future<Result<List<String>>> loadPopularTags([page = 1, perPage = 10]) async {
+  Future<Result<List<String>>> loadPopularTags({int page = 1, int perPage = 8}) async {
     try {
-      final results = await searchDataSource.loadPopularTags(page, perPage);
+      final results = await searchDataSource.loadPopularTags(page: page, perPage: perPage);
       return Result<List<String>>.success(results);
     } catch (e) {
       return Result<List<String>>.fail(e as Exception);
