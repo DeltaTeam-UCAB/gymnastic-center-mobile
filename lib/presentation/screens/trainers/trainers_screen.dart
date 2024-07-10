@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -130,7 +131,7 @@ class _TrainerSlideState extends State<_TrainerSlide> {
         subtitle: Text(widget.trainer.location),
         leading: CircleAvatar(
           radius: 30,
-          backgroundImage: NetworkImage(widget.trainer.image),
+          child: CachedNetworkImage(imageUrl: widget.trainer.image),
         ),
         trailing: ElevatedButton(
           onPressed: () async {

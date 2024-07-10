@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,21 +42,23 @@ class AccountScreen extends StatelessWidget {
                       bottomRight: Radius.circular(60),
                     )),
                 padding: const EdgeInsets.all(16.0),
-                child: const Column(
+                child: Column(
                   // USER DATA - UPDATE
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          // USER PHOTO
-                          backgroundImage: NetworkImage(
-                              "https://secrecyjewels.es/blog/wp-content/uploads/2022/10/esencia-de-una-persona.jpg"),
                           backgroundColor: Colors.deepPurple,
                           radius: 50,
+                          // USER PHOTO
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "https://secrecyjewels.es/blog/wp-content/uploads/2022/10/esencia-de-una-persona.jpg",
+                          ),
                         ),
-                        SizedBox(width: 10),
-                        Column(
+                        const SizedBox(width: 10),
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -157,7 +160,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
@@ -186,7 +191,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,
@@ -215,7 +222,9 @@ class AccountScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See all',
-                          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                         Icon(
                           size: 14,

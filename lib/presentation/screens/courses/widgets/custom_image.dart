@@ -1,4 +1,4 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
@@ -25,13 +25,12 @@ class CustomImage extends StatelessWidget {
         // Image
         ClipRRect(
           borderRadius: customBorderRadius,
-          child: Image.network(
-            src,
+          child: CachedNetworkImage(
+            imageUrl: src,
             height: 400,
             fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) return const SizedBox();
-              return FadeIn(child: child);
+            progressIndicatorBuilder: (context, url, loadingProgress) {
+              return const SizedBox();
             },
           ),
         ),
@@ -66,10 +65,9 @@ class CustomImage extends StatelessWidget {
                 child: Text(
                   trainer.name,
                   style: TextStyle(
-                    color: Colors.deepPurple.shade200,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold
-                  ),
+                      color: Colors.deepPurple.shade200,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],

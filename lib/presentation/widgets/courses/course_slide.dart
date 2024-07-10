@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
@@ -32,22 +33,20 @@ class CourseSlide extends StatelessWidget {
                     height: 150,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        course.image,
+                      child: CachedNetworkImage(
+                        imageUrl: course.image,
                         fit: BoxFit.cover,
                         //width: 150,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress != null) {
-                            return const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
+                        progressIndicatorBuilder:
+                            (context, url, loadingProgress) {
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
                               ),
-                            );
-                          }
-                          return child;
+                            ),
+                          );
                         },
                       ),
                     )),

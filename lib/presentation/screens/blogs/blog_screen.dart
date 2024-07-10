@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,7 @@ class BlogScreen extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (_) => getIt<BlogDetailsBloc>()..loadBlogById(blogId)),
-          BlocProvider(
-              create: (_) => getIt<CommentsBloc>()),
+          BlocProvider(create: (_) => getIt<CommentsBloc>()),
         ],
         child: Scaffold(
             body: Stack(
@@ -98,7 +98,8 @@ class _BlogDetailsView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
                   GestureDetector(
-                    onTap: () => context.push('/home/0/trainer/${blog.trainer.id}'),
+                    onTap: () =>
+                        context.push('/home/0/trainer/${blog.trainer.id}'),
                     child: Text(
                       'By: ${blog.trainer.name}',
                       style: TextStyle(
@@ -137,9 +138,15 @@ class _BlogDetailsView extends StatelessWidget {
               SizedBox(
                 height: 400,
                 child: CommentsSection(
-                  onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(blog.id, 'BLOG'),
-                  onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(blog.id, 'BLOG'),
-                  onPostComment: (message) => context.read<CommentsBloc>().createComment(blog.id, 'BLOG', message),
+                  onInitialLoadComments: () => context
+                      .read<CommentsBloc>()
+                      .startInitialLoad(blog.id, 'BLOG'),
+                  onLoadNextComments: () => context
+                      .read<CommentsBloc>()
+                      .loadNextPageById(blog.id, 'BLOG'),
+                  onPostComment: (message) => context
+                      .read<CommentsBloc>()
+                      .createComment(blog.id, 'BLOG', message),
                 ),
               )
             ],
@@ -162,8 +169,8 @@ class _ImagesCarrousel extends StatelessWidget {
       return SizedBox(
         height: height,
         width: double.infinity,
-        child: Image.network(
-          urlImages[0],
+        child: CachedNetworkImage(
+          imageUrl: urlImages[0],
           fit: BoxFit.fill,
         ),
       );
@@ -174,8 +181,8 @@ class _ImagesCarrousel extends StatelessWidget {
       width: double.infinity,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            urlImages[index],
+          return CachedNetworkImage(
+            imageUrl: urlImages[index],
             fit: BoxFit.fill,
           );
         },

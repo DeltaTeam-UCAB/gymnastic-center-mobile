@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -57,8 +58,8 @@ class SearchSlide extends StatelessWidget {
               ConstrainedBox(
                 constraints:
                     const BoxConstraints(maxWidth: 150, maxHeight: 100),
-                child: Image.network(
-                  image,
+                child: CachedNetworkImage(
+                  imageUrl: image,
                   fit: BoxFit.cover,
                 ),
               )

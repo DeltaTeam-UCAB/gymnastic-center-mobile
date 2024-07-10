@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,11 +64,12 @@ class _SlideItem extends StatelessWidget {
             Container(
               height: 160,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: NetworkImage(blog.images[0]),
-                    fit: BoxFit.cover,
-                  )),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: blog.images[0],
+                fit: BoxFit.cover,
+              ),
             ),
 
             //Title
