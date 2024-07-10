@@ -37,9 +37,16 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
 
   @override
   void initState() {
-    super.initState();
     _passwordController = TextEditingController();
     _repeatPasswordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _repeatPasswordController.dispose();
+    super.dispose();
   }
 
   String? _validatePassword(String? value) {
@@ -108,7 +115,8 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                     'Create password',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode ? Colors.white : const Color(0xff222222),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff222222),
                       fontSize: 28,
                     ),
                     textAlign: TextAlign.center,
@@ -118,7 +126,8 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                   Text(
                     'Create a new password and please never share it with anyone for safe use.',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : const Color(0xff677294),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff677294),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,

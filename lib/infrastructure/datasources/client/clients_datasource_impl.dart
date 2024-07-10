@@ -49,4 +49,19 @@ class ClientsDatasourceImpl extends ClientsDatasource {
     );
     return true;
   }
+
+  @override
+  Future<bool> checkDeviceLink(String deviceToken) async {
+    await dio.get('/user/is/device/linked?token=$deviceToken');
+    return true;
+  }
+
+  @override
+  Future<bool> linkDevice(String deviceToken) async {
+    await dio.put(
+      '/user/link/device',
+      data: {'token': deviceToken},
+    );
+    return true;
+  }
 }

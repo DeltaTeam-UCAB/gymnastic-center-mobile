@@ -68,7 +68,7 @@ class _AllBlogsScreenState extends State<_AllBlogsScreen> {
         ),
         body: BlocBuilder<BlogsBloc, BlogsState>(
           builder: (context, state) {
-            if (state.status == BlogStatus.loading) {
+            if (state.status == BlogStatus.loading && state.loadedBlogs.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
             if (state.status == BlogStatus.error) {
@@ -96,7 +96,7 @@ class _AllBlogsScreenState extends State<_AllBlogsScreen> {
                           return BlogSlide(blog: state.loadedBlogs[index]);
                         },
                       ))
-                    : const NoContent(image: 'assets/stretch.svg')
+                    : const NoContent(image: 'assets/stretch.svg', text: 'Ups!! No content yet...',)
               ],
             );
           },

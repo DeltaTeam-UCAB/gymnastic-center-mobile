@@ -61,6 +61,13 @@ class RoutesManager {
               builder: (context, state) => const AllVideosScreen(),
             ),
             GoRoute(
+              path: 'search',
+              builder: (context, state) => const SearchScreen(),
+            ),
+            GoRoute(
+                path: 'trainers',
+                builder: (context, state) => const TrainersScreen()),
+            GoRoute(
               path: 'trainer/:trainerId',
               builder: (context, state) => TrainerScreen(
                   trainerId: state.pathParameters['trainerId'] ?? ''),
@@ -111,6 +118,9 @@ class RoutesManager {
           path: '/configuration/theme',
           builder: (context, state) => const ThemeManagerScreen()),
       GoRoute(
+          path: '/configuration/privacy',
+          builder: (context, state) => const PrivacyScreen()),
+      GoRoute(
         path: '/configuration/notifications',
         builder: (context, state) => const NotificationStatuScreen(),
       ),
@@ -120,7 +130,6 @@ class RoutesManager {
       GoRoute(
           path: '/account/details',
           builder: (context, state) => const AccountDetailsScreen()),
-      GoRoute(path: '/token', builder: (context, state) => const TokenScreen()),
       GoRoute(
           path: '/password/reset',
           builder: (context, state) => const ResetPasswordScreen()),
@@ -133,6 +142,7 @@ class RoutesManager {
       GoRoute(
           path: '/password/changed',
           builder: (context, state) => const PasswordChangedScreen()),
+      GoRoute(path: '/faq', builder: (context, state) => const FaqScreen()),
       GoRoute(
         path: '/',
         redirect: (_, __) => '/home/0',

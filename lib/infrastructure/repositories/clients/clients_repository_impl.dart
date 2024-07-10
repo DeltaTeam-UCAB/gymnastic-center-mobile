@@ -46,4 +46,27 @@ class ClientsRepositoryImpl extends ClientsRepository {
       rethrow;
     }
   }
+  
+  @override
+  Future<Result<bool>> checkDeviceLink(String deviceToken) async {
+    try {
+      await clientsDatasource.checkDeviceLink(deviceToken);
+      return Result.success(true);
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 404) {
+        return Result.success(false);
+      }
+      return Result.fail(Exception('Failed to check device link'));
+    }
+  }
+  
+  @override
+  Future<Result<bool>> linkDevice(String deviceToken) async {
+    try {
+      await clientsDatasource.linkDevice(deviceToken);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(Exception('Failed to link device'));
+    }
+  }
 }

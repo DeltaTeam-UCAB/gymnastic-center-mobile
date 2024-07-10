@@ -42,7 +42,6 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    super.initState();
     context.read<CoursesBloc>().loadNextPage(
         categoryId: widget.selectedCategoryId,
         trainerId: widget.selectedTrainerId);
@@ -53,6 +52,8 @@ class _AllCoursesScreenState extends State<_AllCoursesScreen> {
         context.read<CoursesBloc>().loadNextPage();
       }
     });
+
+    super.initState();
   }
 
   @override
@@ -119,6 +120,6 @@ class _CoursesView extends StatelessWidget {
               return CourseSlide(course: courses[index]);
             },
           ))
-        : const NoContent(image: 'assets/stretch.svg');
+        : const NoContent(image: 'assets/stretch.svg', text: 'Ups!! No content yet...');
   }
 }
