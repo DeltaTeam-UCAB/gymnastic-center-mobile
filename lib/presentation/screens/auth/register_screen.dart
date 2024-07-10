@@ -240,7 +240,7 @@ class RegisterScreenState extends State<_RegisterForm> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.0294,
               child: CheckboxFormField(
-                title: const Text('Yes! Agree to all Terms and Conditions',
+                title: const Text('Yes! Agree to all Terms & Conditions',
                     style: TextStyle(fontSize: 15, color: Colors.white)),
                 validator: (value) {
                   if (value == null || !value) {

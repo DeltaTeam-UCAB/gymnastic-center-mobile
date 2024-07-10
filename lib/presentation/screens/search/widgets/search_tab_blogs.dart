@@ -63,6 +63,7 @@ class _SearchTabBlogsState extends State<SearchTabBlogs> {
                       height: 300,
                     )
                   : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 16, left: 16),

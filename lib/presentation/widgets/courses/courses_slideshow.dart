@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CoursesSlideShow extends StatelessWidget {
   final List<Course> courses;
@@ -91,7 +92,7 @@ class _SlideItem extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.bold)),
                   Text(
-                    course.released.toString().split(' ')[0],
+                    timeago.format(course.released),
                     style: TextStyle(color: colors.secondary, fontSize: 12),
                   ),
                 ],

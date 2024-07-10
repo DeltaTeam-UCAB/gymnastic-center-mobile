@@ -69,7 +69,7 @@ class CategorySlide extends StatelessWidget {
                           category.name,
                           style: titleStyle,
                           textAlign: TextAlign.center,
-                          maxLines: 2,
+                          maxLines: 1,
                         ),
                       ),
                     ],
