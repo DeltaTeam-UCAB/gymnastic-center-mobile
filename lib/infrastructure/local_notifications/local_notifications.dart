@@ -34,7 +34,7 @@ class LocalNotifications extends LocalNotificationsManager {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     const initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('icon_app');
     final initializationSettingsDarwin = DarwinInitializationSettings(
       onDidReceiveLocalNotification: iosShowNotification,
     );
