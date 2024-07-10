@@ -25,7 +25,7 @@ void main() {
       seed: () => VideoPlayerState( currentVideo: mockCurrentVideo, status: VideoPlayerStatus.playing),
       act: (bloc) => bloc.setNewPositition(const Duration(seconds: 60)),
       verify: (_) {
-        if (!mockVideoPlayerManagerState.isPositionChanged) throw Exception('Video position not changed');
+        expect(mockVideoPlayerManagerState.isPositionChanged, true);
       },
       expect: () => [
         isA<VideoPlayerState>()

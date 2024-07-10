@@ -25,7 +25,7 @@ void main() {
       seed: () => VideoPlayerState( currentVideo: mockCurrentVideo, status: VideoPlayerStatus.playing),
       act: (bloc) => bloc.pauseVideo(),
       verify: (_) {
-        if (!mockVideoPlayerManagerState.isPaused) throw Exception('Video not paused');
+        expect(mockVideoPlayerManagerState.isPaused, true);
       },
       expect: () => [
         isA<VideoPlayerState>()
