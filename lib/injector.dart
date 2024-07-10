@@ -5,12 +5,14 @@ import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
 import 'package:gymnastic_center/application/auth/update/update_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
+import 'package:gymnastic_center/application/blogs/delete-blog/delete_blog_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/application/clients/link-device/link_device_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
@@ -22,6 +24,7 @@ import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
+import 'package:gymnastic_center/application/trainers/delete-trainer/delete_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/follow-trainer/follow_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer-details/trainer_details_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
@@ -139,5 +142,11 @@ class Injector {
     getIt.registerFactory(() => FollowTrainerBloc(trainersRepositoryImpl));
 
     getIt.registerFactory(() => LinkDeviceBloc(clientsRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteBlogBloc(blogRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteCourseBloc(coursesRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteTrainerBloc(trainersRepositoryImpl));
   }
 }

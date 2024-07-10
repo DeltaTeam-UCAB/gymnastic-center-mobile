@@ -38,4 +38,15 @@ class TrainersRepositoryImpl extends TrainersRepository {
       return Result<List<TrainerDetails>>.fail(e as Exception);
     }
   }
+  
+  @override
+  Future<Result<String>> deleteTrainer(String trainerId) async{
+    try {
+      final trainerIdDeleted = await trainersDataSource.deleteTrainer(trainerId);
+      return Result.success(trainerIdDeleted);
+    } catch (e) {
+      return Result.fail(e as Exception);
+      
+    }
+  }
 }
