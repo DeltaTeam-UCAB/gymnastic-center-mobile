@@ -11,4 +11,5 @@ abstract class BlogsRepository {
     String? trainer,
     String? category
   });
+  Future<Result<String>> deleteBlog(String blogId);
 }

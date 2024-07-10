@@ -57,4 +57,11 @@ class APIBlogDatasource extends BlogsDatasource {
 
     return blogs;
   }
+  
+  @override
+  Future<String> deleteBlog(String blogId) async {
+    final response = 
+    await dio.delete('/one/$blogId');
+    return response.data['id'] ?? '';
+  }
 }

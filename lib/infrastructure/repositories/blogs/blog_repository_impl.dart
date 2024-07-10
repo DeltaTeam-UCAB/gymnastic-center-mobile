@@ -37,4 +37,14 @@ class BlogRepositoryImpl extends BlogsRepository {
       return Result<Blog>.fail(e as Exception);
     }
   }
+  
+  @override
+  Future<Result<String>> deleteBlog(String blogId) async {
+    try {
+      final deletedblogId = await blogsDatasource.deleteBlog(blogId);
+      return Result.success(deletedblogId); 
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
 }
