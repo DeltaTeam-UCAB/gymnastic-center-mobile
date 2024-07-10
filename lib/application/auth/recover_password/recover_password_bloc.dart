@@ -30,6 +30,9 @@ class RecoverPasswordBloc
       RecoverPasswordCompleted event, Emitter<RecoverPasswordState> emit) {
     emit(state.copyWith(
       formStatus: RecoverPasswordFormStatus.finished,
+      code: '',
+      email: '',
+      password: '',
     ));
   }
 
@@ -107,15 +110,11 @@ class RecoverPasswordBloc
         await userRespository.sendRecoveryCode(state.email);
 
     if (sendRecoveryCodeResult.isSuccessful()) {
-      final sentRecoveryCode = sendRecoveryCodeResult.getValue();
-
-      if (sentRecoveryCode) {
         add(resend ? RecoverPasswordCodeResent() : RecoverPasswordCodeSent());
-        return;
-      }
+    }else{
+      add(ErrorOccurred(
+          errorMessage: sendRecoveryCodeResult.getError().toString()));
     }
-    add(ErrorOccurred(
-        errorMessage: sendRecoveryCodeResult.getError().toString()));
   }
 
   Future<void> validateCode() async {
@@ -136,15 +135,11 @@ class RecoverPasswordBloc
         await userRespository.validateRecoveryCode(state.email, state.code);
 
     if (codeValidationResult.isSuccessful()) {
-      final codeValid = codeValidationResult.getValue();
-
-      if (codeValid) {
-        add(RecoverPasswordCodeValidated());
-        return;
-      }
+      add(RecoverPasswordCodeValidated());
+    } else {
+      add(ErrorOccurred(
+          errorMessage: codeValidationResult.getError().toString()));
     }
-    add(ErrorOccurred(
-        errorMessage: codeValidationResult.getError().toString()));
   }
 
   Future<void> submitPasswordChange() async {
@@ -157,14 +152,10 @@ class RecoverPasswordBloc
         state.email, state.code, state.password);
 
     if (passwordChangeResult.isSuccessful()) {
-      final passwordChanged = passwordChangeResult.getValue();
-
-      if (passwordChanged) {
-        add(RecoverPasswordCompleted());
-        return;
-      }
+      add(RecoverPasswordCompleted());
+    } else {
+      add(ErrorOccurred(
+          errorMessage: passwordChangeResult.getError().toString()));
     }
-    add(ErrorOccurred(
-        errorMessage: passwordChangeResult.getError().toString()));
   }
 }

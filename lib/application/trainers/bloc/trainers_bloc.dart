@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/trainers/trainers_datasource.dart';
 import 'package:gymnastic_center/domain/repositories/trainers/trainers_repository.dart';
 
 part 'trainers_event.dart';
 part 'trainers_state.dart';
 
-class TrainersBloc extends Bloc<TrainersEvent, TrainersState> {
+class TrainersBloc extends SafeBloc<TrainersEvent, TrainersState> {
   final TrainersRepository _trainersRepository;
 
   TrainersBloc(this._trainersRepository) : super(const TrainersState()) {
