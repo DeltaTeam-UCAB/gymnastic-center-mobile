@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (_) => getIt<TrendingProgressBloc>())
+            create: (_) => getIt<TrendingProgressBloc>()),
         BlocProvider(create: (_) => getIt<CoursesBloc>()),
         BlocProvider(create: (_) => getIt<BlogsBloc>()),
         BlocProvider(create: (_) => getIt<CategoriesBloc>()),
