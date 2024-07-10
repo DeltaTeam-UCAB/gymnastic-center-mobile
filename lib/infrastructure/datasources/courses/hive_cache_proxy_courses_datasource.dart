@@ -47,7 +47,7 @@ class HiveCacheProxyCoursesDatasource extends CoursesDatasource {
         filter: filter,
         trainer: trainer,
         category: category);
-    return (await cacheProxy.tryRetrieve<List<HiveCourse>>(
+    return (await cacheProxy.tryRetrieveArray<HiveCourse>(
             truthSource: () async {
               return (await datasource.getCoursesPaginated(
                       page: page,

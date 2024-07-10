@@ -21,7 +21,7 @@ class HiveCacheProxyCategoriesDatasource extends CategoryDatasource {
   Future<List<Category>> getCategoriesPaginated(
       {int page = 1, int perPage = 10}) async {
     var id = _categoriesPaginatedIdentifier(page: page, perPage: perPage);
-    return (await cacheProxy.tryRetrieve<List<HiveCategory>>(
+    return (await cacheProxy.tryRetrieveArray<HiveCategory>(
             truthSource: () async {
               return (await datasource.getCategoriesPaginated(
                       page: page, perPage: perPage))

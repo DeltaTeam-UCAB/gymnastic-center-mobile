@@ -34,7 +34,7 @@ class HiveCacheProxyTrainersDatasource extends TrainersDataSource {
       {int page = 1, int perPage = 10, bool filterByFollowed = false}) async {
     var id = _trainersPaginatedIdentifier(
         page: page, perPage: perPage, filterByFollowed: filterByFollowed);
-    return (await cacheProxy.tryRetrieve<List<HiveTrainerDetails>>(
+    return (await cacheProxy.tryRetrieveArray<HiveTrainerDetails>(
             truthSource: () async {
               return (await datasource.getTrainersPaginated(
                       page: page,

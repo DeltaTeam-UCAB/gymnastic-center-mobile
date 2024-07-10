@@ -19,7 +19,7 @@ extension HiveCache on HiveInterface {
   Future<void> initForCache([String? subDir]) async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    var appDir = await getApplicationCacheDirectory();
+    var appDir = await getApplicationSupportDirectory();
     init(path_helper.join(appDir.path, subDir));
   }
 

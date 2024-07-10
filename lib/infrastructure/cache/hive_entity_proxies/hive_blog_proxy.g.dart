@@ -22,7 +22,7 @@ class HiveBlogAdapter extends TypeAdapter<HiveBlog> {
       body: fields[2] as String,
       released: fields[3] as DateTime,
       images: (fields[4] as List).cast<String>(),
-      trainer: fields[5] as Trainer,
+      trainer: fields[5] as HiveTrainer,
       category: fields[7] as String,
       tags: (fields[6] as List).cast<String>(),
     );

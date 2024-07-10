@@ -40,7 +40,7 @@ class HiveCacheProxyBlogDatasource extends BlogsDatasource {
         filter: filter,
         trainer: trainer,
         category: category);
-    return (await cacheProxy.tryRetrieve<List<HiveBlog>>(
+    return (await cacheProxy.tryRetrieveArray<HiveBlog>(
             truthSource: () async {
               return (await datasource.getAllBlogs(
                       page: page,
