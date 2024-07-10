@@ -23,4 +23,7 @@ class ErrorOccurred extends LoginEvent {
   ErrorOccurred({required this.errorMessage});
 }
 
-class LoginCompleted extends LoginEvent {}
+class LoginCompleted extends LoginEvent {
+  final bool isClient;
+  LoginCompleted(this.isClient);
+}

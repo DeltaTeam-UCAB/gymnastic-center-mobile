@@ -34,7 +34,11 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final resp = await userDatasource.login(email, password);
       await keyValueStorage.setKeyValue('token', resp.token);
-      return Result.success(true);
+      if (resp.type == 'CLIENT') {
+        return Result.success(true);
+      }
+      await keyValueStorage.setKeyValue<bool>('isAdmin', true);
+      return Result.success(false);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
         return Result.fail(Exception('wrong credendials'));
