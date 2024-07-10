@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/suscriptions/suscribe-course/suscribe_course_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_icon.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/custom_image.dart';
@@ -11,6 +13,7 @@ class CourseDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final suscribeStatus = context.watch<SuscribeCourseBloc>().state.status;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,7 +23,7 @@ class CourseDetailsView extends StatelessWidget {
           title: course.title,
           released: course.released,
         ),
-
+        
         // Course Details
         Padding(
           padding:
@@ -59,7 +62,14 @@ class CourseDetailsView extends StatelessWidget {
 
         LessonsListView(
           lessons: course.lessons!,
-          onPressedLesson: (Lesson lesson) => context.push('/home/0/course/${course.id}/${lesson.id}'),
+          onPressedLesson: (lesson) async {
+              if ( suscribeStatus == SuscribedStatus.unsuscribed){
+                await context.read<SuscribeCourseBloc>().suscribeToCourse(course.id);
+              }
+              if ( context.mounted ){
+                context.push('/home/0/course/${course.id}/${lesson.id}');
+              }
+            }
         ),
 
         const SizedBox(height: 100),
