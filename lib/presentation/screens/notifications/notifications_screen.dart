@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/notifications/widgets/notifications_listview.dart';
 

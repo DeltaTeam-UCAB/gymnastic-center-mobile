@@ -5,6 +5,6 @@ class LoginAPIResponse {
   factory LoginAPIResponse.fromJson(Map<String, dynamic> json) =>
       LoginAPIResponse(
         token: json["token"],
-        type: json["type"],
+        type: json["type"] ?? 'CLIENT',
       );
 }

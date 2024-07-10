@@ -15,7 +15,6 @@ class CategoriesBloc extends SafeBloc<CategoriesEvent, CategoriesState> {
     on<CategoriesLoading>(_onCategoriesLoading);
     on<CategoriesIsEmpty>(_onCategoryIsEmpty);
     on<CategoriesError>(_onCategoryError);
-    on<CurrentCategory>(_onCurrentCategory);
   }
 
   void _onCategoriesFetched(
@@ -26,18 +25,13 @@ class CategoriesBloc extends SafeBloc<CategoriesEvent, CategoriesState> {
         page: state.page + 1));
   }
 
-  void _onCurrentCategory(
-      CurrentCategory event, Emitter<CategoriesState> emit) {
-    emit(state.copyWith(currentCategory: event.category, isLoading: false));
-  }
-
   void _onCategoryError(CategoriesError event, Emitter<CategoriesState> emit) {
-    emit(state.copyWith(isError: true));
+    emit(state.copyWith(isError: true, isLoading: false));
   }
 
   void _onCategoryIsEmpty(
       CategoriesIsEmpty event, Emitter<CategoriesState> emit) {
-    emit(state.copyWith(isLastPage: true));
+    emit(state.copyWith(isLastPage: true, isLoading: false));
   }
 
   void _onCategoriesLoading(

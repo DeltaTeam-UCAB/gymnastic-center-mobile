@@ -62,7 +62,7 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
 
   @override
   Future<bool> saveToken(String token) async {
-    await dio.post('/notifications.savetoken', data: {'token': token});
+    await dio.post('/notifications/savetoken', data: {'token': token});
     return true;
   }
 }

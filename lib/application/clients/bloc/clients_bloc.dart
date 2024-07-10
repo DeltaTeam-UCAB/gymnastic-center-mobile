@@ -7,12 +7,13 @@ import 'package:gymnastic_center/domain/repositories/clients/clients_repository.
 part 'clients_event.dart';
 part 'clients_state.dart';
 
+final initialClient = Client(id: '', name: '', phone: '', email: '');
+
 class ClientsBloc extends SafeBloc<ClientsEvent, ClientsState> {
   final ClientsRepository clientsRepository;
 
   ClientsBloc(this.clientsRepository)
-      : super(ClientsState(
-            client: Client(id: '', name: '', phone: '', email: ''))) {
+      : super(ClientsState(client: initialClient)) {
     on<ClientFetched>(_onClientFetched);
     on<CurrentClient>(_onCurrentClient);
     on<ClientsError>(_onClientsError);

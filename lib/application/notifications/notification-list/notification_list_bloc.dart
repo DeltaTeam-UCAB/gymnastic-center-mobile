@@ -65,7 +65,7 @@ class NotificationListBloc
 
   void _onNotificationListDeleted(
       NotificationListDeleted event, Emitter<NotificationListState> emit) {
-    emit(state.copyWith(notifications: [], page: 1));
+    emit(state.copyWith(notifications: [], page: 1, isLastPage: true));
   }
 
   Future<void> deleteAllNotifications() async {

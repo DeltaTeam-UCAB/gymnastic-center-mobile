@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
+import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
@@ -107,6 +108,7 @@ class _LoginScreenState extends State<_LoginScreen> {
         }
 
         if (state.formStatus == LoginFormStatus.valid) {
+          context.read<NotificationsBloc>().initialStatusCheck();
           context.go('/home/0');
           return;
         }
@@ -237,7 +239,7 @@ class _LoginScreenState extends State<_LoginScreen> {
             height: 15,
           ),
           GestureDetector(
-            onTap: () => context.go('/password/reset'),
+            onTap: () => context.push('/password/reset'),
             child: Text("Forgot your password?",
                 style: TextStyle(
                     color: isDarkMode

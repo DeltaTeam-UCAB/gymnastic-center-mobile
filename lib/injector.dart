@@ -7,12 +7,13 @@ import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
+import 'package:gymnastic_center/application/clients/link-device/link_device_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
 import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
-import 'package:gymnastic_center/application/notifications/notification_list_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
@@ -106,8 +107,9 @@ class Injector {
     getIt.registerFactory(() => NotificationListBloc(
         notificationsRepository: notificationsRepositoryImpl));
     getIt.registerSingleton(ThemesBloc());
-    getIt.registerSingleton(
-        NotificationsBloc(FirebaseNotificationsManager(LocalNotifications())));
+    getIt.registerSingleton(NotificationsBloc(
+        FirebaseNotificationsManager(LocalNotifications()),
+        notificationsRepositoryImpl.saveToken));
     getIt.registerSingleton(ClientsBloc(clientsRepositoryImpl));
     getIt.registerSingleton(
         RecoverPasswordBloc(userRespository: userRepositoryImpl));
@@ -123,5 +125,7 @@ class Injector {
     getIt.registerFactory(() => TrainersBloc(trainersRepositoryImpl));
 
     getIt.registerFactory(() => FollowTrainerBloc(trainersRepositoryImpl));
+
+    getIt.registerFactory(() => LinkDeviceBloc(clientsRepositoryImpl));
   }
 }

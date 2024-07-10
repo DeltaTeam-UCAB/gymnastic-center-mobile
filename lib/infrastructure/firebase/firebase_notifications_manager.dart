@@ -42,11 +42,13 @@ class FirebaseNotificationsManager extends NotificationsManager {
   }
 
   @override
-  void onForegroundMessage() {
-    FirebaseMessaging.onMessage.listen(_handleRemoteMessage);
+  void onForegroundMessage(Function(String event) handlerEvent) {
+    FirebaseMessaging.onMessage.listen(
+        (RemoteMessage message) => _handleRemoteMessage(message, handlerEvent)
+    );
   }
 
-  void _handleRemoteMessage(RemoteMessage message) {
+  void _handleRemoteMessage(RemoteMessage message, Function(String event) handlerEvent) {
     if (message.notification == null) return;
 
     final notification = PushMessageModel(
@@ -68,6 +70,11 @@ class FirebaseNotificationsManager extends NotificationsManager {
         body: notification.body,
         data: notification.data.toString(),
       );
+    }
+
+    if (notification.title.contains('Recovery')){
+      final recoveryCode = notification.body.split(' ')[3];
+      handlerEvent(recoveryCode);
     }
   }
 
