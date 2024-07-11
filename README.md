@@ -6,10 +6,10 @@ Gymnastic Center is an Android app developed in Flutter that promotes physical a
 
 All the team members are students of the Software Engineering career at the Universidad Católica Andrés Bello in Caracas, Venezuela. All of them are passionate about technology and software development.
 
-- **[Gianfranco Lanza]**(https://github.com/GianL22)
-- **[Alejandro Molina]**(https://github.com/Alejo-FM)
-- **[Gian P. Astorino]**(https://github.com/GianPX)
-- **[Eduardo García]**(https://github.com/HappyGick)
+- [Gianfranco Lanza](https://github.com/GianL22)
+- [Alejandro Molina](https://github.com/Alejo-FM)
+- [Gian P. Astorino](https://github.com/GianPX)
+- [Eduardo García](https://github.com/HappyGick)
 
 ## Features
 Among the most important features of the application we have:
@@ -24,7 +24,7 @@ lities
 
 This section will give you an overview of what the application looks like.
 
-![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-1.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-2.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-3.jpeg)
+![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-2.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg)
 
 ## Getting Started
 
