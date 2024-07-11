@@ -18,6 +18,12 @@ class BlogsBloc extends SafeBloc<BlogsEvent, BlogsState> {
     on<LoadingStarted>(_onLoadingStarted);
     on<ErrorOnBlogsLoading>(_onErrorOnBlogsLoading);
     on<AllBlogsLoaded>(_onAllBlogsLoaded);
+    on<RefreshBlogs>(_onRefreshBlogs);
+  }
+
+  void _onRefreshBlogs(RefreshBlogs event, Emitter<BlogsState> emit){
+    emit(const BlogsState());
+    loadNextPage();
   }
 
   void _onLoadingStarted(LoadingStarted event, Emitter<BlogsState> emit) {
@@ -65,4 +71,6 @@ class BlogsBloc extends SafeBloc<BlogsEvent, BlogsState> {
     }
     add(ErrorOnBlogsLoading());
   }
+
+  void refreshBlogs() => add(RefreshBlogs());
 }

@@ -30,7 +30,7 @@ void main() {
   });
 
   blocTest(
-      'Should emit DeleteCourseState with staatus deleting and refresh when deleteCourse is called',
+      'Should emit DeleteCourseState with status deleted and refresh when deleteCourse is called',
       build: () => DeleteCourseBloc(mockCoursesRepository),
       act: (bloc) => bloc.deleteCourse('1'),
       verify: (_) {
@@ -40,7 +40,7 @@ void main() {
         isA<DeleteCourseState>()
           .having((state) => state.status, 'status', DeleteCourseStatus.deleting),
         isA<DeleteCourseState>()
-          .having((state) => state.status, 'status', DeleteCourseStatus.initial),
+          .having((state) => state.status, 'status', DeleteCourseStatus.deleted),
       ]);
 }
  

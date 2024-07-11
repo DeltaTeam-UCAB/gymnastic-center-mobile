@@ -14,3 +14,5 @@ class TrainerLoading extends TrainersEvent{}
 class TrainersIsEmpty extends TrainersEvent{}
 
 class TrainerError extends TrainersEvent{}
+
+class RefreshTrainers extends TrainersEvent{}

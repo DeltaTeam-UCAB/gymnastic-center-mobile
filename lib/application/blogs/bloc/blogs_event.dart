@@ -14,3 +14,5 @@ class AllBlogsLoaded extends BlogsEvent {}
 class LoadingStarted extends BlogsEvent {}
 
 class ErrorOnBlogsLoading extends BlogsEvent {}
+
+class RefreshBlogs extends BlogsEvent {}

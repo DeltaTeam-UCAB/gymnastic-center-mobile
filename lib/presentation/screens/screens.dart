@@ -1,5 +1,6 @@
 export 'package:gymnastic_center/presentation/screens/account/account_details_screen.dart';
 export 'package:gymnastic_center/presentation/screens/account/account_screen.dart';
+export 'package:gymnastic_center/presentation/screens/admin/home_admin_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/create_password_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/login_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/password_changed_screen.dart';
@@ -12,6 +13,7 @@ export 'package:gymnastic_center/presentation/screens/blogs/blog_screen.dart';
 export 'package:gymnastic_center/presentation/screens/blogs/blogs_screen.dart';
 export 'package:gymnastic_center/presentation/screens/courses/course_screen.dart';
 export 'package:gymnastic_center/presentation/screens/courses/courses_screen.dart';
+export 'package:gymnastic_center/presentation/screens/faq/faq_screen.dart';
 export 'package:gymnastic_center/presentation/screens/home_screen.dart';
 export 'package:gymnastic_center/presentation/screens/lessons/lesson_screen.dart';
 export 'package:gymnastic_center/presentation/screens/notifications/notification_status_screen.dart';
@@ -25,5 +27,3 @@ export 'package:gymnastic_center/presentation/screens/trainers/trainer_screen.da
 export 'package:gymnastic_center/presentation/screens/trainers/trainers_screen.dart';
 export 'package:gymnastic_center/presentation/screens/videos/video_player/video_player_screen.dart';
 export 'package:gymnastic_center/presentation/screens/videos/videos_screen.dart';
-export 'package:gymnastic_center/presentation/screens/faq/faq_screen.dart';
-

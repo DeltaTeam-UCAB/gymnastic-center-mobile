@@ -20,7 +20,7 @@ class TrainersScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => getIt<TrainersBloc>(),
+          create: (_) => getIt<TrainersBloc>()..loadNextPage(),
         ),
         BlocProvider(
           create: (context) => getIt<FollowTrainerBloc>(),
@@ -57,7 +57,6 @@ class _TrainersViewState extends State<_TrainersView> {
 
   @override
   void initState() {
-    context.read<TrainersBloc>().loadNextPage(widget.followingTrainers);
     _scrollController.addListener(() {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
@@ -78,7 +77,7 @@ class _TrainersViewState extends State<_TrainersView> {
   Widget build(BuildContext context) {
     return BlocBuilder<TrainersBloc, TrainersState>(
       builder: (context, state) {
-        if (state.status == TrainersStatus.loading) {
+        if (state.status == TrainersStatus.loading && state.trainers.isEmpty) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -91,6 +90,7 @@ class _TrainersViewState extends State<_TrainersView> {
         }
 
         return ListView.separated(
+          controller: _scrollController,
           itemCount: state.trainers.length,
           itemBuilder: (context, index) => _TrainerSlide(
             trainer: state.trainers[index].trainer,

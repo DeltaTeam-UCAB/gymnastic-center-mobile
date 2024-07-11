@@ -25,7 +25,7 @@ class DeleteBlogBloc extends SafeBloc<DeleteBlogEvent, DeleteBlogState> {
   void _onBlogDeleted(BlogDeleted event, Emitter<DeleteBlogState> emit){
     emit(
       state.copyWith(
-        status: DeleteBlogStatus.initial,
+        status: DeleteBlogStatus.deleted,
       )
     );
   }

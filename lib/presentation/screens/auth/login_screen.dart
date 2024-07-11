@@ -17,8 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => getIt<LoginBloc>(),
-        child: const _LoginScreen());
+        create: (context) => getIt<LoginBloc>(), child: const _LoginScreen());
   }
 }
 
@@ -93,7 +92,6 @@ class _LoginScreenState extends State<_LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final formStatus = context.watch<LoginBloc>().state.formStatus;
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return BlocConsumer<LoginBloc, LoginState>(
       listenWhen: (previous, current) =>
@@ -109,7 +107,11 @@ class _LoginScreenState extends State<_LoginScreen> {
 
         if (state.formStatus == LoginFormStatus.valid) {
           context.read<NotificationsBloc>().initialStatusCheck();
-          context.go('/home/0');
+          if (state.isClient) {
+            context.go('/home/0');
+          } else {
+            context.go('/admin/0');
+          }
           return;
         }
       },

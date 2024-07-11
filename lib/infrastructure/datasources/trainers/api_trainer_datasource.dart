@@ -46,7 +46,7 @@ class ApiTrainersDatasource extends TrainersDataSource {
   @override
   Future<bool> toggleFollow(String trainerId) async {
     final response = await dio.post('/trainer/toggle/follow/$trainerId');
-    return response.data['userFollow'];
+    return response.data['userFollow'] ?? true;
   }
 
   @override

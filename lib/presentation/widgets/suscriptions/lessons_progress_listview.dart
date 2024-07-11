@@ -65,6 +65,8 @@ class _LessonsProgressListViewState extends State<LessonsProgressListView> {
           itemBuilder: (context, index) {
             final lesson = widget.lessons[index];
             final lessonProgress = widget.lessonsProgress.firstWhere((lp) => lp.lessonId == lesson.id);
+            final size = MediaQuery.of(context).size;
+
             return ExpansionPanelList(
                   expansionCallback: (panelIndex, expanded) {
                     setState(() {
@@ -88,7 +90,14 @@ class _LessonsProgressListViewState extends State<LessonsProgressListView> {
                                 children: [
                                   const Icon(Icons.video_library),
                                   const SizedBox(width: 8,),
-                                  Text(lesson.title),
+                                  SizedBox(
+                                    width: size.width * (( widget.currentLessondId == lesson.id ) ? 0.37 : 0.46),
+                                    child: Text(
+                                      lesson.title,
+                                      overflow: (isExpanded  ? TextOverflow.clip : TextOverflow.ellipsis ),
+                                    ),
+                                  ),
+                                  if ( widget.currentLessondId == lesson.id )
                                   const Spacer(),
                                   if ( widget.currentLessondId == lesson.id )
                                   Text(

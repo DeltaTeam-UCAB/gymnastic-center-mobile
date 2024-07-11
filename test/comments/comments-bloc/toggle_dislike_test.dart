@@ -16,11 +16,11 @@ void main() {
         id: '1',
         userId: '1',
         body: 'Message 1',
-        likes: 0,
+        likes: 1,
         dislikes: 0,
         creationDate: DateTime.now(),
         userDisliked: false,
-        userLiked: false,
+        userLiked: true,
         username: 'username', 
       ),
       Comment(
@@ -57,11 +57,13 @@ void main() {
         page: 2,
         comments: mockComments.sublist(0,3),
       ),
-      act: (bloc) => bloc.toggleDislike('1'),
+      act: (bloc) => bloc.toggleDislike('1', false),
       expect: () => [
         isA<CommentsState>()
           .having((state) => state.comments.firstWhere((element) => element.id == commentLiked.id).userDisliked, 'comments', true)
           .having((state) => state.comments.firstWhere((element) => element.id == commentLiked.id).dislikes, 'comments', 1)
+          .having((state) => state.comments.firstWhere((element) => element.id == commentLiked.id).userLiked, 'comments', false)
+          .having((state) => state.comments.firstWhere((element) => element.id == commentLiked.id).likes, 'comments', 0)
       ]);
 }
  

@@ -26,7 +26,7 @@ class DeleteTrainerBloc extends SafeBloc<DeleteTrainerEvent, DeleteTrainerState>
   void _onCourseDeleted(TrainerDeleted event, Emitter<DeleteTrainerState> emit){
     emit(
       state.copyWith(
-        status: DeleteTrainerStatus.initial,
+        status: DeleteTrainerStatus.deleted,
       )
     );
   }
