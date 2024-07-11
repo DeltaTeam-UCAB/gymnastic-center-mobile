@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
+import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
 import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/trainers/trainers_datasource.dart';
@@ -26,8 +30,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (_) => getIt<TrendingProgressBloc>()),
+        BlocProvider(create: (_) => getIt<TrendingProgressBloc>()),
         BlocProvider(create: (_) => getIt<CoursesBloc>()),
         BlocProvider(create: (_) => getIt<BlogsBloc>()),
         BlocProvider(create: (_) => getIt<CategoriesBloc>()),
@@ -56,15 +59,33 @@ class __HomeState extends State<_Home> {
     context.read<TrainersBloc>().loadNextPage();
   }
 
+  void _preloadCoursesForCache(List<Course> courses) {
+    if (courses.isEmpty) return;
+    for (var i = 0; i < min(courses.length, 3); i++) {
+      getIt<CourseDetailsBloc>().getCourseById(courses[i].id);
+    }
+  }
+
+  void _preloadBlogsForCache(List<Blog> blogs) {
+    if (blogs.isEmpty) return;
+    for (var i = 0; i < min(blogs.length, 3); i++) {
+      getIt<BlogDetailsBloc>().loadBlogById(blogs[i].id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Course> courses = context.watch<CoursesBloc>().state.courses;
     final List<Category> categories =
         context.watch<CategoriesBloc>().state.categories;
     final List<Blog> blogs = context.watch<BlogsBloc>().state.loadedBlogs;
-    final CourseProgress trendingCourseProgress = context.watch<TrendingProgressBloc>().state.trendingCourseProgress;
+    final CourseProgress trendingCourseProgress =
+        context.watch<TrendingProgressBloc>().state.trendingCourseProgress;
     final List<TrainerDetails> trainers =
         context.watch<TrainersBloc>().state.trainers;
+
+    _preloadBlogsForCache(blogs);
+    _preloadCoursesForCache(courses);
 
     return CustomScrollView(
       slivers: [
