@@ -45,7 +45,7 @@ class _TrainersAdminViewState extends State<TrainersAdminView> {
       },
       child: BlocBuilder<TrainersBloc, TrainersState>(
         builder: (context, state) {
-          if (state.status == TrainersStatus.loading) {
+          if (state.status == TrainersStatus.loading && state.trainers.isEmpty) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -70,6 +70,7 @@ class _TrainersAdminViewState extends State<TrainersAdminView> {
           }
 
           return ListView.separated(
+            controller: _scrollController,
             itemCount: state.trainers.length,
             itemBuilder: (context, index) => _TrainerSlide(
               trainer: state.trainers[index].trainer,

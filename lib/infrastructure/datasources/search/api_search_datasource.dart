@@ -32,7 +32,7 @@ class ApiSearchDatasource extends SearchDataSource {
         'page': page,
         'perPage': perPage,
         'term': term,
-        'tags': tags.map((tag) => '["$tag"]').join(','),
+        'tag': tags,
       },
     );
 

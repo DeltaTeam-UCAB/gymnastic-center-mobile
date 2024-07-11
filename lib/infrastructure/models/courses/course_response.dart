@@ -30,25 +30,29 @@ class CourseResponse {
   });
 
   factory CourseResponse.fromJson(Map<String, dynamic> json) => CourseResponse(
-        id: json["id"], 
-        title: json["title"], 
-        description: json["description"] ?? '', 
+        id: json["id"],
+        title: json["title"],
+        description: json["description"] ?? '',
         trainer: json["trainer"] is String
             ? TrainerResponse(id: '', name: json["trainer"])
             : TrainerResponse.fromJson(json["trainer"]),
         category: json["category"],
         image: json["image"],
-        durationMinutes: json['durationMinutes'] ?? '',
-        durationWeeks: json['durationWeeks'] ?? '',
+        durationMinutes: json['durationMinutes'] != null
+            ? json['durationMinutes'].toString()
+            : '',
+        durationWeeks: json['durationWeeks'] != null
+            ? json['durationWeeks'].toString()
+            : '',
         tags: json["tags"] != null
             ? List<String>.from(json["tags"].map((x) => x))
             : [],
         date: DateTime.parse(json["date"]),
         lessons: json["lessons"] != null
-            ? List<LessonResponse>.from(
-                json["lessons"].map((x) => LessonResponse.fromJson(x)))
+            ? List<LessonResponse>.from(json["lessons"].map((x) =>
+                LessonResponse.fromJson(x, json["lessons"].indexOf(x) + 1)))
             : [],
-        level: json["level"] ?? '',
+        level: json["level"] != null ? json["level"].toString() : 'EASY',
       );
 }
 
@@ -58,7 +62,6 @@ class LessonResponse {
   final String content;
   final String video;
   final int order;
-  final String image;
 
   LessonResponse({
     required this.id,
@@ -66,15 +69,14 @@ class LessonResponse {
     required this.content,
     required this.video,
     required this.order,
-    required this.image,
   });
 
-  factory LessonResponse.fromJson(Map<String, dynamic> json) => LessonResponse(
+  factory LessonResponse.fromJson(Map<String, dynamic> json, int position) =>
+      LessonResponse(
         id: json["id"],
         title: json["title"],
         content: json["content"],
         video: json["video"] ?? '',
-        order: json["order"],
-        image: json["image"] ?? '',
+        order: json["order"] ?? position,
       );
 }
