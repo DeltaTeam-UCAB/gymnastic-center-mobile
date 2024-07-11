@@ -1,6 +1,10 @@
 # Gymnastic Center
 
-Gymnastic Center is an Android app developed in Flutter that promotes physical and mental wellness through guided meditation and yoga courses.
+Gymnastic Center is an Android app developed in Flutter that promotes physical and mental wellness through guided meditation and yoga courses
+
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; width: 100%">
+  <img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/main/assets/icon/logoApp_purple.png" width="30%" style="margin: 0 10px;">
+</div>
 
 ## Team Members
 
@@ -24,7 +28,13 @@ lities
 
 This section will give you an overview of what the application looks like.
 
-![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-1.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-2.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/public/example-3.jpeg)
+
+<div style="display: flex; flex-wrap: nowrap;">
+  <img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg" width="30%" style="margin: 0 10px;">
+  <img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-2.jpeg" width="30%" style="margin: 0 10px;">
+  <img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-3.jpeg" width="30%" style="margin: 0 10px;">
+</div>
+
 
 ## Getting Started
 
@@ -102,8 +112,8 @@ For the operation of the application several libraries were used, but the most i
 - [dio](https://pub.dev/packages/dio). Used for HTTP requests.
 - [go_router](https://pub.dev/packages/go_router). Used for routing.
 
-## Architecture
-The architecture used was DDD based on [ResorCode](https://resocoder.com/2020/03/30/flutter-firebase-ddd-course-5-sign-in-form-logic/), which proposes four layers: 
+
+The architecture used was DDD based on [ResorCode](https://resocoder.com/2020/03/09/flutter-firebase-ddd-course-1-domain-driven-design-principles/), which proposes four layers: 
 - Application: It is the layer that contains the use cases. Making use of the bloc pattern.
 - Domain: It is the layer that contains the business rules. It is the most important layer of the architecture.
 - Infrastructure: It is the layer that contains the external elements of the application, such as the database, the network, etc.  
