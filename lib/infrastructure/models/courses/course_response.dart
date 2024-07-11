@@ -30,9 +30,9 @@ class CourseResponse {
   });
 
   factory CourseResponse.fromJson(Map<String, dynamic> json) => CourseResponse(
-        id: json["id"], 
-        title: json["title"], 
-        description: json["description"] ?? '', 
+        id: json["id"],
+        title: json["title"],
+        description: json["description"] ?? '',
         trainer: json["trainer"] is String
             ? TrainerResponse(id: '', name: json["trainer"])
             : TrainerResponse.fromJson(json["trainer"]),
@@ -58,7 +58,6 @@ class LessonResponse {
   final String content;
   final String video;
   final int order;
-  final String image;
 
   LessonResponse({
     required this.id,
@@ -66,7 +65,6 @@ class LessonResponse {
     required this.content,
     required this.video,
     required this.order,
-    required this.image,
   });
 
   factory LessonResponse.fromJson(Map<String, dynamic> json, int position) => LessonResponse(
@@ -75,6 +73,5 @@ class LessonResponse {
         content: json["content"],
         video: json["video"] ?? '',
         order: json["order"] ?? position,
-        image: json["image"] ?? '',
       );
 }

@@ -9,11 +9,11 @@ class MockCommentsRepository extends CommentsRepository {
   MockCommentsRepository(this.mockComments, [this.shouldFail = false]);
 
   @override
-  Future<Result<String>> createComment(String targetId, String targetType, String message) {
+  Future<Result<bool>> createComment(String targetId, String targetType, String message) {
     if ( shouldFail ) {
       return Future.value(Result.fail(Exception()));
     }
-    return Future.value(Result.success('1'));
+    return Future.value(Result.success(true));
   }
 
   @override

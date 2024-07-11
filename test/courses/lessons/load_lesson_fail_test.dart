@@ -29,7 +29,6 @@ void main() {
             title: 'title',
             content: 'content',
             video: 'video',
-            image: 'image',
             order: 1)
       ],
       level: 'EASY',
