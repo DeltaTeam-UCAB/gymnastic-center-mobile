@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
 import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/play_button.dart';
 import 'package:gymnastic_center/presentation/screens/videos/video_player/widgets/total_duration_text.dart';
@@ -35,6 +37,9 @@ class _VideoCompletedLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.titleLarge!;
+    final currentLesson = context.read<LessonsBloc>().state.currentLesson;
+    final courseId = context.read<LessonsBloc>().state.selectedCourseId;
+    context.read<CourseProgressBloc>().markCompletedLesson(courseId, currentLesson.id);
     return Stack(
       children: [
         Positioned.fill(
@@ -79,6 +84,20 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
     setState(() {});
   }
 
+  void _onExit(BuildContext context){
+    final currentLesson = context.read<LessonsBloc>().state.currentLesson;
+    final courseId = context.read<LessonsBloc>().state.selectedCourseId;
+    final totalDuration = context.read<VideoPlayerBloc>().getTotalDuration().inSeconds;
+    final secondsViewed = context.read<VideoPlayerBloc>().state.progressSeconds.inSeconds;
+    context.read<CourseProgressBloc>().markEndLesson(
+      courseId,
+      currentLesson.id,
+      totalDuration,
+      secondsViewed
+    );
+    context.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return  AnimatedOpacity(
@@ -103,7 +122,7 @@ class _VideoButtonsLayerState extends State<_VideoButtonsLayer> {
               left: 20,
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () => context.pop(),
+                onPressed: () => _onExit(context),
                 color: Colors.white,
               ),
             ),

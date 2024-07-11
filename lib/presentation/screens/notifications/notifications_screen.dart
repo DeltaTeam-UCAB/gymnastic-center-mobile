@@ -1,52 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/infrastructure/models/push_message_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/notifications/widgets/notifications_listview.dart';
 
 class NotificationsScreen extends StatelessWidget {
-  NotificationsScreen({super.key});
-
-  final List<PushMessageModel> myNotifications = [];
+  const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    if (myNotifications.isEmpty) {
-      return _emptyNotificationsView(colors, context);
-    }
-
-    return Scaffold(
-      appBar: const _CustomAppBar(),
-      body: NotificationsListView(notifications: myNotifications),
-    );
-  }
-
-  Scaffold _emptyNotificationsView(ColorScheme colors, BuildContext context) {
-    return Scaffold(
-      appBar: const _CustomAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(Icons.notification_important_outlined,
-                size: 200, color: colors.secondary),
-            Text('Can`t find notifications',
-                style: TextStyle(fontSize: 20, color: colors.secondary)),
-            Text('Let`s explore more context around you',
-                style: TextStyle(fontSize: 15, color: colors.secondary)),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              child: FilledButton(
-                onPressed: () => context.go(('/home/0')),
-                child:
-                    const Text('Back to Feed', style: TextStyle(fontSize: 20)),
-              ),
-            )
-          ],
-        ),
+    return BlocProvider(
+      create: (_) => getIt<NotificationListBloc>(),
+      child: const Scaffold(
+        appBar: _CustomAppBar(),
+        body: NotificationsListView(),
       ),
     );
   }
@@ -56,17 +23,22 @@ class _CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const _CustomAppBar();
   @override
   Widget build(BuildContext context) {
+    var inbox =
+        context.watch<NotificationListBloc>().state.notifications.length;
     return AppBar(
-      title: const Row(
+      title: Row(
         children: [
-          Text('Notifications'),
-          Spacer(),
+          const Text('Notifications'),
+          const Spacer(),
           Text(
-            '0 Inbox',
-            style: TextStyle(fontSize: 15),
+            '$inbox Inbox',
+            style: const TextStyle(fontSize: 15),
           ),
-          Icon(Icons.delete_outline_rounded),
-          SizedBox(width: 10)
+          IconButton(
+              onPressed:
+                  context.read<NotificationListBloc>().deleteAllNotifications,
+              icon: const Icon(Icons.delete_outline_rounded)),
+          const SizedBox(width: 10)
         ],
       ),
     );

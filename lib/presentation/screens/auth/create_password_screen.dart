@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -19,7 +19,7 @@ class CreatePasswordScreen extends StatelessWidget {
 }
 
 class _CreatePasswordScreen extends StatefulWidget {
-  const _CreatePasswordScreen({super.key});
+  const _CreatePasswordScreen();
 
   @override
   _CreatePasswordScreenState createState() => _CreatePasswordScreenState();
@@ -37,9 +37,16 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
 
   @override
   void initState() {
-    super.initState();
     _passwordController = TextEditingController();
     _repeatPasswordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _repeatPasswordController.dispose();
+    super.dispose();
   }
 
   String? _validatePassword(String? value) {
@@ -108,7 +115,8 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                     'Create password',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode ? Colors.white : Color(0xff222222),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff222222),
                       fontSize: 28,
                     ),
                     textAlign: TextAlign.center,
@@ -118,7 +126,8 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                   Text(
                     'Create a new password and please never share it with anyone for safe use.',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Color(0xff677294),
+                      color:
+                          isDarkMode ? Colors.white : const Color(0xff677294),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
@@ -248,7 +257,6 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     ColorScheme colors = Theme.of(context).colorScheme;
 
@@ -259,8 +267,8 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: CircleMaskedBackground(
-                      circleMaskContent: SizedBox.expand(
+                    child: EllipseMaskedBackground(
+                      ellipseMaskContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,
                         alignment: Alignment.topCenter,
@@ -290,11 +298,6 @@ class _CreatePasswordScreenState extends State<_CreatePasswordScreen> {
                               )
                             ],
                           )),
-                      circlePosition: Offset(
-                          MediaQuery.of(context).size.width / 2,
-                          MediaQuery.of(context).size.height * 0.21 +
-                              circleRadius),
-                      circleRadius: circleRadius,
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,

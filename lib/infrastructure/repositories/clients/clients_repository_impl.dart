@@ -18,9 +18,9 @@ class ClientsRepositoryImpl extends ClientsRepository {
       return Result.success(resp);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
-        Result.fail(Exception('Unathorized'));
+        return Result.fail(Exception('Unathorized'));
       }
-      rethrow;
+      return Result.fail(Exception('Updated Failed'));
     }
   }
 
@@ -41,9 +41,32 @@ class ClientsRepositoryImpl extends ClientsRepository {
       return Result.success(true);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
-        Result.fail(Exception('Unathorized'));
+        return Result.fail(Exception('Unathorized'));
       }
-      rethrow;
+      return Result.fail(Exception('Updated Failed'));
+    }
+  }
+  
+  @override
+  Future<Result<bool>> checkDeviceLink(String deviceToken) async {
+    try {
+      await clientsDatasource.checkDeviceLink(deviceToken);
+      return Result.success(true);
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 404) {
+        return Result.success(false);
+      }
+      return Result.fail(Exception('Failed to check device link'));
+    }
+  }
+  
+  @override
+  Future<Result<bool>> linkDevice(String deviceToken) async {
+    try {
+      await clientsDatasource.linkDevice(deviceToken);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(Exception('Failed to link device'));
     }
   }
 }

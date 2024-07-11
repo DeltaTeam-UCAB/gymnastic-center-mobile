@@ -2,34 +2,28 @@ import 'dart:core';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/blogs/blogs_datasource.dart';
 import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
-import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
 import 'package:gymnastic_center/domain/repositories/blogs/blogs_repository.dart';
 
 part 'blogs_event.dart';
 part 'blogs_state.dart';
 
-final initialBlog = Blog(
-    id: '',
-    title: '',
-    body: '',
-    released: DateTime.now(),
-    images: [],
-    trainer: Trainer(id: '', name: '', location: ''),
-    category: '',
-    tags: []);
-
-class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
+class BlogsBloc extends SafeBloc<BlogsEvent, BlogsState> {
   final BlogsRepository blogsRepository;
 
-  BlogsBloc(this.blogsRepository)
-      : super(BlogsState(currentBlog: initialBlog)) {
-    on<CurrentBlogLoaded>(_onCurrentBlogLoaded);
+  BlogsBloc(this.blogsRepository) : super(const BlogsState()) {
     on<BlogsLoaded>(_onBlogsLoaded);
     on<LoadingStarted>(_onLoadingStarted);
     on<ErrorOnBlogsLoading>(_onErrorOnBlogsLoading);
     on<AllBlogsLoaded>(_onAllBlogsLoaded);
+    on<RefreshBlogs>(_onRefreshBlogs);
+  }
+
+  void _onRefreshBlogs(RefreshBlogs event, Emitter<BlogsState> emit){
+    emit(const BlogsState());
+    loadNextPage();
   }
 
   void _onLoadingStarted(LoadingStarted event, Emitter<BlogsState> emit) {
@@ -43,11 +37,6 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
         page: state.page + 1));
   }
 
-  void _onCurrentBlogLoaded(CurrentBlogLoaded event, Emitter<BlogsState> emit) {
-    emit(state.copyWith(
-        currentBlog: event.currentBlog, status: BlogStatus.loaded));
-  }
-
   void _onAllBlogsLoaded(AllBlogsLoaded event, Emitter<BlogsState> emit) {
     emit(state.copyWith(status: BlogStatus.allBlogsLoaded));
   }
@@ -57,19 +46,10 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
     emit(state.copyWith(status: BlogStatus.error));
   }
 
-  Future<void> loadBlogById(String blogId) async {
-    if (state.status == BlogStatus.loading) return;
-    add(LoadingStarted());
-    final blogResult = await blogsRepository.getBlogById(blogId);
-    if (blogResult.isSuccessful()) {
-      final blog = blogResult.getValue();
-      add(CurrentBlogLoaded(currentBlog: blog));
-      return;
-    }
-    add(ErrorOnBlogsLoading());
-  }
-
-  Future<void> loadNextPage({BlogFilter filter = BlogFilter.recent ,String? categoryId, String? trainerId}) async {
+  Future<void> loadNextPage(
+      {BlogFilter filter = BlogFilter.recent,
+      String? categoryId,
+      String? trainerId}) async {
     if (state.status == BlogStatus.loading ||
         state.status == BlogStatus.allBlogsLoaded) return;
     add(LoadingStarted());
@@ -91,4 +71,6 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
     }
     add(ErrorOnBlogsLoading());
   }
+
+  void refreshBlogs() => add(RefreshBlogs());
 }

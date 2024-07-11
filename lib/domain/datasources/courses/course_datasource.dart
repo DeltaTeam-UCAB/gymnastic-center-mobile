@@ -11,4 +11,6 @@ abstract class CoursesDatasource {
       String? category});
 
   Future<Course> getCourseById(String id);
+  Future<String> deleteCourse(String courseId);
+  Future<void> deleteLesson(String courseId, String lessonId);
 }

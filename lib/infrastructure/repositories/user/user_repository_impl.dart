@@ -33,11 +33,12 @@ class UserRepositoryImpl extends UserRepository {
   Future<Result<bool>> login(String email, String password) async {
     try {
       final resp = await userDatasource.login(email, password);
-      if (resp.type == 'ADMIN') {
-        return Result.fail(Exception('Wrong credentials'));
-      }
       await keyValueStorage.setKeyValue('token', resp.token);
-      return Result.success(true);
+      if (resp.type == 'CLIENT') {
+        return Result.success(true);
+      }
+      await keyValueStorage.setKeyValue<bool>('isAdmin', true);
+      return Result.success(false);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
         return Result.fail(Exception('wrong credendials'));

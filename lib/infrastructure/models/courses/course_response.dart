@@ -9,6 +9,8 @@ class CourseResponse {
   final TrainerResponse trainer;
   final String category;
   final String image;
+  final String durationMinutes;
+  final String durationWeeks;
   final List<LessonResponse> lessons;
   final DateTime date;
 
@@ -21,29 +23,32 @@ class CourseResponse {
     required this.trainer,
     required this.category,
     required this.image,
+    required this.durationWeeks,
+    required this.durationMinutes,
     required this.lessons,
     required this.date,
   });
 
   factory CourseResponse.fromJson(Map<String, dynamic> json) => CourseResponse(
-        id: json["id"], // Viene
-        title: json["title"], // Viene
-        description: json["description"], // Viene
-        trainer: json["trainer"] is String // Viene pero diferente segun el caso
+        id: json["id"],
+        title: json["title"],
+        description: json["description"] ?? '',
+        trainer: json["trainer"] is String
             ? TrainerResponse(id: '', name: json["trainer"])
             : TrainerResponse.fromJson(json["trainer"]),
-        category: json["category"], // Viene
-        image: json["image"], // Viene
-
+        category: json["category"],
+        image: json["image"],
+        durationMinutes: json['durationMinutes'].toString(),
+        durationWeeks: json['durationWeeks'].toString(),
         tags: json["tags"] != null
             ? List<String>.from(json["tags"].map((x) => x))
             : [],
-        date: DateTime.parse(json["date"]),
+        date: json["date"] != null ? DateTime.parse(json["date"]) : DateTime.now(),
         lessons: json["lessons"] != null
             ? List<LessonResponse>.from(
-                json["lessons"].map((x) => LessonResponse.fromJson(x)))
+                json["lessons"].map((x) => LessonResponse.fromJson(x, json["lessons"].indexOf(x) + 1)))
             : [],
-        level: json["level"] ?? '',
+        level: json["level"].toString(),
       );
 }
 
@@ -52,8 +57,7 @@ class LessonResponse {
   final String title;
   final String content;
   final String video;
-  final String order;
-  final String image;
+  final int order;
 
   LessonResponse({
     required this.id,
@@ -61,15 +65,13 @@ class LessonResponse {
     required this.content,
     required this.video,
     required this.order,
-    required this.image,
   });
 
-  factory LessonResponse.fromJson(Map<String, dynamic> json) => LessonResponse(
+  factory LessonResponse.fromJson(Map<String, dynamic> json, int position) => LessonResponse(
         id: json["id"],
         title: json["title"],
         content: json["content"],
         video: json["video"] ?? '',
-        order: json["order"],
-        image: json["image"] ?? '',
+        order: json["order"] ?? position,
       );
 }

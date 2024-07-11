@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/login/login_bloc.dart';
+import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/injector.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_input_decoration.dart';
@@ -17,14 +16,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocalStorageService localStorageService = LocalStorageService();
     return BlocProvider(
-        create: (context) => LoginBloc(
-                userRespository: UserRepositoryImpl(
-              userDatasource: APIUserDatasource(),
-              keyValueStorage: localStorageService,
-            )),
-        child: const _LoginScreen());
+        create: (context) => getIt<LoginBloc>(), child: const _LoginScreen());
   }
 }
 
@@ -99,7 +92,6 @@ class _LoginScreenState extends State<_LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final formStatus = context.watch<LoginBloc>().state.formStatus;
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     return BlocConsumer<LoginBloc, LoginState>(
       listenWhen: (previous, current) =>
@@ -114,7 +106,12 @@ class _LoginScreenState extends State<_LoginScreen> {
         }
 
         if (state.formStatus == LoginFormStatus.valid) {
-          context.go('/home/0');
+          context.read<NotificationsBloc>().initialStatusCheck();
+          if (state.isClient) {
+            context.go('/home/0');
+          } else {
+            context.go('/admin/0');
+          }
           return;
         }
       },
@@ -244,7 +241,7 @@ class _LoginScreenState extends State<_LoginScreen> {
             height: 15,
           ),
           GestureDetector(
-            onTap: () => context.go('/password/reset'),
+            onTap: () => context.push('/password/reset'),
             child: Text("Forgot your password?",
                 style: TextStyle(
                     color: isDarkMode
@@ -282,8 +279,6 @@ class _LoginScreenState extends State<_LoginScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height *
-        0.671; // ? Aqui puedo cambiar el radio
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
 
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -295,21 +290,23 @@ class _LoginScreenState extends State<_LoginScreen> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top,
-              child: CircleMaskedBackground(
+              child: EllipseMaskedBackground(
                 backgroundContent: SvgPicture.asset(
                   'assets/splash/splash-screen-bg.svg',
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height,
                   alignment: Alignment.topLeft,
                 ),
-                circleMaskContent: Container(
+                ellipseMaskContent: Container(
                   alignment: Alignment.center,
                   height: double.infinity,
                   child: Container(color: colors.background),
                 ),
-                circlePosition: Offset(MediaQuery.of(context).size.width / 2,
-                    MediaQuery.of(context).size.height * 0.36 + circleRadius),
-                circleRadius: circleRadius,
+                ellipsePosition: Offset(
+                    MediaQuery.of(context).size.width / 2,
+                    MediaQuery.of(context).size.height * 0.369 +
+                        EllipseMaskedBackground
+                            .getDefaultEllipseRadiusYForContext(context)),
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         horizontalPadding,

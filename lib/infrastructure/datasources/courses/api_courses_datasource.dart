@@ -8,12 +8,13 @@ import 'package:gymnastic_center/infrastructure/models/courses/course_response.d
 
 class ApiCoursesDatasource extends CoursesDatasource {
   final KeyValueStorageService keyValueStorage;
-  final dio = Dio(BaseOptions(baseUrl: Environment.backendApi));
+  final dio = Dio(BaseOptions(baseUrl: '${Environment.backendApi}/course'));
 
   ApiCoursesDatasource(this.keyValueStorage) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }
@@ -39,8 +40,7 @@ class ApiCoursesDatasource extends CoursesDatasource {
       queryParameters['category'] = category;
     }
 
-    final response =
-        await dio.get('/course/many', queryParameters: queryParameters);
+    final response = await dio.get('/many', queryParameters: queryParameters);
     final List<Course> courses = [];
 
     for (final course in response.data ?? []) {
@@ -53,8 +53,18 @@ class ApiCoursesDatasource extends CoursesDatasource {
 
   @override
   Future<Course> getCourseById(String id) async {
-    final response = await dio.get('/course/one/$id');
+    final response = await dio.get('/one/$id');
     final courseResponse = CourseResponse.fromJson(response.data);
     return CourseMapper.courseToEntity(courseResponse);
   }
+
+  @override
+  Future<String> deleteCourse(String courseId) async {
+    final response = await dio.delete('/one/$courseId');
+    return response.data['id'] ?? '';
+  }
+
+  @override
+  Future<void> deleteLesson(String courseId, String lessonId) async =>
+      await dio.delete('/remove/lesson/$courseId/$lessonId');
 }

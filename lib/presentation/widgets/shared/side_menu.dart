@@ -17,10 +17,9 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
-    final colors = Theme.of(context).colorScheme;
 
     return NavigationDrawer(
-      backgroundColor: colors.primary,
+      backgroundColor: const Color.fromARGB(255, 109, 71, 219),
       tilePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       selectedIndex: navDrawerIndex,
       onDestinationSelected: (value) {
@@ -36,15 +35,15 @@ class _SideMenuState extends State<SideMenu> {
         const SizedBox(height: 20),
         Padding(
             padding: EdgeInsets.fromLTRB(28, hasNotch ? 0 : 20, 16, 10),
-            child: Text('Gymnastic Center',
+            child: const Text('Gymnastic Center',
                 style: TextStyle(
                     fontSize: 20,
-                    color: colors.onPrimary,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold))),
         ...appMenuItems.map((item) => NavigationDrawerDestination(
-              icon: Icon(item.icon, color: colors.onPrimary),
+              icon: Icon(item.icon, color: Colors.white),
               label:
-                  Text(item.title, style: TextStyle(color: colors.onPrimary)),
+                  Text(item.title, style: const TextStyle(color: Colors.white)),
             )),
         const Padding(
           padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
@@ -52,16 +51,19 @@ class _SideMenuState extends State<SideMenu> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: FilledButton.icon(
+          child: TextButton.icon(
             onPressed: () {
-              LocalStorageService().removeKey('token').then((_data) {
+              LocalStorageService().removeKey('token').then((_) {
                 context.go('/start');
               });
             },
-            icon: const Icon(Icons.logout_rounded),
-            label: Text(
-              'Logout',
-              style: TextStyle(color: colors.onPrimary),
+            icon: const Icon(Icons.logout_rounded, color: Colors.white,),
+            label: const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ),

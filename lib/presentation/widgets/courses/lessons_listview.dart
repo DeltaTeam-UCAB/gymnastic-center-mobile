@@ -6,8 +6,7 @@ class LessonsListView extends StatefulWidget {
     Lesson lesson
   ) onPressedLesson;
   final List<Lesson> lessons;
-  final String? currentLessondId;
-  LessonsListView({Key? key, required this.lessons, required this.onPressedLesson, this.currentLessondId}) : super(key: key) {
+  LessonsListView({Key? key, required this.lessons, required this.onPressedLesson}) : super(key: key) {
     lessons.sort((a, b) => a.order.compareTo(b.order));
   }
 
@@ -27,7 +26,6 @@ class _LessonsListViewState extends State<LessonsListView> {
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme.titleMedium;
-    final colors = Theme.of(context).colorScheme;
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -57,20 +55,24 @@ class _LessonsListViewState extends State<LessonsListView> {
               children: [
                 ExpansionPanel(
                   backgroundColor: 
-                    (lesson.id == widget.currentLessondId) 
-                    ? colors.inversePrimary
-                    : Colors.transparent
+                    Colors.transparent
                   ,
                   headerBuilder: (context, isExpanded) {
                     return ListTile(
-                      title: Text(lesson.title),
+                      title: Text(
+                              lesson.title,
+                              overflow: (isExpanded) ? TextOverflow.clip : TextOverflow.ellipsis,
+                            ),
                       leading: const Icon(Icons.video_library),
                     );
                   },
                   body: Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
-                          onPressed: ()=> widget.onPressedLesson(lesson),
+                          onPressed: () async{
+                            
+                            widget.onPressedLesson(lesson);
+                          },
                           icon: const Icon(Icons.play_circle_fill),
                           label: Text(lesson.content))),
                   isExpanded: _expansionStates[index],

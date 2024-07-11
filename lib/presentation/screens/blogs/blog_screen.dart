@@ -2,13 +2,11 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
+import 'package:gymnastic_center/application/blogs/blog-details/blog_details_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
+import 'package:gymnastic_center/domain/entities/blogs/blog.dart';
 import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/blogs/blog_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/comments/comments_section.dart';
 import 'package:intl/intl.dart';
 
@@ -22,13 +20,9 @@ class BlogScreen extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (_) => BlogsBloc(BlogRepositoryImpl(
-                  blogsDatasource: APIBlogDatasource(localStorageService)))
-                ..loadBlogById(blogId)),
+              create: (_) => getIt<BlogDetailsBloc>()..loadBlogById(blogId)),
           BlocProvider(
-              create: (_) => CommentsBloc(CommentsRepositoryImpl(
-                  commentsDatasource:
-                      ApiCommentDatasource(localStorageService)))),
+              create: (_) => getIt<CommentsBloc>()),
         ],
         child: Scaffold(
             body: Stack(
@@ -53,22 +47,22 @@ class _BlogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BlogsBloc, BlogsState>(
+    return BlocBuilder<BlogDetailsBloc, BlogDetailsState>(
       builder: (context, state) {
-        if (state.currentBlog.id.isEmpty ||
-            state.status == BlogStatus.loading) {
+        if (state.blog.id.isEmpty ||
+            state.status == BlogDetailsStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (state.status == BlogStatus.error) {
+        if (state.status == BlogDetailsStatus.error) {
           return const Center(
             child: Text('Blog Not found'),
           );
         }
         return SingleChildScrollView(
-          child: _BlogDetailsView(),
+          child: _BlogDetailsView(state.blog),
         );
       },
     );
@@ -76,13 +70,13 @@ class _BlogView extends StatelessWidget {
 }
 
 class _BlogDetailsView extends StatelessWidget {
+  final Blog blog;
   final titleFontSize = 32.0;
   final dateFormat = DateFormat('dd-MM-yyyy');
-  _BlogDetailsView();
+  _BlogDetailsView(this.blog);
 
   @override
   Widget build(BuildContext context) {
-    final blog = context.read<BlogsBloc>().state.currentBlog;
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
@@ -142,7 +136,11 @@ class _BlogDetailsView extends StatelessWidget {
               Text('Comments', style: textTheme.titleLarge),
               SizedBox(
                 height: 400,
-                child: CommentsSection(blogId: blog.id,),
+                child: CommentsSection(
+                  onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(blog.id, 'BLOG'),
+                  onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(blog.id, 'BLOG'),
+                  onPostComment: (message) => context.read<CommentsBloc>().createComment(blog.id, 'BLOG', message),
+                ),
               )
             ],
           ),

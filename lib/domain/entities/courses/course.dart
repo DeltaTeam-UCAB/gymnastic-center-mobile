@@ -9,8 +9,10 @@ class Course {
   final String image;
   final List<String> tags;
   final String level;
+  final String durationWeeks;
+  final String durationMinutes;
   final DateTime released;
-  final List<Lesson>? lessons;
+  final List<Lesson> lessons;
 
   Course({
     required this.id,
@@ -21,6 +23,8 @@ class Course {
     required this.image,
     required this.tags,
     required this.level,
+    required this.durationMinutes,
+    required this.durationWeeks,
     required this.released,
     required this.lessons,
   });
@@ -31,7 +35,6 @@ class Lesson {
   final String title;
   final String content;
   final String video;
-  final String image;
   final int order;
 
   const Lesson({
@@ -39,7 +42,6 @@ class Lesson {
     required this.title,
     required this.content,
     required this.video,
-    required this.image,
     required this.order,
   });
 }

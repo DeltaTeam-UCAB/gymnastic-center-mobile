@@ -13,7 +13,8 @@ class APIBlogDatasource extends BlogsDatasource {
   APIBlogDatasource(this.keyValueStorage) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }
@@ -55,5 +56,12 @@ class APIBlogDatasource extends BlogsDatasource {
     }).toList();
 
     return blogs;
+  }
+  
+  @override
+  Future<String> deleteBlog(String blogId) async {
+    final response = 
+    await dio.delete('/one/$blogId');
+    return response.data['id'] ?? '';
   }
 }

@@ -12,7 +12,8 @@ class ClientsDatasourceImpl extends ClientsDatasource {
   ClientsDatasourceImpl(this.keyValueStorage) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }
@@ -42,9 +43,24 @@ class ClientsDatasourceImpl extends ClientsDatasource {
     if (phone != null) body['phone'] = phone;
     if (avatarImage != null) body['image'] = avatarImage; //Cambiar
     if (password != null) body['password'] = password;
-    await dio.post(
+    await dio.put(
       '/user/update',
       data: body,
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> checkDeviceLink(String deviceToken) async {
+    await dio.get('/user/is/device/linked?token=$deviceToken');
+    return true;
+  }
+
+  @override
+  Future<bool> linkDevice(String deviceToken) async {
+    await dio.put(
+      '/user/link/device',
+      data: {'token': deviceToken},
     );
     return true;
   }

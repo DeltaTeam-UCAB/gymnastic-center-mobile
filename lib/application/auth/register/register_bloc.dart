@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymnastic_center/application/core/bloc/safe_bloc.dart';
 import 'package:gymnastic_center/common/results.dart';
 
 part 'register_event.dart';
@@ -12,7 +13,7 @@ typedef RegisterCallBack = Future<Result<bool>> Function({
   required String phone,
 });
 
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+class RegisterBloc extends SafeBloc<RegisterEvent, RegisterState> {
   final RegisterCallBack registerCallBack;
 
   RegisterBloc(this.registerCallBack) : super(const RegisterState()) {
@@ -50,6 +51,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> obSubmitRegister() async {
+    if (state.fullname == '' || state.email == '' || state.password == '' || state.phone == '') {
+      add(FailRegister(errorMessage: 'Invalid fields. You must enter your credentials'));
+      return;
+    }
     add(OnRegisterFormStatusChanged(
         registerFormStatus: RegisterFormStatus.posting));
     final result = await registerCallBack(

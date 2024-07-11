@@ -26,4 +26,37 @@ class TrainersRepositoryImpl extends TrainersRepository {
       return Result<bool>.fail(error as Exception);
     }
   }
+
+  @override
+  Future<Result<List<TrainerDetails>>> getTrainersPaginated(
+      {int page = 1, int perPage = 10, bool filterByFollowed = false}) async {
+    try {
+      final result = await trainersDataSource.getTrainersPaginated(
+          page: page, perPage: perPage, filterByFollowed: filterByFollowed);
+      return Result<List<TrainerDetails>>.success(result);
+    } catch (e) {
+      return Result<List<TrainerDetails>>.fail(e as Exception);
+    }
+  }
+
+  @override
+  Future<Result<String>> deleteTrainer(String trainerId) async {
+    try {
+      final trainerIdDeleted =
+          await trainersDataSource.deleteTrainer(trainerId);
+      return Result.success(trainerIdDeleted);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
+
+  @override
+  Future<Result<int>> getFollowingTrainersCount() async {
+    try {
+      final result = await trainersDataSource.getFollowingTrainersCount();
+      return Result.success(result);
+    } catch (error, _) {
+      return Result.fail(error as Exception);
+    }
+  }
 }

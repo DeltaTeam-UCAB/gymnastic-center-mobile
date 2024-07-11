@@ -14,4 +14,5 @@ abstract class BlogsDatasource {
     String? trainer,
     String? category
   });
+  Future<String> deleteBlog(String blogId);
 }

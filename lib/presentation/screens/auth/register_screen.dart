@@ -4,10 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/register/register_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/injector.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/checkbox_form_field.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gradient_text.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/gymnastic_text_form_field/gymnastic_text_form_field.dart';
@@ -19,10 +17,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegisterBloc(UserRepositoryImpl(
-              keyValueStorage: LocalStorageService(),
-              userDatasource: APIUserDatasource())
-          .register),
+      create: (context) => getIt<RegisterBloc>(),
       child: const _RegisterForm(),
     );
   }
@@ -245,7 +240,7 @@ class RegisterScreenState extends State<_RegisterForm> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.0294,
               child: CheckboxFormField(
-                title: const Text('Yes! Agree to all Terms and Conditions',
+                title: const Text('Yes! Agree to all Terms & Conditions',
                     style: TextStyle(fontSize: 15, color: Colors.white)),
                 validator: (value) {
                   if (value == null || !value) {
@@ -291,7 +286,6 @@ class RegisterScreenState extends State<_RegisterForm> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -303,7 +297,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: CircleMaskedBackground(
+                    child: EllipseMaskedBackground(
                       backgroundContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,
@@ -320,7 +314,7 @@ class RegisterScreenState extends State<_RegisterForm> {
                           ),
                         ),
                       )),
-                      circleMaskContent: Container(
+                      ellipseMaskContent: Container(
                         alignment: Alignment.center,
                         height: double.infinity,
                         child: SvgPicture.asset(
@@ -330,11 +324,6 @@ class RegisterScreenState extends State<_RegisterForm> {
                           alignment: Alignment.topLeft,
                         ),
                       ),
-                      circlePosition: Offset(
-                          MediaQuery.of(context).size.width / 2,
-                          MediaQuery.of(context).size.height * 0.21 +
-                              circleRadius),
-                      circleRadius: circleRadius,
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,

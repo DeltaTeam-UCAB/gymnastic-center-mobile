@@ -9,21 +9,10 @@ class CommentsRepositoryImpl extends CommentsRepository {
   CommentsRepositoryImpl({required this.commentsDatasource});
 
   @override
-  Future<Result<List<Comment>>> getCommentsByBlogId(String blogId, {int perPage = 5, int page = 0}) async {
+  Future<Result<List<Comment>>> getCommentsById(String targetId, String targetType, {int perPage = 5, int page = 0}) async {
     try {
       final comments = await commentsDatasource
-          .getCommentsByBlogId(blogId, perPage: perPage, page: page);
-      return Result<List<Comment>>.success(comments);
-    } catch (e) {
-      return Result<List<Comment>>.fail(e as Exception);
-    }
-  }
-  
-  @override
-  Future<Result<List<Comment>>> getCommentsByLessonId(String lessonId, {int perPage = 5, int page = 0}) async {
-    try {
-      final comments = await commentsDatasource
-          .getCommentsByLessonId(lessonId, perPage: perPage, page: page);
+          .getCommentsById(targetId, targetType, perPage: perPage, page: page);
       return Result<List<Comment>>.success(comments);
     } catch (e) {
       return Result<List<Comment>>.fail(e as Exception);
@@ -46,25 +35,25 @@ class CommentsRepositoryImpl extends CommentsRepository {
       final dislike = await commentsDatasource.toggleLikeCommentById(commentId);
       return Result<bool>.success(dislike);
     } catch (e) {
-      return Result<bool>.fail(e as Exception);
+      return Result<bool>.fail(e  as Exception);
     }
   }
   
   @override
-  Future<Result<String>> createCommentByBlogId(String blogId, String message) async {
+  Future<Result<bool>> createComment(String targetId, String targetType, String message) async {
     try {
-      final commentId = await commentsDatasource.createCommentsByBlogId(blogId, message);
-      return Result.success(commentId);
+      await commentsDatasource.createComment(targetId, targetType, message);
+      return Result.success(true);
     } catch (e) {
       return Result.fail(e as Exception);
     }
   }
   
   @override
-  Future<Result<String>> createCommentByLessonId(String lessonId, String message) async {
+  Future<Result<bool>> deleteComment(String commentId) async {
     try {
-      final commentId = await commentsDatasource.createCommentsByLessonId(lessonId, message);
-      return Result.success(commentId);
+      await commentsDatasource.deleteComment(commentId);
+      return Result.success(true);
     } catch (e) {
       return Result.fail(e as Exception);
     }

@@ -17,9 +17,10 @@ class CategoriesDatasourceImpl extends CategoryDatasource {
   @override
   Future<List<Category>> getCategoriesPaginated(
       {int page = 1, int perPage = 10}) async {
-    final response = await dio.get('/many?page=$page&perPage=$perPage',
-        options: Options(headers: {
-          'auth': await keyValueStorage.getValue<String>('token')
+        final token = await keyValueStorage.getValue<String>('token');
+        final response = await dio.get('/many?page=$page&perPage=$perPage',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
         }));
     final List<Category> categories = [];
 

@@ -27,7 +27,7 @@ class BlogSlide extends StatelessWidget {
 
     //subtitle formatting
     String subtitle =
-        '${DateFormat('mm/dd/yyyy').format(blog.released)} - ${blog.trainer.name}';
+        '${DateFormat('MM/dd/yyyy').format(blog.released)} - ${blog.trainer.name}';
 
     return GestureDetector(
       onTap: () {

@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
@@ -53,7 +52,9 @@ class _AppBarTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          client.name,
+          client.name.length <= 18
+              ? client.name
+              : '${client.name.substring(0, 18)}...',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 28,
@@ -67,7 +68,7 @@ class _AppBarTitle extends StatelessWidget {
             if (isExpanded)
               FadeIn(
                   child: IconButton(
-                onPressed: () {},
+                onPressed: () => context.push('/home/0/search'),
                 icon: const Icon(Icons.search, color: Colors.white),
                 iconSize: 30,
               )),
@@ -75,10 +76,10 @@ class _AppBarTitle extends StatelessWidget {
               width: 5,
             ),
             GestureDetector(
-              onTap: () => context.push('/account/details'),
+              onTap: () => context.push('/account'),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 17,
+                radius: 25,
                 child: client.avatarImage == null
                     ? const Icon(
                         Icons.person,
@@ -86,8 +87,8 @@ class _AppBarTitle extends StatelessWidget {
                         color: Colors.deepPurple,
                       )
                     : SizedBox(
-                        height: 50,
-                        width: 50,
+                        height: 200,
+                        width: 200,
                         child: ClipOval(
                             child: ImageView(image: client.avatarImage!))),
               ),
@@ -105,7 +106,7 @@ class _SearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () {},
+      onPressed: () => context.push('/home/0/search'),
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
@@ -115,10 +116,7 @@ class _SearchButton extends StatelessWidget {
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Search'),
-          Icon(Icons.search),
-        ],
+        children: [Text('Search'), Icon(Icons.search)],
       ),
     );
   }

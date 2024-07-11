@@ -8,102 +8,75 @@ import 'package:gymnastic_center/infrastructure/models/comments/comment_apirespo
 
 class ApiCommentDatasource extends CommentsDatasource {
   final KeyValueStorageService keyValueStorage;
-  final dio =
-      Dio(BaseOptions(baseUrl: '${Environment.backendApi}/comment' ));
-  ApiCommentDatasource(this.keyValueStorage){
+  final dio = Dio(BaseOptions(baseUrl: '${Environment.backendApi}/comment'));
+  ApiCommentDatasource(this.keyValueStorage) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      options.headers['auth'] = await keyValueStorage.getValue<String>('token');
+      final token = await keyValueStorage.getValue<String>('token');
+      options.headers['Authorization'] = 'Bearer $token';
       return handler.next(options);
     }));
   }
 
   @override
-  Future<List<Comment>> getCommentsByLessonId(String lessonId, {int perPage = 5 , int page = 0}) async {
-    
+  Future<List<Comment>> getCommentsById(String targetId, String targetType,
+      {int perPage = 5, int page = 0}) async {
     final Map<String, dynamic> queryParameters = {
-        'page': page,
-        'perPage': perPage,
-        'lesson' : lessonId      
+      'page': page,
+      'perPage': perPage,
     };
 
-    final response = await dio.get('/many',
-      queryParameters: queryParameters
-    );
-    
+    if (targetType == 'LESSON') {
+      queryParameters.addAll({'lesson': targetId});
+    }
+
+    if (targetType == 'BLOG') {
+      queryParameters.addAll({'blog': targetId});
+    }
+
+    final response = await dio.get('/many', queryParameters: queryParameters);
 
     return _responseToComments(response.data);
   }
 
-  @override
-  Future<List<Comment>> getCommentsByBlogId(String blogId, {int perPage = 5 , int page= 0}) async {
-
-    final Map<String, dynamic> queryParameters = {
-        'page': page,
-        'perPage': perPage,
-        'blog' : blogId      
-    };
-
-    final response = await dio.get('/many',
-      queryParameters: queryParameters
-    );
-
-    return _responseToComments(response.data);
-  }
-
-  List<Comment> _responseToComments(dynamic data){
+  List<Comment> _responseToComments(dynamic data) {
     final List<CommentApiResponse> apiCommentsResponse = (data as List)
-      .map((data) => CommentApiResponse.fromJson(data))
-      .toList();
-    final List<Comment> comments = CommentMapper.apiCommentsEntity(apiCommentsResponse); 
+        .map((data) => CommentApiResponse.fromJson(data))
+        .toList();
+    final List<Comment> comments =
+        CommentMapper.apiCommentsEntity(apiCommentsResponse);
     return comments;
   }
 
   @override
   Future<bool> toggleLikeCommentById(String commentId) async {
     final response = await dio.post('/toggle/like/$commentId');
-    final bool like = response.data['like'];
+    final bool like = response.data['like'] ?? true;
     return like;
   }
 
   @override
   Future<bool> toggleDislikeCommentById(String commentId) async {
     final response = await dio.post('/toggle/dislike/$commentId');
-    final bool dislike = response.data['dislike'];
+
+    final bool dislike = response.data['dislike'] ?? true;
     return dislike;
   }
-  
-  @override
-  Future<String> createCommentsByLessonId(String lessonId, String message) async {
 
+  @override
+  Future<void> createComment(
+      String targetId, String targetType, String message) async {
     final Map<String, String> body = {
-      'target' : lessonId,
-      'targetType' : 'LESSON',
-      'body' : message
+      'target': targetId,
+      'targetType': targetType,
+      'body': message
     };
 
-    final response = await dio.post('/release',
-      data: body
-    );
-
-    return response.data['commentId'];
-
+    await dio.post('/release', data: body);
   }
 
   @override
-  Future<String> createCommentsByBlogId(String blogId, String message) async {
-    final Map<String, String> body = {
-      'target' : blogId,
-      'targetType' : 'BLOG',
-      'body' : message
-    };
-
-    final response = await dio.post('/release',
-      data: body
-    );
-   
-    return response.data['commentId'];
+  Future<void> deleteComment(String commentId) async {
+    await dio.delete('/one/$commentId');
   }
-  
-  
 }

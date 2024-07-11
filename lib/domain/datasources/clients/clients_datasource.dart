@@ -8,4 +8,6 @@ abstract class ClientsDatasource {
       String? phone,
       String? avatarImage,
       String? password});
+  Future<bool> linkDevice(String deviceToken);
+  Future<bool> checkDeviceLink(String deviceToken);
 }

@@ -9,4 +9,6 @@ abstract class ClientsRepository {
       String? phone,
       String? avatarImage,
       String? password});
+  Future<Result<bool>> linkDevice(String deviceToken);
+  Future<Result<bool>> checkDeviceLink(String deviceToken);
 }

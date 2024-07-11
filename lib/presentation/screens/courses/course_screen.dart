@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
+import 'package:gymnastic_center/application/suscriptions/suscription/suscription_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
-import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart';
-import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
+import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/screens/courses/widgets/course_details_view.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/navigation_bar/custom_bottom_navigation.dart';
 
@@ -14,11 +13,15 @@ class CourseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CoursesBloc(
-          coursesRepository: CoursesRepositoryImpl(
-              ApiCoursesDatasource(LocalStorageService())))
-        ..getCourseById(courseId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<CourseDetailsBloc>()..getCourseById(courseId),
+        ),
+        BlocProvider(
+          create: (context) => getIt<SuscriptionBloc>()..checkSuscriptionCourse(courseId),
+        ),
+      ],
       child: const _CourseScreenView(),
     );
   }
@@ -29,16 +32,15 @@ class _CourseScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CoursesBloc, CoursesState>(
-      buildWhen: (previous, current) =>
-          (previous.currentCourse != current.currentCourse) ||
-          (current.isError),
+    final checkingSuscriptionStatus = context.watch<SuscriptionBloc>().state.status;
+    return BlocBuilder<CourseDetailsBloc, CourseDetailsState>(
+      buildWhen: (previous, current) => (previous.course != current.course),
       builder: (context, state) {
-        final course = state.currentCourse;
         return Scaffold(
-          //TODO: Evaluar optional o cambiarlo por status
-          body: state.currentCourse != null
-              ? _Details(course: course!)
+          body: (state.status != CourseDetailsStatus.loading &&
+                  state.status != CourseDetailsStatus.initial &&
+                  checkingSuscriptionStatus != SuscribedStatus.checking )
+              ? _Details(course: state.course)
               : const Center(
                   child: CircularProgressIndicator(),
                 ),

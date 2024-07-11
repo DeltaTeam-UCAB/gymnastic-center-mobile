@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
+import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
-import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/circle_masked_background.dart';
+import 'package:gymnastic_center/presentation/widgets/shared/backgrounds/ellipse_masked_background.dart';
 
 class VerificationCodeScreen extends StatelessWidget {
   const VerificationCodeScreen({super.key});
@@ -35,9 +38,11 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
   final _thirdDigitFocusNode = FocusNode();
   final _fourthDigitFocusNode = FocusNode();
 
+  Timer? _debounceTimer;
+  bool _isPosting = false;
+
   @override
   void initState() {
-    super.initState();
     _firstDigit = TextEditingController();
     _secondDigit = TextEditingController();
     _thirdDigit = TextEditingController();
@@ -47,6 +52,21 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
     _secondDigit.text = '\u200b';
     _thirdDigit.text = '\u200b';
     _fourthDigit.text = '\u200b';
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _firstDigit.dispose();
+    _secondDigit.dispose();
+    _thirdDigit.dispose();
+    _fourthDigit.dispose();
+    _firstDigitFocusNode.dispose();
+    _secondDigitFocusNode.dispose();
+    _thirdDigitFocusNode.dispose();
+    _fourthDigitFocusNode.dispose();
+    super.dispose();
   }
 
   void _onCodeChanged() {
@@ -74,6 +94,8 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
     double digitTextFieldSize = MediaQuery.of(context).size.width / 6;
     double digitTextFieldFontSize = MediaQuery.of(context).size.width * 0.072;
     double digitTextFieldLineHeight = 1.072;
+    bool receiveNotification =
+        context.watch<NotificationsBloc>().state.recoveryCode.length == 4;
     return _textFieldPadding(SizedBox(
         height: digitTextFieldSize,
         width: digitTextFieldSize,
@@ -87,7 +109,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
             }
             if (value.length > 1) {
               if (next != null) next.requestFocus();
-              _onCodeChanged();
+              if (!receiveNotification) _onCodeChanged();
             }
           },
           maxLength: 2,
@@ -132,6 +154,23 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
   @override
   Widget build(BuildContext context) {
     String storedCode = context.watch<RecoverPasswordBloc>().state.code;
+    final recoveryNotification =
+        context.watch<NotificationsBloc>().state.recoveryCode;
+
+    if (recoveryNotification.length == 4 && !_isPosting) {
+      setState(() {
+        _isPosting = true;
+      });
+      _firstDigit.text = recoveryNotification[0];
+      _secondDigit.text = recoveryNotification[1];
+      _thirdDigit.text = recoveryNotification[2];
+      _fourthDigit.text = recoveryNotification[3];
+
+      _debounceTimer = Timer(const Duration(seconds: 2), () {
+        _onCodeChanged();
+      });
+      context.read<NotificationsBloc>().resetRecoveryCode();
+    }
 
     if (storedCode.length == 4) {
       _pressSubmit();
@@ -218,7 +257,6 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
   }
 
   Widget _layout(List<Widget> children) {
-    double circleRadius = MediaQuery.of(context).size.height * 0.871;
     double horizontalPadding = MediaQuery.of(context).size.width * 0.0444;
     bool isDarkMode = context.watch<ThemesBloc>().isDarkMode;
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -226,11 +264,13 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-            child: SingleChildScrollView(
+            child: Stack(
+          children: [
+            SingleChildScrollView(
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).padding.top,
-                    child: CircleMaskedBackground(
+                    child: EllipseMaskedBackground(
                       backgroundContent: SizedBox.expand(
                           child: Container(
                         color: colors.background,
@@ -247,7 +287,7 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
                           ),
                         ),
                       )),
-                      circleMaskContent: Container(
+                      ellipseMaskContent: Container(
                         alignment: Alignment.center,
                         height: double.infinity,
                         child: SvgPicture.asset(
@@ -257,11 +297,6 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
                           alignment: Alignment.topLeft,
                         ),
                       ),
-                      circlePosition: Offset(
-                          MediaQuery.of(context).size.width / 2,
-                          MediaQuery.of(context).size.height * 0.21 +
-                              circleRadius),
-                      circleRadius: circleRadius,
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(
                               horizontalPadding,
@@ -275,6 +310,22 @@ class _VerificationCodeScreenState extends State<_VerificationCodeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: children,
                               ))),
-                    )))));
+                    ))),
+            Positioned(
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: isDarkMode
+                      ? Colors.white
+                      : const Color.fromARGB(255, 93, 43, 187),
+                  size: 30,
+                ),
+                onPressed: () {
+                  context.pop();
+                },
+              ),
+            ),
+          ],
+        )));
   }
 }
