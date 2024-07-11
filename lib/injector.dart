@@ -15,6 +15,7 @@ import 'package:gymnastic_center/application/courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/profile/profile_bloc.dart';
 import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
 import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
 import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
@@ -62,7 +63,8 @@ class Injector {
     final apiCoursesDatasource = ApiCoursesDatasource(localStorageService);
     final apiUserDatasource = APIUserDatasource();
     final clientsDatasourceImpl = ClientsDatasourceImpl(localStorageService);
-    final apiSuscriptionDatasource = APISuscriptionDatasource(localStorageService);
+    final apiSuscriptionDatasource =
+        APISuscriptionDatasource(localStorageService);
     final apiTrainersDatasource = ApiTrainersDatasource(localStorageService);
     final apiSearchDatasource = ApiSearchDatasource(localStorageService);
     final apiCommentDatasource = ApiCommentDatasource(localStorageService);
@@ -72,7 +74,8 @@ class Injector {
     final blogRepositoryImpl =
         BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
     final coursesRepositoryImpl = CoursesRepositoryImpl(apiCoursesDatasource);
-    final suscriptionRepositoryImpl = SuscriptionRepositoryImpl(apiSuscriptionDatasource);
+    final suscriptionRepositoryImpl =
+        SuscriptionRepositoryImpl(apiSuscriptionDatasource);
     final userRepositoryImpl = UserRepositoryImpl(
         userDatasource: apiUserDatasource,
         keyValueStorage: localStorageService);
@@ -100,15 +103,11 @@ class Injector {
     getIt.registerFactory(
       () => CourseDetailsBloc(coursesRepositoryImpl),
     );
-    getIt.registerFactory(
-      () => SuscriptionBloc(suscriptionRepositoryImpl)
-    );
-    getIt.registerFactory(
-      () => SuscribedCoursesBloc(suscriptionRepositoryImpl)
-    );
-    getIt.registerFactory(
-      () => TrendingProgressBloc(suscriptionRepositoryImpl)
-    );
+    getIt.registerFactory(() => SuscriptionBloc(suscriptionRepositoryImpl));
+    getIt
+        .registerFactory(() => SuscribedCoursesBloc(suscriptionRepositoryImpl));
+    getIt
+        .registerFactory(() => TrendingProgressBloc(suscriptionRepositoryImpl));
     getIt.registerFactory(
       () => CategoriesBloc(categoryRepository: categoriesRepositoryImpl),
     );
@@ -132,8 +131,7 @@ class Injector {
         () => LessonsBloc(coursesRepository: coursesRepositoryImpl));
     getIt.registerFactory(() => SearchBloc(searchRepositoryImpl));
     getIt.registerLazySingleton(
-      () => CourseProgressBloc(suscriptionRepositoryImpl)
-    );
+        () => CourseProgressBloc(suscriptionRepositoryImpl));
 
     getIt.registerFactory(() => TagsBloc(searchRepositoryImpl));
 
@@ -148,5 +146,9 @@ class Injector {
     getIt.registerFactory(() => DeleteCourseBloc(coursesRepositoryImpl));
 
     getIt.registerFactory(() => DeleteTrainerBloc(trainersRepositoryImpl));
+
+    getIt.registerFactory(() => ProfileBloc(
+        suscriptionRepository: suscriptionRepositoryImpl,
+        trainersRepository: trainersRepositoryImpl));
   }
 }

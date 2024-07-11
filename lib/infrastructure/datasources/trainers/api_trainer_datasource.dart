@@ -64,15 +64,22 @@ class ApiTrainersDatasource extends TrainersDataSource {
     final trainers = (response.data as List).map((data) {
       final apiTrainerResponse = TrainerResponse.fromJson(data);
       final trainer = TrainerMapper.trainerToEntity(apiTrainerResponse);
-      return TrainerDetails(trainer: trainer, isFollowing: apiTrainerResponse.isFollowed);
+      return TrainerDetails(
+          trainer: trainer, isFollowing: apiTrainerResponse.isFollowed);
     }).toList();
 
     return trainers;
   }
-  
+
   @override
   Future<String> deleteTrainer(String trainerId) async {
     final response = await dio.delete('/trainer/one/$trainerId');
     return response.data['id'] ?? '';
-  } 
+  }
+
+  @override
+  Future<int> getFollowingTrainersCount() async {
+    final response = await dio.get('/trainer/user/follow');
+    return response.data["count"] ?? 0;
+  }
 }
