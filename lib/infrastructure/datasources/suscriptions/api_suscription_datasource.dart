@@ -22,8 +22,10 @@ class APISuscriptionDatasource extends SuscriptionsDatasource {
   @override
   Future<CourseProgress> getProgressByCourseId(String courseId) async {
     final response = await dio.get('/one/$courseId');
-    final apiCouseProgressReponse = CourseProgressApiResponse.fromJson(response.data);
-    final courseProgress = CourseProgressMapper.apiResponsetoEntity(apiCouseProgressReponse);
+    final apiCouseProgressReponse =
+        CourseProgressApiResponse.fromJson(response.data);
+    final courseProgress =
+        CourseProgressMapper.apiResponsetoEntity(apiCouseProgressReponse);
     return courseProgress;
   }
 
@@ -31,9 +33,10 @@ class APISuscriptionDatasource extends SuscriptionsDatasource {
   Future<void> suscribeToCourse(String courseId) async {
     await dio.post('/start/$courseId');
   }
-  
+
   @override
-  Future<void> markCompletedProgressLesson(String courseId, String lessonId) async{
+  Future<void> markCompletedProgressLesson(
+      String courseId, String lessonId) async {
     final Map<String, dynamic> body = {
       "courseId": courseId,
       "markAsCompleted": true,
@@ -42,14 +45,12 @@ class APISuscriptionDatasource extends SuscriptionsDatasource {
       "totalTime": 0
     };
 
-    await dio.post('/mark/end',
-      data: body
-    );
-
+    await dio.post('/mark/end', data: body);
   }
-  
+
   @override
-  Future<void> markEndProgressLesson(String courseId, String lessonId, int totalSeconds, int viewedSeconds) async {
+  Future<void> markEndProgressLesson(String courseId, String lessonId,
+      int totalSeconds, int viewedSeconds) async {
     final Map<String, dynamic> body = {
       "courseId": courseId,
       "markAsCompleted": false,
@@ -58,42 +59,42 @@ class APISuscriptionDatasource extends SuscriptionsDatasource {
       "totalTime": totalSeconds
     };
 
-    await dio.post('/mark/end',
-      data: body
-    );
+    await dio.post('/mark/end', data: body);
   }
-  
+
   @override
-  Future<List<CourseProgress>> getSuscribedCourses(int page, {int? perPage = 5})  async{
-    final Map<String, dynamic> body = {
-      "page" : page,
-      "perPage" : perPage
-    };
-    final response = await dio.get('/courses',
-      queryParameters: body
-    );
+  Future<List<CourseProgress>> getSuscribedCourses(int page,
+      {int? perPage = 5}) async {
+    final Map<String, dynamic> body = {"page": page, "perPage": perPage};
+    final response = await dio.get('/courses', queryParameters: body);
     final List<CourseProgress> coursesSuscribed = [];
-    for (final courseSuscribedResponse in response.data ?? []){
-      final coursesProgressApi = CourseProgressApiResponse.fromJson(courseSuscribedResponse);
-      coursesSuscribed.add(CourseProgressMapper.apiResponsetoEntity(coursesProgressApi));
+    for (final courseSuscribedResponse in response.data ?? []) {
+      final coursesProgressApi =
+          CourseProgressApiResponse.fromJson(courseSuscribedResponse);
+      coursesSuscribed
+          .add(CourseProgressMapper.apiResponsetoEntity(coursesProgressApi));
     }
     return coursesSuscribed;
   }
-  
+
   @override
   Future<void> unsuscribeCourse(String courseId) async {
     await dio.delete('/one/$courseId');
   }
-  
+
   @override
-  Future<CourseProgress> getTrendingCourse() async{
+  Future<CourseProgress> getTrendingCourse() async {
     final response = await dio.get('/trending');
-    final apiCouseProgressReponse = CourseProgressApiResponse.fromJson(response.data);
-    final courseProgress = CourseProgressMapper.apiResponsetoEntity(apiCouseProgressReponse);
+    final apiCouseProgressReponse =
+        CourseProgressApiResponse.fromJson(response.data);
+    final courseProgress =
+        CourseProgressMapper.apiResponsetoEntity(apiCouseProgressReponse);
     return courseProgress;
-    
   }
 
-  
-
+  @override
+  Future<int> getSuscribedCoursesCount() async {
+    final response = await dio.get('/count/client');
+    return response.data["count"];
+  }
 }

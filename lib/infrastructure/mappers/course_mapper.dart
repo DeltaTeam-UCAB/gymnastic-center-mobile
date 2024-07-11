@@ -29,7 +29,6 @@ class LessonMapper {
               title: e.title,
               content: e.content,
               video: e.video,
-              image: e.image,
               order: e.order,
             ))
         .toList();

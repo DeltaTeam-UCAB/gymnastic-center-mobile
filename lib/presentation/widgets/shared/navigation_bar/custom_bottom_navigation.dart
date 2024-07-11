@@ -17,12 +17,16 @@ class CustomBottomNavigation extends StatelessWidget {
       width: size.width,
       height: 80,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
           CustomPaint(
             size: Size(size.width, 80),
             painter: BNBCustomPainter(backgroundColor: backgroundColor!),
           ),
-          const BottomNavigationCenterIcon(),
+          Positioned(
+              bottom: 45,
+              left: (size.width - 70) / 2,
+              child: const BottomNavigationCenterIcon()),
           BottomNavigationDecoration(size: size, currentIndex: currentIndex)
         ],
       ),

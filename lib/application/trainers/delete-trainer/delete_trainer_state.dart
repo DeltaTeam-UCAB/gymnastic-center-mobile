@@ -1,7 +1,7 @@
 part of 'delete_trainer_bloc.dart';
 
 
-enum DeleteTrainerStatus { initial, deleting, error }
+enum DeleteTrainerStatus { initial, deleting, deleted ,error }
 class DeleteTrainerState extends Equatable {
   final DeleteTrainerStatus status;
   const DeleteTrainerState({

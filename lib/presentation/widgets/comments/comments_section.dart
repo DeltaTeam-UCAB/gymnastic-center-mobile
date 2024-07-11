@@ -226,7 +226,7 @@ class _CommentTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () => context.read<CommentsBloc>().toggleLike(comment.id),
+                  onPressed: () => context.read<CommentsBloc>().toggleLike(comment.id, comment.userLiked),
                   icon: (!comment.userLiked)
                       ? const Icon(Icons.thumb_up_outlined)
                       : Icon(
@@ -237,7 +237,7 @@ class _CommentTile extends StatelessWidget {
                 ),
                 Text('${comment.likes}', style: textTheme.labelMedium),
                 IconButton(
-                  onPressed: () => context.read<CommentsBloc>().toggleDislike(comment.id),
+                  onPressed: () => context.read<CommentsBloc>().toggleDislike(comment.id, comment.userDisliked),
                   icon: (!comment.userDisliked)
                       ? const Icon(Icons.thumb_down_outlined)
                       : Icon(

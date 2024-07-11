@@ -47,4 +47,14 @@ class CoursesRepositoryImpl extends CoursesRepository {
       return Result.fail(e as Exception);
     }
   }
+  
+  @override
+  Future<Result<bool>> deleteLesson(String courseId, String lessonId) async {
+    try {
+      await coursesDataSource.deleteLesson(courseId, lessonId);
+      return Result.success(true);
+    } catch (e) {
+      return Result.fail(e as Exception);
+    }
+  }
 }

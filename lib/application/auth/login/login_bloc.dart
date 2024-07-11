@@ -9,8 +9,7 @@ part 'login_state.dart';
 class LoginBloc extends SafeBloc<LoginEvent, LoginState> {
   final UserRepository userRespository;
 
-  LoginBloc({required this.userRespository})
-      : super(const LoginState()) {
+  LoginBloc({required this.userRespository}) : super(const LoginState()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<ErrorOccurred>(_onErrorOcurred);
@@ -21,6 +20,7 @@ class LoginBloc extends SafeBloc<LoginEvent, LoginState> {
   void _onLoginCompleted(LoginCompleted event, Emitter<LoginState> emit) {
     emit(state.copyWith(
       formStatus: LoginFormStatus.valid,
+      isClient: event.isClient,
     ));
   }
 
@@ -64,10 +64,8 @@ class LoginBloc extends SafeBloc<LoginEvent, LoginState> {
     if (isLoggedResult.isSuccessful()) {
       final isLogged = isLoggedResult.getValue();
 
-      if (isLogged) {
-        add(LoginCompleted());
-        return;
-      }
+      add(LoginCompleted(isLogged));
+      return;
     }
     add(ErrorOccurred(errorMessage: isLoggedResult.getError().toString()));
   }

@@ -11,17 +11,19 @@ import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
 import 'package:gymnastic_center/application/clients/link-device/link_device_bloc.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/course-details/course_details_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
+import 'package:gymnastic_center/application/courses/delete-lesson/delete_lesson_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
+import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
+import 'package:gymnastic_center/application/profile/profile_bloc.dart';
+import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
+import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/course-progress/course_progress_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/suscribed-courses/suscribed_courses_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/suscription/suscription_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
-import 'package:gymnastic_center/application/notifications/notification-list/notification_list_bloc.dart';
-import 'package:gymnastic_center/application/search/bloc/search_bloc.dart';
-import 'package:gymnastic_center/application/search/tags/tags_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
 import 'package:gymnastic_center/application/trainers/delete-trainer/delete_trainer_bloc.dart';
@@ -37,9 +39,9 @@ import 'package:gymnastic_center/infrastructure/datasources/client/clients_datas
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/hive_cache_proxy_courses_datasource.dart';
-import 'package:gymnastic_center/infrastructure/datasources/suscriptions/api_suscription_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/notifications/notifications_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/search/api_search_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/suscriptions/api_suscription_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/hive_cache_proxy_trainers_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
@@ -51,9 +53,9 @@ import 'package:gymnastic_center/infrastructure/repositories/categories/categori
 import 'package:gymnastic_center/infrastructure/repositories/clients/clients_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/comments/comments_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/courses/courses_repository_impl.dart';
-import 'package:gymnastic_center/infrastructure/repositories/suscriptions/suscription_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/notifications/notifications_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/search/search_repository_impl.dart';
+import 'package:gymnastic_center/infrastructure/repositories/suscriptions/suscription_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/trainers/trainers_repository_impl.dart';
 import 'package:gymnastic_center/infrastructure/repositories/user/user_repository_impl.dart';
 
@@ -153,5 +155,11 @@ class Injector {
     getIt.registerFactory(() => DeleteCourseBloc(coursesRepositoryImpl));
 
     getIt.registerFactory(() => DeleteTrainerBloc(trainersRepositoryImpl));
+
+    getIt.registerFactory(() => ProfileBloc(
+        suscriptionRepository: suscriptionRepositoryImpl,
+        trainersRepository: trainersRepositoryImpl));
+
+    getIt.registerFactory(() => DeleteLessonBloc(coursesRepositoryImpl));
   }
 }

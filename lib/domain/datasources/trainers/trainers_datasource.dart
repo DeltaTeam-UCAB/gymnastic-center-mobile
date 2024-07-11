@@ -12,8 +12,6 @@ class TrainerDetails {
     this.courseCount = 0,
     this.blogCount = 0,
   });
-
-  
 }
 
 abstract class TrainersDataSource {
@@ -25,5 +23,5 @@ abstract class TrainersDataSource {
     bool filterByFollowed = false,
   });
   Future<String> deleteTrainer(String trainerId);
-
+  Future<int> getFollowingTrainersCount();
 }

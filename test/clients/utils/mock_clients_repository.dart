@@ -26,6 +26,7 @@ class MockClientsRepository extends ClientsRepository {
     }
     return Future.value(Result.success(true));
   }
+
   @override
   Future<Result<Client>> getClientData() {
     if (shouldFail) {
@@ -41,7 +42,9 @@ class MockClientsRepository extends ClientsRepository {
       String? phone,
       String? avatarImage,
       String? password}) {
-    // TODO: implement update
-    throw UnimplementedError();
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('An error occurred')));
+    }
+    return Future.value(Result.success(true));
   }
 }

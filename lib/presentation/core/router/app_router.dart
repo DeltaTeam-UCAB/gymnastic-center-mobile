@@ -3,11 +3,25 @@ import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart
 import 'package:gymnastic_center/presentation/screens/categories/categories_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/suscriptions/courses_suscriptions_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/about_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/coming_soon_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(
     initialLocation: '/splash',
     routes: [
+      GoRoute(
+          path: '/admin/:page',
+          builder: (context, state) {
+            final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+            return HomeAdminScreen(pageIndex: pageIndex);
+          },
+          routes: [
+            GoRoute(
+                path: 'courses/:courseId',
+                builder: (context, state) => LessonsAdminScreen(
+                    courseId: state.pathParameters['courseId'] ?? '')),
+          ]),
       GoRoute(
           path: '/home/:page',
           builder: (context, state) {
@@ -23,11 +37,13 @@ class RoutesManager {
             GoRoute(
               path: 'course/:courseId/:selectedLessonId',
               builder: (context, state) {
-                final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+                final selectedLessonId =
+                    state.pathParameters['selectedLessonId'] ?? '';
                 return LessonScreen(
-                  courseId: state.pathParameters['courseId'] ?? '',
-                  selectedLessonId:
-                      selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+                    courseId: state.pathParameters['courseId'] ?? '',
+                    selectedLessonId: selectedLessonId == 'no-lesson'
+                        ? ''
+                        : selectedLessonId);
               },
             ),
             GoRoute(
@@ -66,7 +82,10 @@ class RoutesManager {
             ),
             GoRoute(
                 path: 'trainers',
-                builder: (context, state) => const TrainersScreen()),
+                builder: (context, state) => TrainersScreen(
+                      filteredByFollowed:
+                          state.uri.queryParameters['filteredByFollowed'],
+                    )),
             GoRoute(
               path: 'trainer/:trainerId',
               builder: (context, state) => TrainerScreen(
@@ -83,13 +102,14 @@ class RoutesManager {
             return VideoPlayerScreen(videoURL: (state.extra as String));
           }),
       GoRoute(
-      path: '/course/:courseId/:selectedLessonId',
+        path: '/course/:courseId/:selectedLessonId',
         builder: (context, state) {
-          final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+          final selectedLessonId =
+              state.pathParameters['selectedLessonId'] ?? '';
           return LessonScreen(
-            courseId: state.pathParameters['courseId'] ?? '',
-            selectedLessonId:
-                selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+              courseId: state.pathParameters['courseId'] ?? '',
+              selectedLessonId:
+                  selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
         },
       ),
       GoRoute(
@@ -150,10 +170,28 @@ class RoutesManager {
       GoRoute(
         path: '/suscribed-courses',
         builder: (context, state) => const SuscribedCoursesScreen(),
+      ),
+      GoRoute(
+        path: '/language',
+        builder: (context, state) => const ComingSoonScreen(
+          title: 'Language',
+        ),
+      ),
+      GoRoute(
+        path: '/rate-us',
+        builder: (context, state) => const ComingSoonScreen(
+          title: 'Rate us',
+        ),
+      ),
+      GoRoute(
+        path: '/about',
+        builder: (context, state) => const AboutScreen(),
       )
     ],
     redirect: (context, state) async {
       final isGoingTo = state.matchedLocation;
+      final isAdmin =
+          await LocalStorageService().getValue<bool>('isAdmin') != null;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;
       final hasSeenWelcome =
@@ -173,6 +211,7 @@ class RoutesManager {
       }
 
       if (isGoingTo == '/welcome') {
+        if (isAdmin) return '/admin/0';
         if (isAutorized) return '/';
         if (hasSeenWelcome) return '/start';
         return null;

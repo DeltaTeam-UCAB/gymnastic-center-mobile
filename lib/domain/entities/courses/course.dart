@@ -12,7 +12,7 @@ class Course {
   final String durationWeeks;
   final String durationMinutes;
   final DateTime released;
-  final List<Lesson>? lessons;
+  final List<Lesson> lessons;
 
   Course({
     required this.id,
@@ -35,7 +35,6 @@ class Lesson {
   final String title;
   final String content;
   final String video;
-  final String image;
   final int order;
 
   const Lesson({
@@ -43,7 +42,6 @@ class Lesson {
     required this.title,
     required this.content,
     required this.video,
-    required this.image,
     required this.order,
   });
 }

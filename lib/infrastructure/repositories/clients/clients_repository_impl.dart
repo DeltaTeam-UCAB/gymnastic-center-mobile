@@ -18,9 +18,9 @@ class ClientsRepositoryImpl extends ClientsRepository {
       return Result.success(resp);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
-        Result.fail(Exception('Unathorized'));
+        return Result.fail(Exception('Unathorized'));
       }
-      rethrow;
+      return Result.fail(Exception('Updated Failed'));
     }
   }
 
@@ -41,9 +41,9 @@ class ClientsRepositoryImpl extends ClientsRepository {
       return Result.success(true);
     } catch (e) {
       if (e is DioException && e.response?.statusCode != 500) {
-        Result.fail(Exception('Unathorized'));
+        return Result.fail(Exception('Unathorized'));
       }
-      rethrow;
+      return Result.fail(Exception('Updated Failed'));
     }
   }
   

@@ -11,3 +11,5 @@ class CourseLoaded extends CourseDetailsEvent{
 
 class LoadingStarted extends CourseDetailsEvent{}
 class ErrorOnCourseLoading extends CourseDetailsEvent{}
+class RefreshCourse extends CourseDetailsEvent {}
+

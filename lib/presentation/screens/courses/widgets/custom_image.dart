@@ -30,7 +30,9 @@ class CustomImage extends StatelessWidget {
             height: 400,
             fit: BoxFit.fill,
             progressIndicatorBuilder: (context, url, loadingProgress) {
-              return const SizedBox();
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             },
           ),
         ),

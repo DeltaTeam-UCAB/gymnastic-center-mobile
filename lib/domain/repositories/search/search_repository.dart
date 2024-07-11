@@ -9,5 +9,5 @@ abstract class SearchRepository {
     required String term,
   });
 
-  Future<Result<List<String>>> loadPopularTags([page = 1, perPage = 10]);
+  Future<Result<List<String>>> loadPopularTags({int page = 1, int perPage = 8});
 }

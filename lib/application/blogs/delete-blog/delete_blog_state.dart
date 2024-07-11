@@ -1,7 +1,7 @@
 part of 'delete_blog_bloc.dart';
 
 
-enum DeleteBlogStatus {initial, deleting, error}
+enum DeleteBlogStatus {initial, deleting, deleted ,error}
 class DeleteBlogState extends Equatable {
 
 

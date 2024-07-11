@@ -22,7 +22,8 @@ final initialCourse = Course(
     released: DateTime.now(),
     lessons: []);
 
-class CourseDetailsBloc extends SafeBloc<CourseDetailsEvent, CourseDetailsState> {
+class CourseDetailsBloc
+    extends SafeBloc<CourseDetailsEvent, CourseDetailsState> {
   final CoursesRepository coursesRepository;
 
   CourseDetailsBloc(this.coursesRepository)
@@ -30,6 +31,15 @@ class CourseDetailsBloc extends SafeBloc<CourseDetailsEvent, CourseDetailsState>
     on<CourseLoaded>(_onCourseLoaded);
     on<LoadingStarted>(_onLoadingStarted);
     on<ErrorOnCourseLoading>(_onErrorOnCourseLoading);
+    on<RefreshCourse>(_onRefreshCourse);
+  }
+
+  void _onRefreshCourse(RefreshCourse event, Emitter<CourseDetailsState> emit) {
+    final courseId = state.course.id;
+    emit(CourseDetailsState(
+      course: initialCourse,
+    ));
+    getCourseById(courseId);
   }
 
   void _onCourseLoaded(CourseLoaded event, Emitter<CourseDetailsState> emit) {
@@ -59,4 +69,6 @@ class CourseDetailsBloc extends SafeBloc<CourseDetailsEvent, CourseDetailsState>
     }
     add(ErrorOnCourseLoading());
   }
+
+  void refreshCourse() => add(RefreshCourse());
 }

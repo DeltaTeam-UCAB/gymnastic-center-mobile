@@ -18,6 +18,12 @@ class CoursesBloc extends SafeBloc<CoursesEvent, CoursesState> {
     on<CourseLoading>(_onCourseLoading);
     on<CoursesIsEmpty>(_onCourseIsEmpty);
     on<CourseError>(_onCourseError);
+    on<RefreshCourses>(_onRefreshCourses);
+  }
+
+  void _onRefreshCourses(RefreshCourses event, Emitter<CoursesState> emit) {
+    emit(const CoursesState());
+    loadNextPage();
   }
 
   void _onCourseError(CourseError event, Emitter<CoursesState> emit) {
@@ -66,4 +72,6 @@ class CoursesBloc extends SafeBloc<CoursesEvent, CoursesState> {
     }
     add(const CourseError());
   }
+
+  void refreshCourses() => add(RefreshCourses());
 }

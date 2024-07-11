@@ -10,4 +10,5 @@ abstract class TrainersRepository {
     bool filterByFollowed = false,
   });
   Future<Result<String>> deleteTrainer(String trainerId);
+  Future<Result<int>> getFollowingTrainersCount();
 }

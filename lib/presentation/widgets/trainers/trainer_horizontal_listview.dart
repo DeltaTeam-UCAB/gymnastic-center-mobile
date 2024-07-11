@@ -127,6 +127,8 @@ class _TrainerSlide extends StatelessWidget {
               children: [
                 Text(
                   trainer.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -134,6 +136,8 @@ class _TrainerSlide extends StatelessWidget {
                 ),
                 Text(
                   trainer.location,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: Colors.deepPurple.shade200,
                       fontSize: 10,

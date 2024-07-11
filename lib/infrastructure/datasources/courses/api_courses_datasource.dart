@@ -40,8 +40,7 @@ class ApiCoursesDatasource extends CoursesDatasource {
       queryParameters['category'] = category;
     }
 
-    final response =
-        await dio.get('/many', queryParameters: queryParameters);
+    final response = await dio.get('/many', queryParameters: queryParameters);
     final List<Course> courses = [];
 
     for (final course in response.data ?? []) {
@@ -58,12 +57,14 @@ class ApiCoursesDatasource extends CoursesDatasource {
     final courseResponse = CourseResponse.fromJson(response.data);
     return CourseMapper.courseToEntity(courseResponse);
   }
-  
+
   @override
   Future<String> deleteCourse(String courseId) async {
     final response = await dio.delete('/one/$courseId');
     return response.data['id'] ?? '';
   }
 
-  
+  @override
+  Future<void> deleteLesson(String courseId, String lessonId) async =>
+      await dio.delete('/remove/lesson/$courseId/$lessonId');
 }

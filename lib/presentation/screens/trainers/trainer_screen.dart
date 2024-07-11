@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/trainers/follow-trainer/follow_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer-details/trainer_details_bloc.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';

@@ -29,21 +29,18 @@ void main() {
             title: 'title',
             content: 'content',
             video: 'video',
-            image: 'image',
             order: 1),
         const Lesson(
             id: '2',
             title: 'title',
             content: 'content',
             video: 'video',
-            image: 'image',
             order: 2),
         const Lesson(
             id: '3',
             title: 'title',
             content: 'content',
             video: 'video',
-            image: 'image',
             order: 3),
       ],
       level: 'EASY',
@@ -55,8 +52,8 @@ void main() {
   blocTest(
     'Should emit LessonsState with LessonsStatus [loaded] and currentLesson, isFirstLesson [false], isLastLesson [true] when changeToNextLesson is called and succeeds',
     seed: () => LessonsState(
-      currentLesson: mockCourses.lessons![1],
-      lessons: mockCourses.lessons!,
+      currentLesson: mockCourses.lessons[1],
+      lessons: mockCourses.lessons,
       imgSelectedCourse: mockCourses.image,
       isFirstLesson: false,
       isLastLesson: false,
@@ -67,8 +64,8 @@ void main() {
     expect: () => [
       LessonsState(
         status: LessonsStatus.loaded,
-        currentLesson: mockCourses.lessons!.last,
-        lessons: mockCourses.lessons!,
+        currentLesson: mockCourses.lessons.last,
+        lessons: mockCourses.lessons,
         imgSelectedCourse: mockCourses.image,
         isFirstLesson: false,
         isLastLesson: true,

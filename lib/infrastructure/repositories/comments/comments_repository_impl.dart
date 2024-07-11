@@ -35,15 +35,15 @@ class CommentsRepositoryImpl extends CommentsRepository {
       final dislike = await commentsDatasource.toggleLikeCommentById(commentId);
       return Result<bool>.success(dislike);
     } catch (e) {
-      return Result<bool>.fail(e as Exception);
+      return Result<bool>.fail(e  as Exception);
     }
   }
   
   @override
-  Future<Result<String>> createComment(String targetId, String targetType, String message) async {
+  Future<Result<bool>> createComment(String targetId, String targetType, String message) async {
     try {
-      final commentId = await commentsDatasource.createComment(targetId, targetType, message);
-      return Result.success(commentId);
+      await commentsDatasource.createComment(targetId, targetType, message);
+      return Result.success(true);
     } catch (e) {
       return Result.fail(e as Exception);
     }

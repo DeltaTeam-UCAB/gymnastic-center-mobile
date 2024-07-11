@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/categories/bloc/categories_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/suscriptions/trending-progress/trending_progress_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/trainers/trainers_datasource.dart';

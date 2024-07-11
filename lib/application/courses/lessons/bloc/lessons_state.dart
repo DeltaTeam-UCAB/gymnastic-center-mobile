@@ -21,7 +21,7 @@ class LessonsState extends Equatable {
   const LessonsState({
     this.selectedCourseId = '',
     this.imgSelectedCourse = '',
-    this.currentLesson = const Lesson(id: '', title: '', content: '', video: '', image: '', order: 0),
+    this.currentLesson = const Lesson(id: '', title: '', content: '', video: '', order: 0),
     this.lessons = const [],
     this.status = LessonsStatus.loading,
     this.isLastLesson = false,
