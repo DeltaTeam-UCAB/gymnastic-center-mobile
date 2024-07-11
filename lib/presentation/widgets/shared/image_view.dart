@@ -7,23 +7,10 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 class ImageView extends StatelessWidget {
   final String image;
-  late final bool _hasInternetConnection;
-  ImageView({super.key, required this.image}) {
-    InternetConnection().hasInternetAccess.then((value) {
-      _hasInternetConnection = value;
-    });
-  }
+  const ImageView({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
-    if (!_hasInternetConnection) {
-      return FadeIn(
-          child: CachedNetworkImage(
-        imageUrl: image,
-        fit: BoxFit.cover,
-      ));
-    }
-
     late ImageProvider imageProvider;
 
     if (image.startsWith('http')) {
