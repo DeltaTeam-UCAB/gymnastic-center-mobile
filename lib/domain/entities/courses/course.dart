@@ -12,7 +12,7 @@ class Course {
   final String durationWeeks;
   final String durationMinutes;
   final DateTime released;
-  final List<Lesson>? lessons;
+  final List<Lesson> lessons;
 
   Course({
     required this.id,

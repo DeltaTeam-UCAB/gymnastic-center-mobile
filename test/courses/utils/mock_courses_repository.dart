@@ -41,4 +41,14 @@ class MockCoursesRepository extends CoursesRepository {
     courses.removeWhere((course) => course.id == courseId);
     return Future.value(Result.success('course deleted'));
   }
+  
+  @override
+  Future<Result<bool>> deleteLesson(String courseId, String lessonId) {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('Failed to delete lesson')));
+    }
+    final course = courses.firstWhere((course) => course.id == courseId);
+    course.lessons.removeWhere((lesson) => lesson.id == lessonId);
+    return Future.value(Result.success(true));
+  }
 }

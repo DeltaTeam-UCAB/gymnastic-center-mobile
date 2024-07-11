@@ -2,7 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
 import 'package:gymnastic_center/domain/datasources/courses/course_datasource.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
@@ -114,13 +115,16 @@ class CustomGridView extends StatelessWidget {
       itemCount: courses.length,
       itemBuilder: (context, index) {
         final course = courses[index];
-        return SlideAdmin(
-          id: course.id,
-          image: course.image,
-          onPressed: context.read<DeleteCourseBloc>().deleteCourse,
-          title: course.title,
-          trainer: course.trainer.name,
-          type: 'Course',
+        return GestureDetector(
+          onTap: () => context.push('/admin/1/courses/${course.id}'),
+          child: SlideAdmin(
+            id: course.id,
+            image: course.image,
+            onPressed: context.read<DeleteCourseBloc>().deleteCourse,
+            title: course.title,
+            trainer: course.trainer.name,
+            type: 'Course',
+          ),
         );
       },
     );

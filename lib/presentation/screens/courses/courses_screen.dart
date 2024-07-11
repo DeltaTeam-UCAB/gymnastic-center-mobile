@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/domain/entities/courses/course.dart';
 import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/courses/course_slide.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymnastic_center/application/auth/recover_password/recover_password_bloc.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/notifications/bloc/notifications_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/infrastructure/core/constants/environment.dart';

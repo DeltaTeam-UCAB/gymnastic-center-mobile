@@ -12,4 +12,5 @@ abstract class CoursesRepository {
 
   Future<Result<Course>> getCourseById(String id);
   Future<Result<String>> deleteCourse(String courseId);
+  Future<Result<bool>> deleteLesson(String courseId, String lessonId);
 }

@@ -44,7 +44,7 @@ void main() {
     expect: () => [
       LessonsState(
         status: LessonsStatus.changingLesson,
-        lessons: mockCourses.lessons!,
+        lessons: mockCourses.lessons,
         imgSelectedCourse: mockCourses.image,
         selectedCourseId: mockCourses.id,
       ),

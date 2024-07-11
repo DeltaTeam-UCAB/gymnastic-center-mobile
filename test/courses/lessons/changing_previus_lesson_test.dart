@@ -52,8 +52,8 @@ void main() {
   blocTest(
     'Should emit LessonsState with LessonsStatus [loaded] and currentLesson, isFirstLesson [false], isLastLesson [false] when changeToPreviousLesson is called and succeeds',
     seed: () => LessonsState(
-      currentLesson: mockCourses.lessons!.last,
-      lessons: mockCourses.lessons!,
+      currentLesson: mockCourses.lessons.last,
+      lessons: mockCourses.lessons,
       imgSelectedCourse: mockCourses.image,
       isFirstLesson: false,
       isLastLesson: true,
@@ -64,8 +64,8 @@ void main() {
     expect: () => [
       LessonsState(
         status: LessonsStatus.loaded,
-        currentLesson: mockCourses.lessons!.elementAt(1),
-        lessons: mockCourses.lessons!,
+        currentLesson: mockCourses.lessons.elementAt(1),
+        lessons: mockCourses.lessons,
         imgSelectedCourse: mockCourses.image,
         isFirstLesson: false,
         isLastLesson: false,

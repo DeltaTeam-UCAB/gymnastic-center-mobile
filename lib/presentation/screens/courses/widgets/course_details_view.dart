@@ -61,7 +61,7 @@ class CourseDetailsView extends StatelessWidget {
         ),
 
         LessonsListView(
-          lessons: course.lessons!,
+          lessons: course.lessons,
           onPressedLesson: (lesson) async {
               if ( suscribeStatus == SuscribedStatus.unsuscribed){
                 await context.read<SuscriptionBloc>().suscribeToCourse(course.id);
