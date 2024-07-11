@@ -7,7 +7,6 @@ class HiveCacheProvider extends CacheProvider {
   Future<Optional<T>> read<T>(String collection, String identifier) async {
     var box = await Hive.openBox<T>(collection);
     var value = Optional(box.get(identifier));
-    await box.close();
     return value;
   }
 
@@ -15,7 +14,6 @@ class HiveCacheProvider extends CacheProvider {
   Future<void> write<T>(T data, String collection, String identifier) async {
     var box = await Hive.openBox<T>(collection);
     await box.put(identifier, data);
-    await box.close();
   }
 
   @override
@@ -28,7 +26,6 @@ class HiveCacheProvider extends CacheProvider {
     var boxArraySize =
         await Hive.openBox<int>('${collection}_${identifier}_params');
     int arraySize = boxArraySize.get('size')!;
-    await boxArraySize.close();
 
     List<T> array = [];
 
@@ -43,7 +40,6 @@ class HiveCacheProvider extends CacheProvider {
         array.add(data);
       }
     }
-    await box.close();
     return Optional(array);
   }
 
@@ -53,19 +49,16 @@ class HiveCacheProvider extends CacheProvider {
     var boxArraySize =
         await Hive.openBox<int>('${collection}_${identifier}_params');
     await boxArraySize.put('size', data.length);
-    await boxArraySize.close();
 
     var box = await Hive.openBox<T>('${collection}_$identifier');
     for (int i = 0; i < data.length; i++) {
       await box.put('$i', data[i]);
     }
-    await box.close();
   }
 
   @override
   Future<void> delete<T>(String collection, String identifier) async {
     var box = await Hive.openBox<T>(collection);
     await box.delete(identifier);
-    await box.close();
   }
 }
