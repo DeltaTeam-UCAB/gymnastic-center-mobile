@@ -13,7 +13,8 @@ class MockTrainerRepository extends TrainersRepository {
   @override
   Future<Result<TrainerDetails>> getTrainerById(String trainerId) {
     if (trainers.isNotEmpty) {
-      final trainerDetails = trainers.firstWhere((element) => element.trainer.id == trainerId);
+      final trainerDetails =
+          trainers.firstWhere((element) => element.trainer.id == trainerId);
       return Future.value(Result.success(TrainerDetails(
           trainer: trainerDetails.trainer,
           blogCount: 10,
@@ -45,7 +46,7 @@ class MockTrainerRepository extends TrainersRepository {
     return Future.value(Result.success(
         [TrainerDetails(trainer: trainers.first.trainer, isFollowing: false)]));
   }
-  
+
   @override
   Future<Result<String>> deleteTrainer(String trainerId) {
     if (shouldFail) {
@@ -53,5 +54,13 @@ class MockTrainerRepository extends TrainersRepository {
     }
     trainers.removeWhere((trainer) => trainer.trainer.id == trainerId);
     return Future.value(Result.success('course deleted'));
+  }
+
+  @override
+  Future<Result<int>> getFollowingTrainersCount() {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('Error loading profile')));
+    }
+    return Future.value(Result.success(5));
   }
 }

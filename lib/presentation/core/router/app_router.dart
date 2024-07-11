@@ -23,11 +23,13 @@ class RoutesManager {
             GoRoute(
               path: 'course/:courseId/:selectedLessonId',
               builder: (context, state) {
-                final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+                final selectedLessonId =
+                    state.pathParameters['selectedLessonId'] ?? '';
                 return LessonScreen(
-                  courseId: state.pathParameters['courseId'] ?? '',
-                  selectedLessonId:
-                      selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+                    courseId: state.pathParameters['courseId'] ?? '',
+                    selectedLessonId: selectedLessonId == 'no-lesson'
+                        ? ''
+                        : selectedLessonId);
               },
             ),
             GoRoute(
@@ -66,7 +68,10 @@ class RoutesManager {
             ),
             GoRoute(
                 path: 'trainers',
-                builder: (context, state) => const TrainersScreen()),
+                builder: (context, state) => TrainersScreen(
+                      filteredByFollowed:
+                          state.uri.queryParameters['filteredByFollowed'],
+                    )),
             GoRoute(
               path: 'trainer/:trainerId',
               builder: (context, state) => TrainerScreen(
@@ -83,13 +88,14 @@ class RoutesManager {
             return VideoPlayerScreen(videoURL: (state.extra as String));
           }),
       GoRoute(
-      path: '/course/:courseId/:selectedLessonId',
+        path: '/course/:courseId/:selectedLessonId',
         builder: (context, state) {
-          final selectedLessonId = state.pathParameters['selectedLessonId'] ?? '';
+          final selectedLessonId =
+              state.pathParameters['selectedLessonId'] ?? '';
           return LessonScreen(
-            courseId: state.pathParameters['courseId'] ?? '',
-            selectedLessonId:
-                selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
+              courseId: state.pathParameters['courseId'] ?? '',
+              selectedLessonId:
+                  selectedLessonId == 'no-lesson' ? '' : selectedLessonId);
         },
       ),
       GoRoute(

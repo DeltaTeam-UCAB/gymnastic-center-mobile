@@ -8,10 +8,15 @@ import 'package:gymnastic_center/injector.dart';
 import 'package:gymnastic_center/presentation/widgets/shared/navigation_bar/custom_bottom_navigation.dart';
 
 class TrainersScreen extends StatelessWidget {
-  const TrainersScreen({super.key});
+  const TrainersScreen({super.key, this.filteredByFollowed});
+  final String? filteredByFollowed;
 
   @override
   Widget build(BuildContext context) {
+    late bool filterByFollowedBool = false;
+    if (filteredByFollowed != null && filteredByFollowed == 'true') {
+      filterByFollowedBool = true;
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -28,7 +33,9 @@ class TrainersScreen extends StatelessWidget {
                 color: Colors.white,
               )),
         ),
-        body: const _TrainersView(),
+        body: _TrainersView(
+          followingTrainers: filterByFollowedBool,
+        ),
         bottomNavigationBar: const CustomBottomNavigation(
           currentIndex: 0,
         ),
@@ -38,7 +45,8 @@ class TrainersScreen extends StatelessWidget {
 }
 
 class _TrainersView extends StatefulWidget {
-  const _TrainersView();
+  const _TrainersView({required this.followingTrainers});
+  final bool followingTrainers;
 
   @override
   State<_TrainersView> createState() => _TrainersViewState();
@@ -49,12 +57,12 @@ class _TrainersViewState extends State<_TrainersView> {
 
   @override
   void initState() {
-    context.read<TrainersBloc>().loadNextPage();
+    context.read<TrainersBloc>().loadNextPage(widget.followingTrainers);
     _scrollController.addListener(() {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        context.read<TrainersBloc>().loadNextPage();
+        context.read<TrainersBloc>().loadNextPage(widget.followingTrainers);
       }
     });
     super.initState();
