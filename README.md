@@ -2,7 +2,7 @@
 
 Gymnastic Center is an Android app developed in Flutter that promotes physical and mental wellness through guided meditation and yoga courses.
 
-<div style="display: flex; flex-wrap: nowrap;">
+<div style="display: flex; flex-wrap: nowrap; justify-content: center;">
   <img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/main/assets/icon/logoApp_purple.png" width="30%" style="margin: 0 10px;">
 </div>
 
