@@ -38,21 +38,17 @@ class CourseResponse {
             : TrainerResponse.fromJson(json["trainer"]),
         category: json["category"],
         image: json["image"],
-        durationMinutes: json['durationMinutes'] != null
-            ? json['durationMinutes'].toString()
-            : '',
-        durationWeeks: json['durationWeeks'] != null
-            ? json['durationWeeks'].toString()
-            : '',
+        durationMinutes: json['durationMinutes'].toString(),
+        durationWeeks: json['durationWeeks'].toString(),
         tags: json["tags"] != null
             ? List<String>.from(json["tags"].map((x) => x))
             : [],
-        date: DateTime.parse(json["date"]),
+        date: json["date"] != null ? DateTime.parse(json["date"]) : DateTime.now(),
         lessons: json["lessons"] != null
-            ? List<LessonResponse>.from(json["lessons"].map((x) =>
-                LessonResponse.fromJson(x, json["lessons"].indexOf(x) + 1)))
+            ? List<LessonResponse>.from(
+                json["lessons"].map((x) => LessonResponse.fromJson(x, json["lessons"].indexOf(x) + 1)))
             : [],
-        level: json["level"] != null ? json["level"].toString() : 'EASY',
+        level: json["level"].toString(),
       );
 }
 
@@ -71,8 +67,7 @@ class LessonResponse {
     required this.order,
   });
 
-  factory LessonResponse.fromJson(Map<String, dynamic> json, int position) =>
-      LessonResponse(
+  factory LessonResponse.fromJson(Map<String, dynamic> json, int position) => LessonResponse(
         id: json["id"],
         title: json["title"],
         content: json["content"],

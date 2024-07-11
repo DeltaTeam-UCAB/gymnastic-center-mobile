@@ -5,9 +5,10 @@ enum TagStatus { loading, success, failure }
 class TagsState extends Equatable {
   final List<String> tags;
   final TagStatus status;
-
+  final int perPage;
 
   const TagsState({
+    this.perPage = 8,
     this.tags = const [],
     this.status = TagStatus.loading,
   });
@@ -23,6 +24,6 @@ class TagsState extends Equatable {
   }
   
   @override
-  List<Object> get props => [tags, status];
+  List<Object> get props => [tags, status, perPage];
 }
 

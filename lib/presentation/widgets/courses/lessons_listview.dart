@@ -59,7 +59,10 @@ class _LessonsListViewState extends State<LessonsListView> {
                   ,
                   headerBuilder: (context, isExpanded) {
                     return ListTile(
-                      title: Text(lesson.title),
+                      title: Text(
+                              lesson.title,
+                              overflow: (isExpanded) ? TextOverflow.clip : TextOverflow.ellipsis,
+                            ),
                       leading: const Icon(Icons.video_library),
                     );
                   },

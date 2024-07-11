@@ -161,19 +161,19 @@ class CommentsBloc extends SafeBloc<CommentsEvent, CommentsState> {
     );
   }
 
-  Future<void> toggleLike(String commentId) async{
+  Future<void> toggleLike(String commentId, bool commentLikeState) async{
     final commentLikedResult = await commentsRepository.toggleLikeCommentById(commentId);
     if (commentLikedResult.isSuccessful()){
-      add(CommentLikesChanged(commentId: commentId, newCommentLikeState: commentLikedResult.getValue()));
+      add(CommentLikesChanged(commentId: commentId, newCommentLikeState: !commentLikeState));
       return;
     }
     add(ErrorOccurred());
   }
 
-  Future<void> toggleDislike(String commentId) async{
+  Future<void> toggleDislike(String commentId, bool commentDislikeState) async{
     final commentDislikedResult = await commentsRepository.toggleDislikeCommentById(commentId);
     if (commentDislikedResult.isSuccessful()){
-      add(CommentDiskesChanged(commentId: commentId, newCommentDislikeState: commentDislikedResult.getValue()));
+      add(CommentDiskesChanged(commentId: commentId, newCommentDislikeState: !commentDislikeState));
       return;
     }
     add(ErrorOccurred());

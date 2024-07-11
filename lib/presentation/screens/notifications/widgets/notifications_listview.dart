@@ -47,15 +47,14 @@ class _NotificationsListViewState extends State<NotificationsListView> {
         }
         return state.notifications.isEmpty
             ? _emptyNotificationsView(colors, context)
-            : Expanded(
-                child: ListView.separated(
-                  itemCount: state.notifications.length,
-                  itemBuilder: (context, index) => _CustomNotification(
-                      notification: state.notifications[index]),
-                  separatorBuilder: (context, index) =>
-                      const Divider(height: 2),
-                ),
-              );
+            : ListView.separated(
+              itemCount: state.notifications.length,
+              controller: _scrollController,
+              itemBuilder: (context, index) => _CustomNotification(
+                  notification: state.notifications[index]),
+              separatorBuilder: (context, index) =>
+                  const Divider(height: 2),
+            );
       },
     );
   }

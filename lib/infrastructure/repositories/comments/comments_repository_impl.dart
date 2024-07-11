@@ -35,7 +35,7 @@ class CommentsRepositoryImpl extends CommentsRepository {
       final dislike = await commentsDatasource.toggleLikeCommentById(commentId);
       return Result<bool>.success(dislike);
     } catch (e) {
-      return Result<bool>.fail(e as Exception);
+      return Result<bool>.fail(e  as Exception);
     }
   }
   
