@@ -38,17 +38,17 @@ class CourseResponse {
             : TrainerResponse.fromJson(json["trainer"]),
         category: json["category"],
         image: json["image"],
-        durationMinutes: json['durationMinutes'] ?? '',
-        durationWeeks: json['durationWeeks'] ?? '',
+        durationMinutes: json['durationMinutes'].toString(),
+        durationWeeks: json['durationWeeks'].toString(),
         tags: json["tags"] != null
             ? List<String>.from(json["tags"].map((x) => x))
             : [],
-        date: DateTime.parse(json["date"]),
+        date: json["date"] != null ? DateTime.parse(json["date"]) : DateTime.now(),
         lessons: json["lessons"] != null
             ? List<LessonResponse>.from(
-                json["lessons"].map((x) => LessonResponse.fromJson(x)))
+                json["lessons"].map((x) => LessonResponse.fromJson(x, json["lessons"].indexOf(x) + 1)))
             : [],
-        level: json["level"] ?? '',
+        level: json["level"].toString(),
       );
 }
 
@@ -69,12 +69,12 @@ class LessonResponse {
     required this.image,
   });
 
-  factory LessonResponse.fromJson(Map<String, dynamic> json) => LessonResponse(
+  factory LessonResponse.fromJson(Map<String, dynamic> json, int position) => LessonResponse(
         id: json["id"],
         title: json["title"],
         content: json["content"],
         video: json["video"] ?? '',
-        order: json["order"],
+        order: json["order"] ?? position,
         image: json["image"] ?? '',
       );
 }

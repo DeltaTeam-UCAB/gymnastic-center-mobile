@@ -45,6 +45,7 @@ class TrainerDetailsBloc
       CurrentTrainer event, Emitter<TrainerDetailsState> emit) {
     emit(state.copyWith(
       trainer: event.trainer,
+      isFollowing: event.isFollowing,
       courseCount: event.courseCount,
       blogCount: event.blogCount,
       isLoading: false,

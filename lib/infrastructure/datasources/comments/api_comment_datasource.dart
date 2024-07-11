@@ -53,14 +53,15 @@ class ApiCommentDatasource extends CommentsDatasource {
   @override
   Future<bool> toggleLikeCommentById(String commentId) async {
     final response = await dio.post('/toggle/like/$commentId');
-    final bool like = response.data['like'];
+    final bool like = response.data['like'] ?? true;
     return like;
   }
 
   @override
   Future<bool> toggleDislikeCommentById(String commentId) async {
     final response = await dio.post('/toggle/dislike/$commentId');
-    final bool dislike = response.data['dislike'];
+
+    final bool dislike = response.data['dislike'] ?? true;
     return dislike;
   }
   
@@ -77,7 +78,7 @@ class ApiCommentDatasource extends CommentsDatasource {
       data: body
     );
 
-    return response.data['commentId'];
+    return response.data['commentId'] ?? '';
   }
   
   @override
