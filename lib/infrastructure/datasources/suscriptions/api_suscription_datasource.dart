@@ -95,6 +95,6 @@ class APISuscriptionDatasource extends SuscriptionsDatasource {
   @override
   Future<int> getSuscribedCoursesCount() async {
     final response = await dio.get('/count/client');
-    return response.data["count"] ?? 5;
+    return response.data["count"];
   }
 }

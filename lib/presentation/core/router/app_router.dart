@@ -3,6 +3,8 @@ import 'package:gymnastic_center/infrastructure/local_storage/local_storage.dart
 import 'package:gymnastic_center/presentation/screens/categories/categories_screen.dart';
 import 'package:gymnastic_center/presentation/screens/screens.dart';
 import 'package:gymnastic_center/presentation/screens/suscriptions/courses_suscriptions_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/about_screen.dart';
+import 'package:gymnastic_center/presentation/screens/tabs/coming_soon_screen.dart';
 
 class RoutesManager {
   static GoRouter appRouter = GoRouter(
@@ -156,6 +158,22 @@ class RoutesManager {
       GoRoute(
         path: '/suscribed-courses',
         builder: (context, state) => const SuscribedCoursesScreen(),
+      ),
+      GoRoute(
+        path: '/language',
+        builder: (context, state) => const ComingSoonScreen(
+          title: 'Language',
+        ),
+      ),
+      GoRoute(
+        path: '/rate-us',
+        builder: (context, state) => const ComingSoonScreen(
+          title: 'Rate us',
+        ),
+      ),
+      GoRoute(
+        path: '/about',
+        builder: (context, state) => const AboutScreen(),
       )
     ],
     redirect: (context, state) async {

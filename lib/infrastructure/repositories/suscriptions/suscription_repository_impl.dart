@@ -92,8 +92,8 @@ class SuscriptionRepositoryImpl extends SuscriptionRepository {
       final result = await suscriptionsDatasource.getSuscribedCoursesCount();
       return Result.success(result);
     } catch (error, _) {
-      if (error is DioException) {
-        return Result.fail(error);
+      if (error is DioException && error.response?.statusCode == 404) {
+        return Result.success(0);
       }
       return Result.fail(error as Exception);
     }

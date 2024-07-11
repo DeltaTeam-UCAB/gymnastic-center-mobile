@@ -34,8 +34,6 @@ class ProfileBloc extends SafeBloc<ProfileEvent, ProfileState> {
   }
 
   void loadProfileData() async {
-    late int followingTrainers;
-    late int suscribedCourses;
     if (state.isLoading || state.isError) return;
     add(const ProfileLoading());
 
@@ -45,8 +43,8 @@ class ProfileBloc extends SafeBloc<ProfileEvent, ProfileState> {
         await suscriptionRepository.getSuscribedCoursesCount();
     if (followingTrainersResult.isSuccessful() &&
         suscribedCoursesResult.isSuccessful()) {
-      followingTrainers = followingTrainersResult.getValue();
-      suscribedCourses = suscribedCoursesResult.getValue();
+      final followingTrainers = followingTrainersResult.getValue();
+      final suscribedCourses = suscribedCoursesResult.getValue();
       add(ProfileLoaded(suscribedCourses, followingTrainers));
     } else {
       add(const ProfileError());
