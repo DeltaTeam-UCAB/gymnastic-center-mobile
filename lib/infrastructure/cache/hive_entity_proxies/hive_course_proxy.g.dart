@@ -28,7 +28,7 @@ class HiveCourseAdapter extends TypeAdapter<HiveCourse> {
       durationMinutes: fields[9] as String,
       durationWeeks: fields[8] as String,
       released: fields[10] as DateTime,
-      lessons: (fields[11] as List?)?.cast<HiveLesson>(),
+      lessons: (fields[11] as List).cast<HiveLesson>(),
     );
   }
 
@@ -88,15 +88,14 @@ class HiveLessonAdapter extends TypeAdapter<HiveLesson> {
       title: fields[1] as String,
       content: fields[2] as String,
       video: fields[3] as String,
-      image: fields[4] as String,
-      order: fields[5] as int,
+      order: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLesson obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -106,8 +105,6 @@ class HiveLessonAdapter extends TypeAdapter<HiveLesson> {
       ..writeByte(3)
       ..write(obj.video)
       ..writeByte(4)
-      ..write(obj.image)
-      ..writeByte(5)
       ..write(obj.order);
   }
 

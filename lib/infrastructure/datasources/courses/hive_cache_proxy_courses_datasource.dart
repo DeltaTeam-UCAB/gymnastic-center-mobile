@@ -63,4 +63,16 @@ class HiveCacheProxyCoursesDatasource extends CoursesDatasource {
         .map((e) => e.toProxiedType())
         .toList();
   }
+
+  @override
+  Future<String> deleteCourse(String courseId) async {
+    var result = await datasource.deleteCourse(courseId);
+    await cacheProvider.delete('courses', courseId);
+    return result;
+  }
+
+  @override
+  Future<void> deleteLesson(String courseId, String lessonId) async {
+    return await datasource.deleteLesson(courseId, lessonId);
+  }
 }

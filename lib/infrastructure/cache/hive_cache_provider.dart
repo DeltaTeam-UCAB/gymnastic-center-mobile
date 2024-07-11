@@ -61,4 +61,11 @@ class HiveCacheProvider extends CacheProvider {
     }
     await box.close();
   }
+
+  @override
+  Future<void> delete<T>(String collection, String identifier) async {
+    var box = await Hive.openBox<T>(collection);
+    await box.delete(identifier);
+    await box.close();
+  }
 }

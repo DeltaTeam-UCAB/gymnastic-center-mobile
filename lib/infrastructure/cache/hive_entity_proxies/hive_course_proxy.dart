@@ -30,7 +30,7 @@ class HiveCourse extends HiveEntityProxy<Course> {
   @HiveField(10)
   final DateTime released;
   @HiveField(11)
-  final List<HiveLesson>? lessons;
+  final List<HiveLesson> lessons;
 
   HiveCourse({
     required this.id,
@@ -62,7 +62,7 @@ class HiveCourse extends HiveEntityProxy<Course> {
         durationWeeks: data.durationWeeks,
         released: data.released,
         lessons:
-            data.lessons?.map((e) => HiveLesson.fromProxiedType(e)).toList());
+            data.lessons.map((e) => HiveLesson.fromProxiedType(e)).toList());
   }
 
   @override
@@ -79,7 +79,7 @@ class HiveCourse extends HiveEntityProxy<Course> {
         durationMinutes: durationMinutes,
         durationWeeks: durationWeeks,
         released: released,
-        lessons: lessons?.map((e) => e.toProxiedType()).toList());
+        lessons: lessons.map((e) => e.toProxiedType()).toList());
   }
 }
 
@@ -94,8 +94,6 @@ class HiveLesson extends HiveEntityProxy<Lesson> {
   @HiveField(3)
   final String video;
   @HiveField(4)
-  final String image;
-  @HiveField(5)
   final int order;
 
   HiveLesson({
@@ -103,7 +101,6 @@ class HiveLesson extends HiveEntityProxy<Lesson> {
     required this.title,
     required this.content,
     required this.video,
-    required this.image,
     required this.order,
   });
 
@@ -114,18 +111,12 @@ class HiveLesson extends HiveEntityProxy<Lesson> {
         title: data.title,
         content: data.content,
         video: data.video,
-        image: data.image,
         order: data.order);
   }
 
   @override
   Lesson toProxiedType() {
     return Lesson(
-        id: id,
-        title: title,
-        content: content,
-        video: video,
-        image: image,
-        order: order);
+        id: id, title: title, content: content, video: video, order: order);
   }
 }

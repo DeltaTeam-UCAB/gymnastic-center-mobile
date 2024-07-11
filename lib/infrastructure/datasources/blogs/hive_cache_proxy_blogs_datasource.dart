@@ -68,4 +68,11 @@ class HiveCacheProxyBlogDatasource extends BlogsDatasource {
             identifier: blogId))
         .toProxiedType();
   }
+
+  @override
+  Future<String> deleteBlog(String blogId) async {
+    var result = await datasource.deleteBlog(blogId);
+    await cacheProvider.delete('blogs', blogId);
+    return result;
+  }
 }

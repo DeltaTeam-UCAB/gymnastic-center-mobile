@@ -53,4 +53,16 @@ class HiveCacheProxyTrainersDatasource extends TrainersDataSource {
   Future<bool> toggleFollow(String trainerId) async {
     return await datasource.toggleFollow(trainerId);
   }
+
+  @override
+  Future<String> deleteTrainer(String trainerId) async {
+    var result = await datasource.deleteTrainer(trainerId);
+    await cacheProvider.delete('trainers', trainerId);
+    return result;
+  }
+
+  @override
+  Future<int> getFollowingTrainersCount() async {
+    return await datasource.getFollowingTrainersCount();
+  }
 }
