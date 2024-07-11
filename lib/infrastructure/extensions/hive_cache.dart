@@ -29,5 +29,6 @@ extension HiveCache on HiveInterface {
     Hive.registerAdapter(HiveCourseAdapter());
     Hive.registerAdapter(HiveTrainerAdapter());
     Hive.registerAdapter(HiveTrainerDetailsAdapter());
+    Hive.registerAdapter(HiveLessonAdapter());
   }
 }
