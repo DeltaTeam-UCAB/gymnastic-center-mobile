@@ -1,6 +1,7 @@
 export 'package:gymnastic_center/presentation/screens/account/account_details_screen.dart';
 export 'package:gymnastic_center/presentation/screens/account/account_screen.dart';
 export 'package:gymnastic_center/presentation/screens/admin/home_admin_screen.dart';
+export 'package:gymnastic_center/presentation/screens/admin/lessons_admin_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/create_password_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/login_screen.dart';
 export 'package:gymnastic_center/presentation/screens/auth/password_changed_screen.dart';

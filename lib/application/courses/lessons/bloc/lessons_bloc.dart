@@ -45,7 +45,7 @@ class LessonsBloc extends SafeBloc<LessonsEvent, LessonsState> {
     final courseResult = await coursesRepository.getCourseById(courseId);
     if (courseResult.isSuccessful()) {
       final course = courseResult.getValue();
-      final lessons = course.lessons!;
+      final lessons = course.lessons;
       add(LessonsLoaded(lessons, course.id, course.image));
       return;
     }

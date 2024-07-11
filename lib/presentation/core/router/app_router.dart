@@ -16,7 +16,12 @@ class RoutesManager {
             final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
             return HomeAdminScreen(pageIndex: pageIndex);
           },
-      ),
+          routes: [
+            GoRoute(
+                path: 'courses/:courseId',
+                builder: (context, state) => LessonsAdminScreen(
+                    courseId: state.pathParameters['courseId'] ?? '')),
+          ]),
       GoRoute(
           path: '/home/:page',
           builder: (context, state) {
@@ -185,7 +190,8 @@ class RoutesManager {
     ],
     redirect: (context, state) async {
       final isGoingTo = state.matchedLocation;
-      final isAdmin = await LocalStorageService().getValue<bool>('isAdmin') != null;
+      final isAdmin =
+          await LocalStorageService().getValue<bool>('isAdmin') != null;
       final isAutorized =
           await LocalStorageService().getValue<String>('token') != null;
       final hasSeenWelcome =

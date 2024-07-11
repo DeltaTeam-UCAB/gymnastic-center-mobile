@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/blogs/bloc/blogs_bloc.dart';
 import 'package:gymnastic_center/application/blogs/delete-blog/delete_blog_bloc.dart';
 import 'package:gymnastic_center/application/clients/bloc/clients_bloc.dart';
-import 'package:gymnastic_center/application/courses/courses_bloc.dart';
+import 'package:gymnastic_center/application/courses/all-courses/courses_bloc.dart';
 import 'package:gymnastic_center/application/courses/delete-course/delete_course_bloc.dart';
 import 'package:gymnastic_center/application/themes/themes_bloc.dart';
 import 'package:gymnastic_center/application/trainers/bloc/trainers_bloc.dart';
