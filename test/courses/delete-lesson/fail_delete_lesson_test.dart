@@ -38,7 +38,7 @@ void main() {
   });
 
   blocTest(
-      'Should emit DeleteCourseState with status error when deleteCourse is called and fails',
+      'Should emit DeleteLessonStatus with status [error] when deleteLesson is called and fails',
       build: () => DeleteLessonBloc(mockCoursesRepository),
       act: (bloc) => bloc.deleteLesson(
         courseId: '1',

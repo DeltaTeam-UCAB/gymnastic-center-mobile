@@ -38,7 +38,7 @@ void main() {
   });
 
   blocTest(
-      'Should emit DeleteCourseState with status deleted and refresh when deleteCourse is called',
+      'Should emit DeleteLessonState with status [deleted] when deleteLesson is called and succeeds',
       build: () => DeleteLessonBloc(mockCoursesRepository),
       act: (bloc) => bloc.deleteLesson(
         courseId: '1',
