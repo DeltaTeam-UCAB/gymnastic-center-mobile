@@ -49,6 +49,7 @@ class _NotificationsListViewState extends State<NotificationsListView> {
             ? _emptyNotificationsView(colors, context)
             : ListView.separated(
               itemCount: state.notifications.length,
+              controller: _scrollController,
               itemBuilder: (context, index) => _CustomNotification(
                   notification: state.notifications[index]),
               separatorBuilder: (context, index) =>
