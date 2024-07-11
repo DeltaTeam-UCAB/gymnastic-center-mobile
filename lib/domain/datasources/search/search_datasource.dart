@@ -16,5 +16,5 @@ abstract class SearchDataSource {
     required String term,
   });
 
-  Future<List<String>> loadPopularTags([page = 1, perPage = 10]);
+  Future<List<String>> loadPopularTags({int page = 1, int perPage = 8});
 }

@@ -24,7 +24,8 @@ class TagsBloc extends SafeBloc<TagsEvent, TagsState> {
   }
 
   Future<void> loadPopularTags() async {
-    final result = await _searchRepository.loadPopularTags();
+    final result =
+        await _searchRepository.loadPopularTags(perPage: state.perPage);
     if (result.isSuccessful()) {
       final popularTags = result.getValue();
       add(LoadPopularTags(popularTags));

@@ -13,7 +13,7 @@ class MockSearchRepository extends SearchRepository {
       this.shouldFail = false});
 
   @override
-  Future<Result<List<String>>> loadPopularTags([page = 1, perPage = 10]) {
+  Future<Result<List<String>>> loadPopularTags({page = 1, perPage = 10}) {
     if (tags.isNotEmpty) {
       return Future.value(Result.success(tags));
     }
