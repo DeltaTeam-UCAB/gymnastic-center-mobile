@@ -50,7 +50,7 @@ const appMenuItems = <MenuItem>[
   ),
   MenuItem(
     title: 'About',
-    route: '/token',
+    route: '/about',
     icon: Icons.info_rounded,
   ),
 ];

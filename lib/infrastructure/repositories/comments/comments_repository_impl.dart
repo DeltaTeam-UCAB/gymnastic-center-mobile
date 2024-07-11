@@ -40,10 +40,10 @@ class CommentsRepositoryImpl extends CommentsRepository {
   }
   
   @override
-  Future<Result<String>> createComment(String targetId, String targetType, String message) async {
+  Future<Result<bool>> createComment(String targetId, String targetType, String message) async {
     try {
-      final commentId = await commentsDatasource.createComment(targetId, targetType, message);
-      return Result.success(commentId);
+      await commentsDatasource.createComment(targetId, targetType, message);
+      return Result.success(true);
     } catch (e) {
       return Result.fail(e as Exception);
     }

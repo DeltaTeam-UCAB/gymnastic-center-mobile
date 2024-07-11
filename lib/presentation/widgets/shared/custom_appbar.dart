@@ -76,7 +76,7 @@ class _AppBarTitle extends StatelessWidget {
               width: 5,
             ),
             GestureDetector(
-              onTap: () => context.push('/account/details'),
+              onTap: () => context.push('/account'),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 25,
@@ -116,10 +116,7 @@ class _SearchButton extends StatelessWidget {
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Search'),
-          Icon(Icons.search)
-        ],
+        children: [Text('Search'), Icon(Icons.search)],
       ),
     );
   }

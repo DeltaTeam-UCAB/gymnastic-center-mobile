@@ -2,7 +2,7 @@ import 'package:gymnastic_center/common/results.dart';
 import 'package:gymnastic_center/domain/entities/suscription/course_progress.dart';
 import 'package:gymnastic_center/domain/repositories/suscription/suscription_repository.dart';
 
-class MockSuscriptionRepository extends SuscriptionRepository{
+class MockSuscriptionRepository extends SuscriptionRepository {
   final List<CourseProgress> coursesProgress;
   final bool shouldFail;
   MockSuscriptionRepository(this.coursesProgress, [this.shouldFail = false]);
@@ -11,20 +11,22 @@ class MockSuscriptionRepository extends SuscriptionRepository{
     if (coursesProgress.isEmpty || shouldFail) {
       return Future.value(Result.fail(Exception('No coursesProgress found')));
     }
-    final course = coursesProgress.firstWhere((element) => element.courseId == courseId);
+    final course =
+        coursesProgress.firstWhere((element) => element.courseId == courseId);
     return Future.value(Result.success(course));
   }
 
   @override
-  Future<Result<List<CourseProgress>>> getSuscribedCourses(int page, {int? perPage = 10}) {
+  Future<Result<List<CourseProgress>>> getSuscribedCourses(int page,
+      {int? perPage = 10}) {
     if (coursesProgress.isEmpty) {
       return Future.value(Result.success([]));
     }
     if (shouldFail) {
       return Future.value(Result.fail(Exception()));
     }
-    return Future.value(Result.success(coursesProgress.sublist(perPage!*(page - 1), perPage * page)));
-    
+    return Future.value(Result.success(
+        coursesProgress.sublist(perPage! * (page - 1), perPage * page)));
   }
 
   @override
@@ -36,12 +38,14 @@ class MockSuscriptionRepository extends SuscriptionRepository{
   }
 
   @override
-  Future<Result<bool>> markCompletedProgressLesson(String courseId, String lessonId) {
+  Future<Result<bool>> markCompletedProgressLesson(
+      String courseId, String lessonId) {
     return Future.value(Result.success(true));
   }
 
   @override
-  Future<Result<bool>> markEndProgressLesson(String courseId, String lessonId, int totalSeconds, int secondsViewed) {
+  Future<Result<bool>> markEndProgressLesson(
+      String courseId, String lessonId, int totalSeconds, int secondsViewed) {
     return Future.value(Result.success(true));
   }
 
@@ -63,4 +67,11 @@ class MockSuscriptionRepository extends SuscriptionRepository{
     return Future.value(Result.success(true));
   }
 
-} 
+  @override
+  Future<Result<int>> getSuscribedCoursesCount() {
+    if (shouldFail) {
+      return Future.value(Result.fail(Exception('Error loading profile')));
+    }
+    return Future.value(Result.success(10));
+  }
+}
