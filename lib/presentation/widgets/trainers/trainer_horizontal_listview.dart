@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/datasources/trainers/trainers_datasource.dart';
@@ -96,8 +97,8 @@ class _TrainerSlide extends StatelessWidget {
           child: FadeInRight(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                trainer.image,
+              child: CachedNetworkImage(
+                imageUrl: trainer.image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -107,9 +108,8 @@ class _TrainerSlide extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20)
-              ),
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
               gradient: LinearGradient(
                 begin: Alignment.center,
                 end: Alignment.bottomCenter,
@@ -118,7 +118,6 @@ class _TrainerSlide extends StatelessWidget {
             ),
           ),
         ),
-      
         Positioned(
           bottom: 10,
           child: Padding(

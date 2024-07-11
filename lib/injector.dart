@@ -30,15 +30,20 @@ import 'package:gymnastic_center/application/trainers/delete-trainer/delete_trai
 import 'package:gymnastic_center/application/trainers/follow-trainer/follow_trainer_bloc.dart';
 import 'package:gymnastic_center/application/trainers/trainer-details/trainer_details_bloc.dart';
 import 'package:gymnastic_center/application/video_player/bloc/video_player_bloc.dart';
+import 'package:gymnastic_center/infrastructure/cache/hive_cache_provider.dart';
 import 'package:gymnastic_center/infrastructure/datasources/blogs/api_blog_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/blogs/hive_cache_proxy_blogs_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/categories/hive_cache_proxy_categories_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/categories/categories_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/client/clients_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/comments/api_comment_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/courses/api_courses_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/courses/hive_cache_proxy_courses_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/notifications/notifications_datasource_impl.dart';
 import 'package:gymnastic_center/infrastructure/datasources/search/api_search_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/suscriptions/api_suscription_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/trainers/api_trainer_datasource.dart';
+import 'package:gymnastic_center/infrastructure/datasources/trainers/hive_cache_proxy_trainers_datasource.dart';
 import 'package:gymnastic_center/infrastructure/datasources/user/api_user_datasource.dart';
 import 'package:gymnastic_center/infrastructure/firebase/firebase_notifications_manager.dart';
 import 'package:gymnastic_center/infrastructure/local_notifications/local_notifications.dart';
@@ -60,17 +65,20 @@ class Injector {
   void setUp() {
     final LocalStorageService localStorageService = LocalStorageService();
 
-    final apiBlogDatasource = APIBlogDatasource(localStorageService);
-    final apiCoursesDatasource = ApiCoursesDatasource(localStorageService);
+    final apiBlogDatasource = HiveCacheProxyBlogDatasource(
+        APIBlogDatasource(localStorageService), HiveCacheProvider());
+    final apiCoursesDatasource = HiveCacheProxyCoursesDatasource(
+        ApiCoursesDatasource(localStorageService), HiveCacheProvider());
     final apiUserDatasource = APIUserDatasource();
     final clientsDatasourceImpl = ClientsDatasourceImpl(localStorageService);
     final apiSuscriptionDatasource =
         APISuscriptionDatasource(localStorageService);
-    final apiTrainersDatasource = ApiTrainersDatasource(localStorageService);
+    final apiTrainersDatasource = HiveCacheProxyTrainersDatasource(
+        ApiTrainersDatasource(localStorageService), HiveCacheProvider());
     final apiSearchDatasource = ApiSearchDatasource(localStorageService);
     final apiCommentDatasource = ApiCommentDatasource(localStorageService);
-    final apiCategoriesDatasource =
-        CategoriesDatasourceImpl(localStorageService);
+    final apiCategoriesDatasource = HiveCacheProxyCategoriesDatasource(
+        CategoriesDatasourceImpl(localStorageService), HiveCacheProvider());
 
     final blogRepositoryImpl =
         BlogRepositoryImpl(blogsDatasource: apiBlogDatasource);
@@ -153,6 +161,5 @@ class Injector {
         trainersRepository: trainersRepositoryImpl));
 
     getIt.registerFactory(() => DeleteLessonBloc(coursesRepositoryImpl));
-
   }
 }

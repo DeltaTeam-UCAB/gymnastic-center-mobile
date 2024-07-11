@@ -1,4 +1,4 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/trainers/trainer.dart';
@@ -25,17 +25,14 @@ class CustomImage extends StatelessWidget {
         // Image
         ClipRRect(
           borderRadius: customBorderRadius,
-          child: Image.network(
-            src,
+          child: CachedNetworkImage(
+            imageUrl: src,
             height: 400,
             fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return FadeIn(child: child);
+            progressIndicatorBuilder: (context, url, loadingProgress) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             },
           ),
         ),

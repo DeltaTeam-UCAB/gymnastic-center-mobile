@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/application/comments/bloc/comments_bloc.dart';
 import 'package:gymnastic_center/application/courses/lessons/bloc/lessons_bloc.dart';
@@ -23,7 +23,6 @@ class LessonScreen extends StatefulWidget {
 }
 
 class _LessonScreenState extends State<LessonScreen> {
-
   @override
   void dispose() {
     getIt.resetLazySingleton<LessonsBloc>();
@@ -36,16 +35,13 @@ class _LessonScreenState extends State<LessonScreen> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => getIt<LessonsBloc>()
-              ..loadLessonsByCourseId(widget.courseId),
+            create: (_) =>
+                getIt<LessonsBloc>()..loadLessonsByCourseId(widget.courseId),
           ),
+          BlocProvider(create: (_) => getIt<CommentsBloc>()),
           BlocProvider(
-            create: (_) => getIt<CommentsBloc>()
-          ),
-          BlocProvider(
-            create: (_) => getIt<CourseProgressBloc>()
-              ..loadCurrentCourseProgressById(widget.courseId)
-          )
+              create: (_) => getIt<CourseProgressBloc>()
+                ..loadCurrentCourseProgressById(widget.courseId))
         ],
         child: Stack(children: [
           _LesssonView(widget.selectedLessonId),
@@ -53,9 +49,9 @@ class _LessonScreenState extends State<LessonScreen> {
               top: 0,
               left: 0,
               right: 0,
-              child: AppBar(  
+              child: AppBar(
                 titleSpacing: -10,
-                title: const Text('Lessons' ),
+                title: const Text('Lessons'),
                 elevation: 0,
               )),
         ]));
@@ -75,7 +71,7 @@ class _LesssonViewState extends State<_LesssonView>
   late TabController _controller;
   @override
   void initState() {
-    _controller = TabController(length: 3, vsync: this, initialIndex: 0);    
+    _controller = TabController(length: 3, vsync: this, initialIndex: 0);
     super.initState();
   }
 
@@ -87,9 +83,12 @@ class _LesssonViewState extends State<_LesssonView>
 
   @override
   Widget build(BuildContext context) {
-    final courseProgressStatus = context.watch<CourseProgressBloc>().state.status;
-    final lessonsProgress = context.watch<CourseProgressBloc>().state.lessonsProgress;
-    final coursePercent = context.watch<CourseProgressBloc>().state.coursePercent;
+    final courseProgressStatus =
+        context.watch<CourseProgressBloc>().state.status;
+    final lessonsProgress =
+        context.watch<CourseProgressBloc>().state.lessonsProgress;
+    final coursePercent =
+        context.watch<CourseProgressBloc>().state.coursePercent;
     return Scaffold(
       body: BlocBuilder<LessonsBloc, LessonsState>(
         buildWhen: (previous, current) =>
@@ -98,21 +97,23 @@ class _LesssonViewState extends State<_LesssonView>
             (previous.isFirstLesson != current.isFirstLesson) ||
             (previous.isLastLesson != current.isLastLesson),
         builder: (context, state) {
-          if (state.status == LessonsStatus.loading || courseProgressStatus == CourseProgressStatus.loading ) {
+          if (state.status == LessonsStatus.loading ||
+              courseProgressStatus == CourseProgressStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state.status == LessonsStatus.error || courseProgressStatus == CourseProgressStatus.error) {
+          if (state.status == LessonsStatus.error ||
+              courseProgressStatus == CourseProgressStatus.error) {
             return const Center(
               child: Text('Error has occured'),
             );
           }
           if (state.status == LessonsStatus.changingLesson) {
-            
-            context
-                .read<LessonsBloc>()
-                .changeCurrentLesson((widget.selectedLessonId.isNotEmpty) ? widget.selectedLessonId : state.lessons.first.id);
+            context.read<LessonsBloc>().changeCurrentLesson(
+                (widget.selectedLessonId.isNotEmpty)
+                    ? widget.selectedLessonId
+                    : state.lessons.first.id);
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -122,9 +123,7 @@ class _LesssonViewState extends State<_LesssonView>
               Column(
                 children: [
                   _VideoPreview(state.currentLesson),
-                  TabBar(
-                    controller: _controller,
-                    tabs: const [
+                  TabBar(controller: _controller, tabs: const [
                     Tab(
                       text: 'Description',
                     ),
@@ -145,16 +144,14 @@ class _LesssonViewState extends State<_LesssonView>
                         const _CommentsTab(),
                         SingleChildScrollView(
                           child: LessonsProgressListView(
-                            lessons: state.lessons,
-                            currentLessondId: state.currentLesson.id,
-                            lessonsProgress: lessonsProgress,
-                            onPressedLesson: (lesson) {
+                              lessons: state.lessons,
+                              currentLessondId: state.currentLesson.id,
+                              lessonsProgress: lessonsProgress,
+                              onPressedLesson: (lesson) {
                                 context
-                                  .read<LessonsBloc>()
-                                  .changeCurrentLesson(lesson.id);
-                              }
-                          ),
-                          
+                                    .read<LessonsBloc>()
+                                    .changeCurrentLesson(lesson.id);
+                              }),
                         )
                       ],
                     ),
@@ -162,12 +159,11 @@ class _LesssonViewState extends State<_LesssonView>
                 ],
               ),
               Positioned(
-                right: 16,
-                bottom: 64,
-                child: CourseCirularProgress(
-                  percent: coursePercent,
-                )
-              ),
+                  right: 16,
+                  bottom: 64,
+                  child: CourseCirularProgress(
+                    percent: coursePercent,
+                  )),
             ],
           );
         },
@@ -183,18 +179,25 @@ class _CommentsTab extends StatefulWidget {
   State<_CommentsTab> createState() => _CommentsTabState();
 }
 
-class _CommentsTabState extends State<_CommentsTab> with AutomaticKeepAliveClientMixin{
+class _CommentsTabState extends State<_CommentsTab>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final currentLesson = context.watch<LessonsBloc>().state.currentLesson;
     return CommentsSection(
-      onInitialLoadComments: () => context.read<CommentsBloc>().startInitialLoad(currentLesson.id, 'LESSON'),
-      onLoadNextComments: () => context.read<CommentsBloc>().loadNextPageById(currentLesson.id, 'LESSON'),
-      onPostComment: (message) => context.read<CommentsBloc>().createComment(currentLesson.id, 'LESSON', message), 
+      onInitialLoadComments: () => context
+          .read<CommentsBloc>()
+          .startInitialLoad(currentLesson.id, 'LESSON'),
+      onLoadNextComments: () => context
+          .read<CommentsBloc>()
+          .loadNextPageById(currentLesson.id, 'LESSON'),
+      onPostComment: (message) => context
+          .read<CommentsBloc>()
+          .createComment(currentLesson.id, 'LESSON', message),
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }
@@ -213,13 +216,12 @@ class _VideoPreview extends StatelessWidget {
     return SizedBox(
       height: _height,
       child: Stack(children: [
-        Image.network(
-          context.read<LessonsBloc>().state.imgSelectedCourse,
+        CachedNetworkImage(
+          imageUrl: context.read<LessonsBloc>().state.imgSelectedCourse,
           height: _height,
           fit: BoxFit.fill,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress != null) return const SizedBox();
-            return FadeIn(child: child);
+          progressIndicatorBuilder: (context, url, loadingProgress) {
+            return const SizedBox();
           },
         ),
         Container(
@@ -256,8 +258,7 @@ class _VideoPreview extends StatelessWidget {
                       iconData: Icons.arrow_right,
                       onPressed: () {
                         context.read<LessonsBloc>().changeToNextLesson();
-                    }
-                  ),
+                      }),
               ]),
             ),
           ),
@@ -270,7 +271,7 @@ class _VideoPreview extends StatelessWidget {
               child: IconButton(
                 onPressed: () {
                   context.push('/video-player', extra: lesson.video);
-                } ,
+                },
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll(colors.inversePrimary),
@@ -319,4 +320,3 @@ class _CustomButton extends StatelessWidget {
     );
   }
 }
-

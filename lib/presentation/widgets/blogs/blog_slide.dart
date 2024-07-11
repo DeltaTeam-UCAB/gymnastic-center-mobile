@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -47,22 +48,20 @@ class BlogSlide extends StatelessWidget {
                   width: 180,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      blog.images[0],
+                    child: CachedNetworkImage(
+                      imageUrl: blog.images[0],
                       fit: BoxFit.cover,
                       //width: 150,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress != null) {
-                          return const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
+                      progressIndicatorBuilder:
+                          (context, url, loadingProgress) {
+                        return const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
                             ),
-                          );
-                        }
-                        return child;
+                          ),
+                        );
                       },
                     ),
                   ),

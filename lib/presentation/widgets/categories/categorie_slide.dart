@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymnastic_center/domain/entities/categories/category.dart';
@@ -29,22 +30,20 @@ class CategorySlide extends StatelessWidget {
                       borderRadius: BorderRadius.circular(7),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        child: Image.network(
-                          category.icon,
+                        child: CachedNetworkImage(
+                          imageUrl: category.icon,
                           fit: BoxFit.cover,
                           //width: 150,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress != null) {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
+                          progressIndicatorBuilder:
+                              (context, url, loadingProgress) {
+                            return const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
                                 ),
-                              );
-                            }
-                            return child;
+                              ),
+                            );
                           },
                         ),
                       ),
