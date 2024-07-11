@@ -24,7 +24,9 @@ lities
 
 This section will give you an overview of what the application looks like.
 
-![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-2.jpeg) ![image](https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg)
+<img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-1.jpeg" width="33%" style="display:inline-block;">
+<img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-2.jpeg" width="33%" style="display:inline-block;">
+<img src="https://github.com/DeltaTeam-UCAB/gymnastic-center-mobile/blob/readme/public/example-3.jpeg" width="33%" style="display:inline-block;">
 
 ## Getting Started
 
