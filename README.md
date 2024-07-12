@@ -10,10 +10,10 @@ Gymnastic Center is an Android app developed in Flutter that promotes physical a
 
 All the team members are students of the Software Engineering career at the Universidad Católica Andrés Bello in Caracas, Venezuela. All of them are passionate about technology and software development.
 
-- **[Gianfranco Lanza]**(https://github.com/GianL22)
-- **[Alejandro Molina]**(https://github.com/Alejo-FM)
-- **[Gian P. Astorino]**(https://github.com/GianPX)
-- **[Eduardo García]**(https://github.com/HappyGick)
+- [**Gianfranco Lanza**](https://github.com/GianL22)
+- [**Alejandro Molina**](https://github.com/Alejo-FM)
+- [**Gian P. Astorino**](https://github.com/GianPX)
+- [**Eduardo García**](https://github.com/HappyGick)
 
 ## Features
 Among the most important features of the application we have:
@@ -22,7 +22,7 @@ Among the most important features of the application we have:
 - The application must have the ability to search for content.
 - A record of the use of the application by the user must be kept.
 - The application must have integrated Push Notifications that will be used for different functionalities.
-lities
+- There's an (incomplete due to external reasons) cache/persistence feature. It will preload some content and cache some of the viewed content and show it to the user when there's no internet connection available, this code is in PR #98, branch feat/cache.
 
 ## How It Looks
 
